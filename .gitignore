@@ -1,4 +1,5 @@
 *.foam
+*.swp
 case.pid
 0.*
 [1-9]*

@@ -1,0 +1,9 @@
+faceSet rockerFaceZone new patchToFace rocker
+faceSet seaBedFaceZone new patchToFace seaBed
+faceSet right1FaceZone new patchToFace right1
+faceSet rightFaceZone new patchToFace right
+faceSet left1FaceZone new patchToFace left1
+faceSet leftFaceZone new patchToFace left
+
+
+quit

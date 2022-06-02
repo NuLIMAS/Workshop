@@ -1,0 +1,176 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  3.0.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+
+
+ {
+        name    leftFaceSet;
+        type    faceSet;
+        action  new;
+        source  boxToFace;
+        sourceInfo
+        {
+          // box (31.0125 0 -37.5)(91.0125 5 -12.5);
+          box (0.245 0 -0.051)(0.355 0.02 0.00015);
+        }
+    }
+
+  /*  {
+        name    leftFaceSet;
+        type    faceSet;
+        action  delete;
+        source  boxToFace;
+        sourceInfo
+        {
+          //box (58.6 0 -25.5)(63.4 5 -23.8);
+           box (0.2505 0.01 -0.05)(0.3495 0.019 -0.0002);
+        }
+    }*/
+
+    {
+        name    leftCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            //box (32.0125 0 -36.5)(91.5 5 -11.5);
+            
+             box (0.245 0 -0.051)(0.345 0.02 0.00015);
+        }
+    }
+
+    {
+        name    leftFaces;
+        type    faceZoneSet;
+        action  new;
+        source  setsToFaceZone;
+        sourceInfo
+        {
+            faceSet leftFaceSet;
+            cellSet leftCellSet;
+          
+        }
+    }
+    
+    {
+        name    leftZones;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        sourceInfo
+        {
+            set leftCellSet;
+          
+        }
+    }
+
+
+
+
+
+
+
+
+
+ {
+        name    rightFaceSet;
+        type    faceSet;
+        action  new;
+        source  boxToFace;
+        sourceInfo
+        {
+          box (0.545 0 -0.051)(0.655 0.02 0.0001);
+          
+        }
+    }
+
+  /*  {
+        name    rightFaceSet;
+        type    faceSet;
+        action  delete;
+        source  boxToFace;
+        sourceInfo
+        {
+          box (0.5805 0.01 -0.05)(0.6295 0.019 -0.001);
+        
+        }
+    }*/
+
+    {
+        name    rightCellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            //box (32.0125 0 -36.5)(91.5 5 -11.5);
+            
+             box (0.545 0 -0.051)(0.655 0.02 0.0001);
+        }
+    }
+
+    {
+        name    rightFaces;
+        type    faceZoneSet;
+        action  new;
+        source  setsToFaceZone;
+        sourceInfo
+        {
+            faceSet rightFaceSet;
+            cellSet rightCellSet;
+          
+        }
+    }
+    
+    {
+        name    rightZones;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        sourceInfo
+        {
+            set rightCellSet;
+          
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+);
+
+// ************************************************************************* //

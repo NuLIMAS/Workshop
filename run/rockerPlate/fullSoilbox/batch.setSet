@@ -1,0 +1,16 @@
+cellSet leftZones new boxToCell (0.245 0 -0.030) (0.355 0.02 0)
+cellSet rightZones new boxToCell (0.545 0 -0.030) (0.655 0.02 0)
+
+cellSet rockerZones new boxToCell (0.3 0 -0.015) (0.6 0.02 0.015)
+
+/*cellZoneSet lZone setToCellZone l
+cellZoneSet rZone setToCellZone r*/
+
+faceSet rockerFaceZone new patchToFace rocker
+faceSet seaBedFaceZone new patchToFace seaBed
+
+
+
+
+
+quit

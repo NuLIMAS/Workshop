@@ -1,0 +1,139 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  3.0.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      createBafflesDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Whether to convert internal faces only (so leave boundary faces intact).
+// This is only relevant if your face selection type can pick up boundary
+// faces.
+internalFacesOnly true;
+
+
+// Baffles to create.
+baffles
+{
+    baffleFaces
+    {
+        //- Use predefined faceZone to select faces and orientation.
+        type        faceZone;
+        zoneName    baffleFaces;
+
+
+        patchPairs
+        {
+            type            cyclic;
+
+            patchFields
+            {
+                
+                p
+                {
+                    type            cyclic;
+                    
+                }
+                D
+                {
+                    type            cyclic;
+                    
+                    
+                }
+                pE
+                {
+                    type            cyclic;
+                    
+                }
+                
+               
+                
+
+            }
+        }
+    }
+    
+    
+      /*  baffleZones
+    {
+        //- Use predefined faceZone to select faces and orientation.
+        type        cellZone;
+        zoneName    baffleZones;
+
+
+        patchPairs
+        {
+            type            cyclic;
+
+            patchFields
+            {
+                
+                p
+                {
+                    type            cyclic;
+                    
+                }
+                D
+                {
+                    type            cyclic;
+                    
+                    
+                }
+                pE
+                {
+                    type            cyclic;
+                    
+                }
+                
+               
+                
+
+            }
+        }
+    }
+    
+    
+*/
+
+
+  /*  cyclicFaces
+    {
+        //- Select faces and orientation through a searchableSurface
+        type        searchableSurface;
+        surface     searchablePlate;
+        origin      (31.0125 0 -37.5);
+        span        (60 0 25);
+
+        patchPairs
+        {
+            type            cyclic;
+
+            //- Optional override of added patchfields. If not specified
+            //  any added patchfields are of type calculated.
+            patchFields
+            {
+                p
+                {
+                    type            fixedValue;
+                    patchType       cyclic;
+                    jump            uniform 0;
+                    value           uniform 0;
+                    jumpTable       polynomial 1((100 0));
+                }
+            }
+        }
+    }
+    */
+    
+}
+
+
+// ************************************************************************* //

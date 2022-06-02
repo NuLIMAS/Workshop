@@ -1,0 +1,51 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      materialProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+E              E [ 1 -1 -2 0 0 0 0 ] 9e6;
+
+nu             nu [ 0 0 0 0 0 0 0 ] 0.29;
+
+k              k [ 0 1 -1 0 0 0 0 ] 1e-6;
+//k              k [ 0 1 -1 0 0 0 0 ] 1e-5;
+
+K              K [ 1 -1 -2 0 0 0 0 ] 1.9e9;
+
+Sr             Sr [ 0 0 0 0 0 0 0 ] 1;
+
+p0             p0 [ 1 -1 -2 0 0 0 0 ] 4120;
+
+gamma          gamma [ 1 -2 -2 0 0 0 0 ] 9810;
+
+n           	n [ 0 0 0 0 0 0 0 ] 0.35;
+
+emax           emax [ 0 0 0 0 0 0 0 ] 1.13;
+emin           emin [ 0 0 0 0 0 0 0 ] 0.44;
+
+k0             k0 [0 0 0 0 0 0 0 ] 0.41;
+
+alpha          alpha [0 0 0 0 0 0 0 ] 0.2132;
+beta           beta [0 0 0 0 0 0 0 ] -0.3194;
+relDensity     relDensity [0 0 0 0 0 0 0 ] 0.38; 
+//alpha          alpha [0 0 0 0 0 0 0 ] 0.2676;
+//beta           beta [0 0 0 0 0 0 0 ] -0.2602;
+//relDensity     relDensity [0 0 0 0 0 0 0 ] 0.54;
+gammaD         gammaD [1 -2 -2 0 0 0 0 ]1.052e4;
+
+
+planeStress     no;
+
+// ************************************************************************* //

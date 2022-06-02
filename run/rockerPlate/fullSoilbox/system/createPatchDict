@@ -1,0 +1,117 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.4.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      createPatchDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Do a synchronisation of coupled points after creation of any patches.
+// Note: this does not work with points that are on multiple coupled patches
+//       with transformations (i.e. cyclics).
+pointSync false;
+
+// Patches to create.
+patches
+(
+    /*{
+        //- Slave side patch
+        name            amirotstatdummy;
+        patchInfo
+        {
+            type            wall;//no cyclicAMI since we have no neighbour patch given
+        }
+        constructFrom patches;
+        patches (INTERFACE);
+    }*/
+//code change start
+/*
+    {
+        //- Master side patch peri rot
+        name            amiperirota;
+        patchInfo
+        {
+            type            cyclicAMI;
+            matchTolerance  0.0001;
+            neighbourPatch  amiperirotb;
+            transform       rotational;
+	    rotationAxis    (0 0 1);
+            rotationCentre  (0 0 0);
+        }
+        constructFrom patches;
+        patches (PERIODICROTA);
+    }
+
+    {
+        //- Slave side patch peri rot
+        name            amiperirotb;
+        patchInfo
+        {
+            type            cyclicAMI;
+            matchTolerance  0.0001;
+            neighbourPatch  amiperirota;
+            transform       rotational;
+	    rotationAxis    (0 0 1);
+            rotationCentre  (0 0 0);
+        }
+        constructFrom patches;
+        patches (PERIODICROTB);
+    }
+*/
+//code change end
+    {
+        name            seaBed;
+        patchInfo
+        {
+            type            wall;
+        }
+        constructFrom patches;
+        patches (seaBed);
+    }
+    {
+        name            rocker;
+        patchInfo
+        {
+            type            wall;
+        }
+        constructFrom patches;
+        patches (rocker);
+    }
+    {
+        name            left;
+        patchInfo
+        {
+            type            wall;
+        }
+        constructFrom patches;
+        patches (left);
+    }
+    {
+        name            SoilDomainBottom;
+        patchInfo
+        {
+            type            wall;
+        }
+        constructFrom patches;
+        patches (SoilDomainBottom);
+    }
+    {
+        name            frontBack;
+        patchInfo
+        {
+            type            wall;
+        }
+        constructFrom patches;
+        patches (frontBack);
+    }
+);
+
+// ************************************************************************* //

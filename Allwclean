@@ -19,7 +19,8 @@ cd src/solvers/pressureBuildupFoam  && wclean
 cd ~/Projects/NuLIMAS_GIT
 cd src/solvers/residualLiquefactionFDDyMFoam/ && wclean
 cd ~/Projects/NuLIMAS_GIT
-
+cd src/solvers/rockerFoam/ && wclean
+cd ~/Projects/NuLIMAS_GIT
 # Compile boundaries
 cd src/boundaries && wclean 
 cd ~/Projects/NuLIMAS_GIT

@@ -19,7 +19,8 @@ cd src/solvers/pressureBuildupFoam  && wmake
 cd ~/Projects/NuLIMAS_GIT
 cd src/solvers/residualLiquefactionFDDyMFoam && wmake
 cd ~/Projects/NuLIMAS_GIT
-
+cd src/solvers/rockerFoam && wmake
+cd ~/Projects/NuLIMAS_GIT
 
 # Compile boundaries
 cd src/boundaries && wmake libso
