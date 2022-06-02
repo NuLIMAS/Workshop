@@ -1,0 +1,3 @@
+simpleLiqFvMesh/simpleLiqFvMesh.C
+
+LIB = $(FOAM_USER_LIBBIN)/libLiquefactionFvMeshFields

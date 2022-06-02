@@ -1,0 +1,13 @@
+tractionDisplacement/tractionDisplacementFvPatchVectorField.C
+tractionDisplacementSF/tractionDisplacementSFFvPatchVectorField.C
+propagatingPressureWave/propagatingPressureWaveFvPatchScalarField.C
+tractionPressureDisplacement/tractionPressureDisplacementFvPatchVectorField.C
+splitCyclic/splitCyclicPolyPatch.C
+splitCyclic/splitCyclicFvPatch.C
+splitCyclic/splitCyclicFvPatchFields.C
+splitCyclic/splitCyclicPointPatch.C
+splitCyclic/splitCyclicLduInterface.C
+splitCyclic/splitCyclicLduInterfaceField.C
+splitCyclic/coupleGroupIdentifier.C
+
+LIB = $(FOAM_USER_LIBBIN)/libliqueFvPatchFields
