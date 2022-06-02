@@ -1,0 +1,55 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    seaBed
+    {
+        type        propagatingPressureWave;
+        waveHeight      6;
+waterDepth      20;
+//amplitude     18544.07525;                    //wave amplitude
+direction       (1 0 0);                //wave direction
+period          10.0;                   //wave period
+waveLength      122.025;                        //wave length
+phase           .0;                     // Phase shift in rad/(2*pi) 
+offset          0;                      // base pressure 
+
+        #include "../constant/waveProperties"
+
+    }
+ 
+    sides
+    {
+        type            cyclic;   
+    }
+
+    soilDomainBottom
+    {
+        type            zeroGradient;
+    }
+    
+    frontBack
+    { 
+        type  		empty;
+     }
+}
+
+// ************************************************************************* //

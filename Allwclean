@@ -1,0 +1,27 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+
+
+# Check if OpenFOAM/FOAM has been sourced
+if [[ -z "${WM_PROJECT}" ]]
+then
+    echo "Please source the OpenFOAM/FOAM bashrc first!"
+    exit 1 
+fi
+
+# Compile solvers
+cd src/solvers/biotQSFoam  && wclean
+cd ~/Projects/NuLIMAS_GIT
+cd src/solvers/residualLiquefactionQSFoam  && wclean
+cd ~/Projects/NuLIMAS_GIT
+cd src/solvers/pressureBuildupFoam  && wclean
+cd ~/Projects/NuLIMAS_GIT
+cd src/solvers/residualLiquefactionFDDyMFoam/ && wclean
+cd ~/Projects/NuLIMAS_GIT
+
+# Compile boundaries
+cd src/boundaries && wclean 
+cd ~/Projects/NuLIMAS_GIT
+# Compile mesh files
+cd src/mesh && wclean libso
