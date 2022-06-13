@@ -12,19 +12,19 @@ fi
 
 # Compile solvers
 cd src/solvers/biotQSFoam  && wmake
-cd ~/Projects/NuLIMAS_GIT
-cd src/solvers/residualLiquefactionQSFoam  && wmake
-cd ~/Projects/NuLIMAS_GIT
-cd src/solvers/pressureBuildupFoam  && wmake
-cd ~/Projects/NuLIMAS_GIT
-cd src/solvers/residualLiquefactionFDDyMFoam && wmake
-cd ~/Projects/NuLIMAS_GIT
-cd src/solvers/rockerFoam && wmake
-cd ~/Projects/NuLIMAS_GIT
+cd ..
+cd residualLiquefactionQSFoam  && wmake
+cd ..
+cd pressureBuildupFoam  && wmake
+cd ..
+cd residualLiquefactionFDDyMFoam && wmake
+cd ..
+cd rockerFoam && wmake
+cd ../../
 
 # Compile boundaries
-cd src/boundaries && wmake libso
-cd ~/Projects/NuLIMAS_GIT
+cd boundaries && wmake libso
+cd ../
 
 # Compile mesh files
-cd src/mesh && wmake libso
+cd mesh && wmake libso

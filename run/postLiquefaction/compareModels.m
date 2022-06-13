@@ -1,5 +1,5 @@
-A=load('~/Projects/NuLIMAS_GIT/run/postLiquefaction/testCaseBE/postProcessing/Probes/0/pE');
-B=load('~/Projects/NuLIMAS_GIT/run/postLiquefaction/testCasePL/postProcessing/Probes/0/pE');
+A=load('testCaseBE/postProcessing/Probes/0/pE');
+B=load('testCasePL/postProcessing/Probes/0/pE');
 
 
 for i= 1:6

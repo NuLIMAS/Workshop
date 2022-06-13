@@ -12,17 +12,19 @@ fi
 
 # Compile solvers
 cd src/solvers/biotQSFoam  && wclean
-cd ~/Projects/NuLIMAS_GIT
-cd src/solvers/residualLiquefactionQSFoam  && wclean
-cd ~/Projects/NuLIMAS_GIT
-cd src/solvers/pressureBuildupFoam  && wclean
-cd ~/Projects/NuLIMAS_GIT
-cd src/solvers/residualLiquefactionFDDyMFoam/ && wclean
-cd ~/Projects/NuLIMAS_GIT
-cd src/solvers/rockerFoam/ && wclean
-cd ~/Projects/NuLIMAS_GIT
+cd ..
+cd residualLiquefactionQSFoam  && wclean
+cd ..
+cd pressureBuildupFoam  && wclean
+cd ..
+cd residualLiquefactionFDDyMFoam && wclean
+cd ..
+cd rockerFoam && wclean
+cd ../../
+
 # Compile boundaries
-cd src/boundaries && wclean 
-cd ~/Projects/NuLIMAS_GIT
+cd boundaries && wclean
+cd ../
+
 # Compile mesh files
-cd src/mesh && wclean libso
+cd mesh && wclean 
