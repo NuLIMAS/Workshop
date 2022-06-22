@@ -19,6 +19,8 @@ cd pressureBuildupFoam  && wmake
 cd ..
 cd residualLiquefactionFDDyMFoam && wmake
 cd ..
+cd liquefactionQSFoam && wmake
+cd ..
 cd rockerFoam && wmake
 cd ../../
 
