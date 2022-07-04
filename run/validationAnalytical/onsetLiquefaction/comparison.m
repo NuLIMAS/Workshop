@@ -12,10 +12,12 @@ plot(c2(:,3), c2(:,1),'r','lineWidth',2)
 plot(c3(:,3), c3(:,1),'g','lineWidth',2)
 plot(c4(:,3), c4(:,1),'m','lineWidth',2)
 
-d1=load('t2.csv');
-d2=load('t4.csv');
-d3=load('t8.csv');
-d4=load('t15.csv');
+
+A=load('p_sigma0.txt');
+d1=[A.p_sigma0(:,2) A.p_sigma0(:,1)];
+d2=[A.p_sigma0(:,3) A.p_sigma0(:,1)];
+d3=[A.p_sigma0(:,4) A.p_sigma0(:,1)];
+d4=[A.p_sigma0(:,5) A.p_sigma0(:,1)];
 
 plot(d1(:,1), d1(:,2),'b--','lineWidth',2)
 
@@ -52,6 +54,6 @@ r = 2*o +3.2;
 
 
 %legend (secondax, [H1 H2], 'Numerical', 'Analytical', 'location', 'southeast');
-t=title({'Comparison of Numerical (-) and Analytical^1 (--) solution'} , 'Interpreter', 'tex')
-set(t,'fontsize',16)
+%t=title({'Comparison of Numerical (-) and Analytical^1 (--) solution'} , 'Interpreter', 'tex')
+%set(t,'fontsize',16)
 saveas(figure(1), 'pbysigma0_z2.png')
