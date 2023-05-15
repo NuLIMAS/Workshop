@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "solidDisplacementFoam.C": "cpp",
+        "tractionDisplacementFvPatchVectorField.H": "cpp",
+        "tractionDisplacementFvPatchVectorField.C": "cpp",
+        "initialConsolidationFoam.C": "cpp"
+    }
+}

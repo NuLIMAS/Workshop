@@ -1,0 +1,4 @@
+tractionDisplacement/tractionDisplacementFvPatchVectorField.C
+initialConsolidationFoam.C
+
+EXE = $(FOAM_APPBIN)/initialConsolidationFoam
