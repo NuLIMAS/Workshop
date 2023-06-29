@@ -43,6 +43,8 @@ SourceFiles
 namespace Foam
 {
 
+class splitCyclicFvPatch;
+
 /*---------------------------------------------------------------------------*\
                   Class splitCyclicLduInterface Declaration
 \*---------------------------------------------------------------------------*/
@@ -65,12 +67,14 @@ public:
 
         // Access
 
-            //- Return neighbour
+            //- Neighbour patchID
             virtual label neighbPatchID() const = 0;
 
+            //- Neighbour patchID
             virtual bool master() const = 0;
 
-            //- Return processor number
+            //virtual const splitCyclicLduInterface& neighbInterface() const = 0;
+
             virtual const splitCyclicLduInterface& neighbPatch() const = 0;
 
             //- Return face transformation tensor
@@ -78,6 +82,7 @@ public:
 
             //- Return face reverse transformation tensor
             virtual const tensorField& reverseT() const = 0;
+
 };
 
 

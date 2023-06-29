@@ -1,0 +1,44 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      materialProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+E              E [ 1 -1 -2 0 0 0 0 ] 2.5e6; // Elastic modulus
+
+nu             nu [ 0 0 0 0 0 0 0 ] 0.29; //Poisson ratio
+
+k              k [ 0 1 -1 0 0 0 0 ] 1.5e-5; // Permeability
+
+K              K [ 1 -1 -2 0 0 0 0 ] 2e9; // True Bulk modulus
+
+Sr             Sr [ 0 0 0 0 0 0 0 ]1; // Degree of saturation
+
+p0             p0 [ 1 -1 -2 0 0 0 0 ] 5395.5; // Pressure at rest
+
+gamma          gamma [ 1 -2 -2 0 0 0 0 ] 0.981e4; // Specific weight of water
+
+n              n [ 0 0 0 0 0 0 0 ] 0.51; // Porosity of soil (initial)
+
+k0             k0 [0 0 0 0 0 0 0 ] 0.42; // Coeff of lateral stress
+
+gammaD         gammaD [1 -2 -2 0 0 0 0 ] 0.814e4; //Submerged specific weight of soil
+
+relDensity     relDensity [0 0 0 0 0 0 0] 0.28; // Relative density of the soil (initial)
+
+
+
+planeStress     no;
+
+// ************************************************************************* //

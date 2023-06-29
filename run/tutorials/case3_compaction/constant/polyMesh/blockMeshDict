@@ -1,0 +1,122 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 1;
+xl 2; 
+zl -0.2;
+zu 0;
+vertices        
+(
+    (0 0 $zl)
+    ($xl 0 $zl)
+    ($xl 0.05 $zl)
+    (0 0.05 $zl)
+    (0 0 $zu)
+    ($xl 0 $zu)
+    ($xl 0.05 $zu)
+    (0 0.05 $zu)
+);
+
+blocks          
+(
+    hex (0 1 2 3 4 5 6 7) (100 1 40) simpleGrading (1 1 1)
+);  
+
+edges           
+(
+);
+
+
+boundary
+(
+    seaBed
+    {
+        type wall;
+        faces
+        (
+	 (4 5 6 7)	
+        ) ;
+    }
+     
+    frontBack
+    {
+        type empty;
+        faces
+        (
+	  (3 7 6 2)
+          (0 1 5 4)	
+        ) ;
+    }  
+    
+    soilDomainBottom
+    {
+        type wall;
+        faces
+        (
+	  (0 3 2 1 )	
+        ) ;
+    } 
+    
+    left
+    {
+        type splitCyclic;
+        neighbourPatch  right;
+        faces
+        (
+            (0 4 7 3)
+
+        );
+          
+    }
+     
+     right
+    {
+        type splitCyclic;
+        neighbourPatch  left;
+        faces
+        (
+            (1 5 6 2)
+        );
+          
+    }  
+
+
+    liq
+    {
+        type splitCyclic;
+        neighbourPatch  sol;
+        faces
+        (
+        );
+        }
+    sol
+    {
+        type splitCyclic;
+        neighbourPatch  liq;
+        faces
+        (
+        );
+        }
+
+
+);
+
+
+mergePatchPairs 
+(
+);
+
+// ************************************************************************* //

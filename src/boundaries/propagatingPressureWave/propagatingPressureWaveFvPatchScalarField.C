@@ -156,6 +156,13 @@ void Foam::propagatingPressureWaveFvPatchScalarField::write
 ) const
 {
     fvPatchField<scalar>::write(os);
+    os.writeKeyword("direction") << k_ << token::END_STATEMENT << nl;
+    os.writeKeyword("waveHeight") << wh_ << token::END_STATEMENT << nl;
+    os.writeKeyword("waterDepth") << wd_ << token::END_STATEMENT << nl;
+    os.writeKeyword("waveLength") << lambda_ << token::END_STATEMENT << nl;
+    os.writeKeyword("period") << T_ << token::END_STATEMENT << nl;
+    os.writeKeyword("shift") <<shift_ << token::END_STATEMENT << nl;
+    os.writeKeyword("offset") << offset_ << token::END_STATEMENT << nl;
     writeEntry("value", os);
 }
 

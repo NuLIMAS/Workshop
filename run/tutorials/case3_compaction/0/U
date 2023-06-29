@@ -1,0 +1,73 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  3.0.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 0 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    seaBed
+    {
+        type            tractionDisplacementSF;
+        traction        uniform (0 0 0);
+        pressure        uniform 0;
+        value           uniform (0 0 0);
+    }
+
+    frontBack
+    {
+        type            empty;
+    }
+
+    soilDomainBottom
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+
+    "left|right"
+    {
+        type            splitCyclic;
+    }
+    
+    /*"liq|sol"
+    {
+        type            splitCyclic;
+    }*/
+
+    liq
+    {
+
+        patchType       splitCyclic;
+        type            cyclicFixedValue;
+        value           uniform (0 0 0 );
+        //type            splitCyclic;
+    }
+
+    sol
+    {
+        patchType       splitCyclic;
+        type            tractionPressureDisplacementSF;
+        traction        uniform (0 0 0);
+        pressure        uniform 0;
+        value           uniform (0 0 0);
+    }
+}
+
+
+// ************************************************************************* //

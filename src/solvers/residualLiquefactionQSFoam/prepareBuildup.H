@@ -94,7 +94,8 @@ numCyc.internalField() =
 numCyc.correctBoundaryConditions();
 
 
-volScalarField f
+
+/*volScalarField f
 (
     IOobject
     (
@@ -105,7 +106,9 @@ volScalarField f
         IOobject::AUTO_WRITE
     ),
     sigma0/(numCyc * T)
-);
+);*/
+
+f = sigma0/(numCyc * T);
 
 dimensionedScalar cv("cv", (mu * k / gamma) * ((2-2*nu)/ ((1-2*nu)+(2-2*nu)*(n*mu/Kprime))));
 

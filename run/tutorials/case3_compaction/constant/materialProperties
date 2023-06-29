@@ -1,0 +1,72 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      materialProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+E              E [ 1 -1 -2 0 0 0 0 ] 0.7e6; // Elastic modulus
+
+nu             nu [ 0 0 0 0 0 0 0 ] 0.29; //Poisson ratio
+
+k              k [ 0 1 -1 0 0 0 0 ] 1.45e-5; // Permeability
+
+K              K [ 1 -1 -2 0 0 0 0 ] 1.9e9; // True Bulk modulus
+
+Sr             Sr [ 0 0 0 0 0 0 0 ]1; // Degree of saturation
+
+p0             p0 [ 1 -1 -2 0 0 0 0 ] 4905; // Pressure at rest
+
+gamma          gamma [ 1 -2 -2 0 0 0 0 ] 0.981e4; // Specific weight of water
+
+n1             n1 [ 0 0 0 0 0 0 0 ] 0.5; // Porosity of soil (initial)
+
+n2             n2 [ 0 0 0 0 0 0 0 ] 0.44; // Porosity of compacted soil (final)
+
+k0             k0 [0 0 0 0 0 0 0 ] 0.37; // Coeff of lateral stress
+
+relDensity     relDensity [0 0 0 0 0 0 0] 0.22; // Relative density of the soil (initial)
+
+relDensity2    relDensity2 [0 0 0 0 0 0 0] 0.75; // Relative density of the compacted soil (Final)
+
+emax           emax [0 0 0 0 0 0 0] 1.159; // Max void ratio
+
+emin           emin [0 0 0 0 0 0 0] 0.586; // min voil ratio
+
+gammaD         gammaD [1 -2 -2 0 0 0 0 ] 8120.0; //Submerged specific weight of soil
+
+rhos           rhos [ 1 -3 0 0 0 0 0 ] 2656; // Density of soil grains
+
+rhof           rhof [ 1 -3 0 0 0 0 0 ] 1000; // Density of water
+
+g              g [ 0 1 -2 0 0 0 0 ] (0 0 -9.81); // Gravity
+
+vis            vis [1 -1 -1 0 0 0 0] 0.001; // Viscosity of water
+
+C              C [1 -1 -1 0 0 0 0] -142.88; // Coeff for calculating viscosty  vis(with grains) = vis + C*log(1-alpha) 
+
+V0             V0 [0 1 -1 0 0 0 0] (0 0 -0.008);// Settling velocity Vdj = V0*(1-alpha)^q
+
+q              q [0 0 0 0 0 0 0] 2; // Coeff in calculating Vdj
+
+sg             sg [0 0 0 0 0 0 0 ] 2.656;// Specific gravity of soil
+
+wh             wh [0 1 0 0 0 0 0 ] 0; // Water height
+
+steady         no; // if it need to be run in steady
+
+iniliq         no; // to initialize liquefaction initially 
+
+planeStress    no; // Plane stress or plane strain condition
+
+// ************************************************************************* //

@@ -267,7 +267,7 @@ public:
         const word& neighbPatchName() const;
 
         //- Neighbour patchID
-        virtual label neighbPatchID() const;
+        label neighbPatchID() const;
 
         //- Is this the master side?
         //virtual bool master() const
@@ -276,7 +276,7 @@ public:
         //    return true;
         //}
         virtual bool master() const
-         {
+        {
             return index() < neighbPatchID();
         }
 

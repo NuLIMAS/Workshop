@@ -44,6 +44,21 @@ volScalarField pE
     mesh
 );
 
+volScalarField f
+(
+    IOobject
+    (
+        "f",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("zero", dimForce / dimArea/ dimTime, 0.0),
+    zeroGradientFvPatchScalarField::typeName
+);
+
 Info<< "Calculating stress field sigmaD\n" << endl;
 volSymmTensorField sigmaD
 (
@@ -52,9 +67,11 @@ volSymmTensorField sigmaD
         "sigmaD",
         runTime.timeName(),
         mesh,
-        IOobject::NO_READ,
+        IOobject::READ_IF_PRESENT,
         IOobject::AUTO_WRITE
     ),
+    //mesh
+    //dimensionedTensor("zero", dimForce / dimArea, 0.0),
     mu*twoSymm(fvc::grad(U)) + lambda*(I*tr(fvc::grad(U)))
 );
 
@@ -152,3 +169,18 @@ else
 {
     divSigmaExp -= fvc::div((2*mu + lambda)*fvc::grad(U), "div(sigmaD)");
 }
+
+Info<< "Reading pore pressure field V\n" << endl;
+
+volVectorField V
+(
+    IOobject
+    (
+        "V",
+        runTime.timeName(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::AUTO_WRITE
+    ),
+    -Dp3 *fvc::grad(p)
+);

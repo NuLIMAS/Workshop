@@ -1,0 +1,33 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.1.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      dynamicMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dynamicFvMesh   simpleLiqFvMesh;
+motionSolverLibs ( "libLiquefactionFvMeshFields.so" );
+
+simpleLiqFvMeshCoeffs
+{
+
+    wallFz wall;
+    master liq;
+    slave sol;
+    direction (0 0 -1);
+    //fileName "liftcurve";
+    //outOfBounds clamp;
+}
+
+
+// ************************************************************************* //

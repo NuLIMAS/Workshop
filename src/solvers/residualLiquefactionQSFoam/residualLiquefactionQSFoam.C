@@ -77,17 +77,22 @@ int main(int argc, char *argv[])
             Info << "iCorr ="<< iCorr << endl; 
             U.storePrevIter();
             p.storePrevIter();
+            
+            sigmaD.correctBoundaryConditions();
 
             fvScalarMatrix pEqn
             (
-                fvm::ddt(p)
+                (1/Dp2)*fvm::ddt(p)
                 == 
-                fvm::laplacian(Dp, p) 
-                - fvc::div(fvc::ddt(Dp2,U))
+                fvm::laplacian(Dp3, p) 
+                - fvc::div(fvc::ddt(U)) 
+                
             );
             pEqn.relax();
             pResidual = pEqn.solve().initialResidual();
             p.relax();
+
+
 
             fvVectorMatrix UEqn
             (
@@ -107,6 +112,16 @@ int main(int argc, char *argv[])
 
         } while (residual > convergenceTolerance && ++iCorr < nCorr);
 
+        V= -Dp3 *fvc::grad(p);
+        
+
+        surfaceScalarField phi = - fvc::interpolate(V) & mesh.Sf();
+
+        volScalarField contErr = fvc::div(fvc::ddt(U)) +fvc::ddt(1/Dp2,p)
+                                    + fvc::div(phi);
+
+        Info << "div1 :" <<   gSum(contErr) << endl;
+
         Info << "number of iterations " << iCorr << endl;
 
 
@@ -122,6 +137,7 @@ int main(int argc, char *argv[])
         );
         pEEqn.solve();
 
+        
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"

@@ -109,10 +109,17 @@ public:
             //- Return processor number
             virtual const splitCyclicFvPatch& neighbPatch() const
             {
+                Info << this->boundaryMesh()[splitCyclicPolyPatch_.neighbPatchID()].type() << endl;
+                Info << typeid(this->boundaryMesh()[splitCyclicPolyPatch_.neighbPatchID()]).name() << endl;
                 return refCast<const splitCyclicFvPatch>
                 (
                     this->boundaryMesh()[splitCyclicPolyPatch_.neighbPatchID()]
                 );
+                //return reinterpret_cast<const splitCyclicFvPatch&>
+                //(
+                //    this->boundaryMesh()[splitCyclicPolyPatch_.neighbPatchID()]
+                //);
+                //return this->boundaryMesh()[splitCyclicPolyPatch_.neighbPatchID()];
             }
 
             //- Are the splitCyclic planes parallel
@@ -133,7 +140,7 @@ public:
                 return splitCyclicPolyPatch_.reverseT();
             }
 
-            const splitCyclicFvPatch& neighbFvPatch() const
+            virtual const splitCyclicFvPatch& neighbFvPatch() const
             {
                 return refCast<const splitCyclicFvPatch>
                 (

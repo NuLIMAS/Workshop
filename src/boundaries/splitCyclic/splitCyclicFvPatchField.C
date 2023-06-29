@@ -200,7 +200,6 @@ void splitCyclicFvPatchField<Type>::updateInterfaceMatrix
     const bool switchToLhs
 ) const
 {
-    //Info << "2 " << this->patch().name() << endl;
     const labelUList& nbrFaceCells =
         splitCyclicPatch().splitCyclicPatch().neighbPatch().faceCells();
 
@@ -244,6 +243,7 @@ template<class Type>
 void splitCyclicFvPatchField<Type>::write(Ostream& os) const
 {
     fvPatchField<Type>::write(os);
+    
 }
 
 

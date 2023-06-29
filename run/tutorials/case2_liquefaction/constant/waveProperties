@@ -1,0 +1,28 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      waveProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+       waveHeight     0.12; // in m
+       waterDepth     0.55;   // in m
+       direction	(1 0 0);		//wave direction
+       period		1.6;			//wave period
+       waveLength	3.18;			//wave length
+       phase		.0;			// Phase shift in rad/(2*pi) 
+       offset		0;			// base pressure 
+       value       uniform 0;      // Initial value
+       start		0;
+
+// ************************************************************************* //
