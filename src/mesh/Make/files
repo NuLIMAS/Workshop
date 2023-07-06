@@ -1,5 +1,3 @@
 simpleLiqFvMesh/simpleLiqFvMesh.C
-wallDistPatch/patchDistMethod.C
-
 
 LIB = $(FOAM_USER_LIBBIN)/libLiquefactionFvMeshFields

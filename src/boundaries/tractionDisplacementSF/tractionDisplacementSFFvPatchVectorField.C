@@ -143,14 +143,14 @@ void tractionDisplacementSFFvPatchVectorField::updateCoeffs()
         return;
     }
 
-    
+
 
     vectorField n = patch().nf(); //Unit normal
 
     const fvPatchField<scalar>& mu =
          patch().lookupPatchField<volScalarField, scalar>("mu");
     const fvPatchField<scalar>& lambda =
-         patch().lookupPatchField<volScalarField, scalar>("lambda");      
+         patch().lookupPatchField<volScalarField, scalar>("lambda");
 
 
     const fvPatchField<symmTensor>& sigmaD =
@@ -159,16 +159,18 @@ void tractionDisplacementSFFvPatchVectorField::updateCoeffs()
     const fvPatchField<scalar>& p =
     patch().lookupPatchField<volScalarField, scalar>("p");
 
-
+    const fvPatchField<tensor>& gradU =
+        patch().lookupPatchField<volTensorField, tensor>("gradU");
 
 
     gradient() =
     (
         (traction_ + pressure_*n)
-      + (2*mu + lambda)*fvPatchField<vector>::snGrad() - (n & sigmaD)
-    )/(2*mu + lambda);
+        - (n & (mu * gradU.T() - (mu + lambda)*gradU))
+        - n * tr(gradU) * lambda
+        //- n * p // pressure acting the opposite direction
+    )/ (2*mu + lambda);
 
-    //gradient() -= (p*n)/twoMuLambda;
 
     fixedGradientFvPatchVectorField::updateCoeffs();
 }

@@ -17,11 +17,9 @@ cd residualLiquefactionQSFoam  && wclean
 cd ..
 cd pressureBuildupFoam  && wclean
 cd ..
-cd residualLiquefactionFDDyMFoam && wclean
-cd ..
 cd liquefactionQSFoam && wclean
 cd ..
-cd rockerFoam && wclean
+cd liqueCompactionDyMFoam && wclean
 cd ../../
 
 # Compile boundaries

@@ -17,11 +17,9 @@ cd residualLiquefactionQSFoam  && wmake
 cd ..
 cd pressureBuildupFoam  && wmake
 cd ..
-cd residualLiquefactionFDDyMFoam && wmake
-cd ..
 cd liquefactionQSFoam && wmake
 cd ..
-cd rockerFoam && wmake
+cd liqueCompactionDyMFoam && wmake
 cd ../../
 
 # Compile boundaries
