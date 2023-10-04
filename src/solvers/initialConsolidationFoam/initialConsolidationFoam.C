@@ -28,7 +28,7 @@ Description
     Simple linear elasticity structural analysis code.
     Solves for the displacement vector field D, also generating the
     stress tensor field sigma.
-    Also, calculates the Elastic modulus and initial effective 
+    Also, calculates the Elastic modulus and initial effective
     stress of the soil
 
 \*---------------------------------------------------------------------------*/
@@ -61,48 +61,37 @@ int main(int argc, char *argv[])
         int iCorr = 0;
         scalar initialResidual = 0;
 
-        
         do
         {
 
-            {
-                fvVectorMatrix UEqn
-                (
-                    fvm::laplacian(2*mu + lambda, U, "laplacian(DD,D)")
-                  + divSigmaExp
-                );
+            fvVectorMatrix UEqn
+            (
+                fvm::laplacian(2*mu + lambda, U, "laplacian(DD,D)")
+                + divSigmaExp + rhog
+            );
 
-                initialResidual = UEqn.solve().initialResidual();
+            initialResidual = UEqn.solve().initialResidual();
 
-                if (!compactNormalStress)
-                {
-                    divSigmaExp = fvc::div(UEqn.flux());
-                }
-            }
+            strain = 0.5*twoSymm(gradU);
+            gradU = fvc::grad(U);
+            volStrain = tr(strain);
+            sigmaD = mu*twoSymm(gradU) + (lambda*I)*tr(gradU);
 
-            {
-                volTensorField gradU = fvc::grad(U);
-                sigmaD = mu*twoSymm(gradU) + (lambda*I)*tr(gradU);
+            divSigmaExp = fvc::div
+            (
+                sigmaD - (2*mu + lambda)*gradU,
+                "div(sigmaD)"
+            );
 
-                if (compactNormalStress)
-                {
-                    divSigmaExp = fvc::div
-                    (
-                        sigmaD - (2*mu + lambda)*gradU,
-                        "div(sigmaD)"
-                    );
-                }
-                else
-                {
-                    divSigmaExp += fvc::div(sigmaD);
-                }
-            }
-            
         } while (initialResidual > convergenceTolerance && ++iCorr < nCorr);
 
-#       include "calculateStress.H"
-        Info << "E :  max:" << max(E).value() << " Pa,  min:" << min(E).value() << " Pa  " << endl;
-        
+        sigma0 = - (sigmaD.component(symmTensor::XX)
+                 + sigmaD.component(symmTensor::YY)
+                 + sigmaD.component(symmTensor::ZZ)) /3;
+
+        sigmaA = sigma0 - effStress;
+        runTime.write();
+
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
             << nl << endl;

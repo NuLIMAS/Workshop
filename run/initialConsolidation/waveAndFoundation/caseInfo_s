@@ -1,0 +1,35 @@
+/* Mesh parametrs and probes */
+xm 0.05; //Location of probes middle of the domain
+z1 0;    //Seabed mudline
+z2 -0.3;//Impermeable base
+z3 -0.015;//Impermeable base
+y 0.1;
+x1 0;    // Seabed start
+x2 3.32; //Length of the seabed
+x3 1.51; //Foundation start
+x4 1.81; //Foundation end
+y  0.05;
+nxs 60;
+nxf 30;
+nzt 2;
+nzb 38;
+nz 20;
+
+
+
+/* Material properties */
+E            1.5e6; // Elastic modulus
+nu           0.34426; // Poisson ratio
+n            0.5; // Porosity
+rhos         2656; // Desnity of soil grains
+rhof         1000; // Desnity of water
+k0           0.525; // Coeff of lateral stress
+planeStress    no;
+
+
+/* Simulation controls */
+application     initialConsolidationFoam;
+startTime       0;
+endTime         1000;
+deltaT          0.2;
+writeInterval   10;

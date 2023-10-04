@@ -1,0 +1,57 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "$FOAM_CASE/caseInfo"
+
+application     initialConsolidationFoam;
+
+startFrom       startTime;
+
+startTime       $startTime;
+
+stopAt          endTime;
+
+endTime         $endTime;
+
+deltaT          $deltaT;
+
+writeControl    adjustableRunTime;
+
+writeInterval   $writeInterval;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression uncompressed;
+
+timeFormat      general;
+
+timePrecision   6;
+
+graphFormat     raw;
+
+runTimeModifiable yes;
+
+libs ( "libliqueFvPatchFields.so" "libOpenFOAM.so"  "libsolidModels.so" );
+
+#include "Functions.H"
+
+
+// ************************************************************************* //
