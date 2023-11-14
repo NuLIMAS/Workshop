@@ -1,3 +1,7 @@
-simpleLiqFvMesh/simpleLiqFvMesh.C
+interfaceFront/interfaceFront.C
+interfaceFront/addInterface.C
+interfaceFront/removeInterface.C
+interfaceFront/interfaceFrontPointMatchMap.C
+interfaceFrontFvMesh/interfaceFrontFvMesh.C
 
 LIB = $(FOAM_USER_LIBBIN)/libLiquefactionFvMeshFields
