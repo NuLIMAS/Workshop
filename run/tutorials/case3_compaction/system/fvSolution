@@ -74,10 +74,10 @@ solvers
         agglomerator    faceAreaPair;
         mergeLevels     1;
     }
-    
+
     rho
     {}
-    
+
     alpha
     {
         solver          PBiCG;
@@ -110,19 +110,13 @@ relaxationFactors
 {
     fields
     {
-        //default -1;
-        //U    0.001;
-        //U    0.2;
         U    0.15;
         p     0.15;
     }
 
     equations
     {
-        //default -1;
-        //p     0.2;
-        //D    1;
-        Vm    0.8;
+        Vm    0.75;
     }
 }
 

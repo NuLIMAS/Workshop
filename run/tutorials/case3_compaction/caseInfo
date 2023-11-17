@@ -24,8 +24,8 @@ K            1.9e9; // True Bulk Modulus
 p0           4905; //  Atm pressure
 Sr           1;    // Degree of saturation
 n1           0.5; // Porosity
-n2           0.44; // Porosity of compacted soil
-relDensity   0.22; // Realtive density
+n2           0.37; // Porosity of compacted soil
+relDensity   0.2; // Realtive density
 emax         1.159; // Max void ratio
 emin         0.586; // Min void ratio
 rhos         2656; // Density of soil grains
@@ -46,7 +46,7 @@ k0           0.37; // Coeff of lateral stress
 /* Fluid properties for drift flux model */
 vis          0.001;// Viscosity of pore fluid
 C            -142.88; // Const for cal viscosity
-V0           -0.008; // Settling velocity
+V0           -0.01; // Settling velocity
 q            2; // Factor in calculting drift flux
 
 /* Simulation controls */
