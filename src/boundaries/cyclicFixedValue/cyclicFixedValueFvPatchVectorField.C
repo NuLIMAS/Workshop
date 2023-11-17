@@ -1,25 +1,25 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2009-2011 OpenCFD Ltd.
-     \\/     M anipulation  |
+  \\      /  F ield         | foam-extend: Open Source CFD
+   \\    /   O peration     | Version:     4.1
+    \\  /    A nd           | Web:         http://www.foam-extend.org
+     \\/     M anipulation  | For copyright notice see file Copyright
 -------------------------------------------------------------------------------
 License
-    This file is part of OpenFOAM.
+    This file is part of foam-extend.
 
-    OpenFOAM is free software: you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    foam-extend is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or (at your
+    option) any later version.
 
-    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
-    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-    for more details.
+    foam-extend is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+    along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 \*---------------------------------------------------------------------------*/
 #include "splitCyclicFvPatchField.H"
@@ -101,54 +101,34 @@ void Foam::cyclicFixedValueFvPatchVectorField::updateCoeffs()
     {
         return;
     }
-    
+
     const fvPatchField<vector>& U =
         patch().lookupPatchField<volVectorField, vector>("U");
-        
-        
-    //Info << "U vector : " << U << endl;
-    
-    //const fvMesh& mesh = patch().boundaryMesh().mesh();
+
     const volVectorField& Uref =this->db().objectRegistry::lookupObject<volVectorField>  ("U");
-    
-    
-    vectorField  Uref2 = Uref.boundaryField()[6];
+
+
+    int solBoundaryIndex = -1;
+    for (size_t i = 0; i < Uref.boundaryField().size(); ++i)
+    {
+        if (Uref.boundaryField()[i].patch().name() == "sol")
+        {
+            solBoundaryIndex = i;
+            break;
+        }
+    }
+    if (solBoundaryIndex == -1)
+    {
+        Info << "Boundary field with name 'sol' not found." << endl;
+        return;
+    }
+    vectorField  Uref2 = Uref.boundaryField()[solBoundaryIndex];
 
     vectorField n = patch().nf();
 
-    // mesh.lookupObject<volVectorField>"U");
+     const vectorField x = patch().Cf();
 
-    //splitCyclicFvPatchField<vector>& sc =
-    //    const_cast<splitCyclicFvPatchField<vector>&>
-    //    (
-    //        this->boundaryMesh()
-    //    );
-    
-    //splitCyclicPolyPatch& sc =
-    //    const_cast<splitCyclicPolyPatch&>
-    //    (
-    //        refCast<const splitCyclicPolyPatch>(U)
-    //    );
-    
-    
-    //Info << "label " << Ucyc << endl;
-    
-    //vectorField masterPressure = sc.interpolateSlaveToMaster(sc.normalContactModelPtr()->slavePressure());
-         
-     const vectorField x = patch().Cf(); 
 
-    //vectorField Ucyc =
-    //solidContactFvPatchVectorField& sc =
-    //    const_cast<solidContactFvPatchVectorField&>
-    //    (
-    //        refCast<const solidContactFvPatchVectorField>(U)
-    //    );
-    //const fvPatchField<vector>& U =
-    //    patch().lookupPatchField<volVectorField, vector>("U");
-
-    //operator== Uref.boundaryField()[6];
-    //operator == (Uref2);
-    
     operator== (Uref2);
 
     fixedValueFvPatchField<vector>::updateCoeffs();

@@ -131,9 +131,6 @@ void buoyantRhoPressureFvPatchScalarField::updateCoeffs()
         return;
     }*/
 
-    //const uniformDimensionedVectorField& g =
-    //    db().lookupObject<uniformDimensionedVectorField>("g");
-    
     const dictionary& materialProperties =
         db().lookupObject<IOdictionary>("materialProperties");
     dimensionedVector g(materialProperties.lookup("g"));
@@ -144,12 +141,9 @@ void buoyantRhoPressureFvPatchScalarField::updateCoeffs()
         lookupPatchField<volScalarField, scalar>("rhof");
     const fvPatchField<scalar>& Cl =
         lookupPatchField<volScalarField, scalar>("Cl");
-    const fvPatchField<scalar>& Cs =
-        lookupPatchField<volScalarField, scalar>("Cs");
-    //const fvPatchField<vector>& gradRho =
-    //    lookupPatchField<volVectorField, vector>("gradRho");
-    //const fvPatchField<scalar>& gh =
-    //    lookupPatchField<volScalarField, scalar>("gh");
+    //const fvPatchField<scalar>& Cs =
+    //    lookupPatchField<volScalarField, scalar>("Cs");
+
 
     // If the variable name is "p_rgh" or "pd" assume it is p - rho*g.h
     // and set the gradient appropriately.
@@ -165,7 +159,6 @@ void buoyantRhoPressureFvPatchScalarField::updateCoeffs()
     }
     else
     {
-        
         //gradient() = -rho*(g.value() & patch().nf());
         gradient() = (-rho*(g.value() & patch().Cf()) +  rhof*(g.value() & patch().Cf()))*Cl   ; //+ gh*(gradRho& patch().Cf())
     }

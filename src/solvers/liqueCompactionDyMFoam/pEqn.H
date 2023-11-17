@@ -1,6 +1,7 @@
+// Define and interpolate rAV for non-orthogonal pressure correction
 volScalarField rAVm("rAVm",1.0/VmEqn.A());
 
-surfaceScalarField rAVmf_temp
+surfaceScalarField rAVf_temp
 (
     "(rho*(1|A(Vmf)))",
     fvc::interpolate(rAVm, "myInterpolation")
@@ -11,10 +12,11 @@ surfaceScalarField rhoF
     "rhoF",
     fvc::interpolate(rho,  "myInterpolation")
 );
-surfaceScalarField rAVmf ( "rAVmf", rAVmf_temp*rhoF);
+surfaceScalarField rAVmf ( "rAVmf", rAVf_temp*rhoF);
 
 Vm = rAVm*VmEqn.H();
 
+// Calculate fluxes for non-orthogonal pressure correction
 phi = rhoF*(fvc::interpolate(Vm,"myInterpolation") & mesh.Sf());
 surfaceVectorField  rhosc ("rhosc",(rhoF - rhoc)*g);
 phi += rhosc*rAVmf& mesh.Sf();
@@ -22,6 +24,7 @@ phi += rhosc*rAVmf& mesh.Sf();
 // Non-orthogonal pressure corrector loop
 while (piso.correctNonOrthogonal())
 {
+    // Define pressure equation
     fvScalarMatrix pEqn
     (
         - (1-st)*(1.0 - Cl)*(rho*n/Kprime)*fvm::ddt(p)
@@ -34,15 +37,17 @@ while (piso.correctNonOrthogonal())
     );
     pEqn.relax();
 
+    // Solve the pressure equation
     pResidual=pEqn.solve().initialResidual();
 
+    // Update phi for continuity errors
     if (piso.finalNonOrthogonalIter())
     {
         phi -= pEqn.flux();
     }
 }
 
-
+// Calculate the continuity error
 contErr = fvc::div(phi)
     + (1-st)*(1.0 - Cl)*(rho*n/Kprime)*fvc::ddt(p)
     - (1-st)*(1.0 - Cl)*(1-Cs)*(rho*n/Kprime)*fvc::ddt(pE)
@@ -62,8 +67,8 @@ Info<< "time step continuity errors : sum local = " << sumLocalContErr
     << ", cumulative = " << cumulativeContErr
     << endl;
 
+// Relax pressure field and update velocity field
 p.relax();
-
 surfaceScalarField phiByRho = (phi)/rhoF;
 Vm = fvc::reconstruct(phiByRho);
 Vm.correctBoundaryConditions();

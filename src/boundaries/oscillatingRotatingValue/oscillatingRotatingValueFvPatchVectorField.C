@@ -50,7 +50,9 @@ oscillatingRotatingValueFvPatchVectorField::oscillatingRotatingValueFvPatchVecto
 :
     fixedValueFvPatchField<vector>(p, iF),
     amplitude_(),
-    frequency_(),
+    period_(),
+    rampPeriod_(),
+    width_(),
     origin_(),
     curTimeIndex_(-1)
 {}
@@ -67,7 +69,9 @@ oscillatingRotatingValueFvPatchVectorField::oscillatingRotatingValueFvPatchVecto
 :
     fixedValueFvPatchField<vector>(ptf, p, iF, mapper),
     amplitude_(ptf.amplitude_),
-    frequency_(ptf.frequency_),  
+    period_(ptf.period_),
+    rampPeriod_(ptf.rampPeriod_),
+    width_(ptf.width_),
     origin_(ptf.origin_),
     curTimeIndex_(-1)
 {}
@@ -79,12 +83,14 @@ oscillatingRotatingValueFvPatchVectorField::oscillatingRotatingValueFvPatchVecto
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF,
     const dictionary& dict
-    
+
 )
 :
     fixedValueFvPatchField<vector>(p, iF),
     amplitude_(readScalar(dict.lookup("amplitude"))),
-    frequency_(readScalar(dict.lookup("frequency"))),
+    period_(readScalar(dict.lookup("period"))),
+    rampPeriod_(readScalar(dict.lookup("rampPeriod"))),
+    width_(readScalar(dict.lookup("width"))),
     origin_(vector(dict.lookup("origin"))),
     curTimeIndex_(-1)
 {
@@ -99,25 +105,42 @@ oscillatingRotatingValueFvPatchVectorField::oscillatingRotatingValueFvPatchVecto
     {
         const scalar t = db().time().value();
 
-        // Convert the rotational motion from deg to rad
-        scalar angle = asin(amplitude_/0.15);
-        scalar eulerAngle = angle *sin(twoPi*frequency_* t);
+        scalar angle = asin(amplitude_*2/width_);
+
+        scalar frequency = 1.0 /period_;
+
+        //scalar rampTime = period_ * rampPeriod_;
+
+        scalar eulerAngle = angle *sin(twoPi*frequency* t);
+
+        if (eulerAngle > 0)
+        {
+            eulerAngle = min(eulerAngle, eulerAngle* t);
+            //eulerAngle = min(eulerAngle, eulerAngle* t/ rampTime);
+        }
+
+        else
+        {
+            eulerAngle = max(eulerAngle, eulerAngle* t);
+            //eulerAngle = max(eulerAngle, eulerAngle* t/ rampTime);
+        }
+
         //eulerAngles *= pi/180.0;
 
         //quaternion R(eulerAngles.x(), eulerAngles.y(), eulerAngles.z());
+
         quaternion R(0 , eulerAngle, 0);
+
         septernion TR(septernion(origin_)*R*septernion(-origin_));
-        
+
         vectorField displacement = this->patch().Cf();
 
-        //Info << "displacement1  " << displacement << endl;
         forAll(displacement, faceI)
         {
             displacement[faceI] = TR.transform(displacement[faceI]);
         }
-        //displacement = displacement - displacement1;
+
         displacement -= this->patch().Cf();
-        //Info << "displacement 2 " << displacement << endl;
 
         fixedValueFvPatchField<vector>::operator== (displacement);
     }
@@ -132,7 +155,9 @@ oscillatingRotatingValueFvPatchVectorField::oscillatingRotatingValueFvPatchVecto
 :
     fixedValueFvPatchField<vector>(ptf),
     amplitude_(ptf.amplitude_),
-    frequency_(ptf.frequency_),  
+    period_(ptf.period_),
+    rampPeriod_(ptf.rampPeriod_),
+    width_(ptf.width_),
     origin_(ptf.origin_),
     curTimeIndex_(-1)
 {}
@@ -147,7 +172,9 @@ oscillatingRotatingValueFvPatchVectorField::oscillatingRotatingValueFvPatchVecto
 :
     fixedValueFvPatchField<vector>(ptf, iF),
     amplitude_(ptf.amplitude_),
-    frequency_(ptf.frequency_),  
+    period_(ptf.period_),
+    rampPeriod_(ptf.rampPeriod_),
+    width_(ptf.width_),
     origin_(ptf.origin_),
     curTimeIndex_(-1)
 {}
@@ -190,27 +217,44 @@ void oscillatingRotatingValueFvPatchVectorField::updateCoeffs()
     }
 
     if (curTimeIndex_ != this->db().time().timeIndex())
-    
-    {
-    
-        const scalar t = db().time().value();
-        
-        scalar angle = asin(amplitude_/0.15); //radian
-        
-        scalar eulerAngle = angle *sin(twoPi*frequency_* t);
 
+    {
+
+        const scalar t = db().time().value();
+
+        scalar angle = asin(amplitude_*2/width_); //radian
+
+        scalar frequency = 1.0 /period_;
+
+        scalar rampTime = period_ * rampPeriod_;
+
+        scalar eulerAngle = angle *sin(twoPi*frequency* t );
+
+        if (eulerAngle > 0)
+        {
+            eulerAngle = min(eulerAngle, eulerAngle* t);
+            //eulerAngle = min(eulerAngle, eulerAngle* t/ rampTime);
+        }
+
+        else
+        {
+            eulerAngle = max(eulerAngle, eulerAngle* t);
+            //eulerAngle = max(eulerAngle, eulerAngle* t/ rampTime);
+        }
 
         // Convert the rotational motion from deg to rad
+
         //eulerAngle *= pi/180.0;
 
-        
+
         //quaternion R(eulerAngles.x(), eulerAngles.y(), eulerAngles.z());
+
         quaternion R(0,  eulerAngle, 0 );
 
         septernion TR(septernion(origin_)*R*septernion(-origin_));
 
-        
-        
+
+
         vectorField displacement = this->patch().Cf();
 
         forAll(displacement, faceI)
@@ -220,7 +264,6 @@ void oscillatingRotatingValueFvPatchVectorField::updateCoeffs()
 
         displacement -= this->patch().Cf();
         fixedValueFvPatchField<vector>::operator== (displacement);
-
 
         curTimeIndex_ = this->db().time().timeIndex();
     }
@@ -234,7 +277,9 @@ void oscillatingRotatingValueFvPatchVectorField::write(Ostream& os) const
 {
     fixedValueFvPatchField<vector>::write(os);
     os.writeKeyword("amplitude") << amplitude_ << token::END_STATEMENT << nl;
-    os.writeKeyword("frequency") << frequency_ << token::END_STATEMENT << nl;
+    os.writeKeyword("period") << period_ << token::END_STATEMENT << nl;
+    os.writeKeyword("rampPeriod") << rampPeriod_ << token::END_STATEMENT << nl;
+    os.writeKeyword("width") << width_ << token::END_STATEMENT << nl;
     os.writeKeyword("origin") << origin_ << token::END_STATEMENT << nl;
 }
 

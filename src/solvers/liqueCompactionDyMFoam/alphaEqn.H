@@ -1,15 +1,18 @@
-
+// Correct boundary conditions for the volume fraction alpha
 alpha.correctBoundaryConditions();
+
+// Interpolate alpha to cell faces
 alphaF=fvc::interpolate(alpha);
 
 phiAlpha = fvc::interpolate(Cl)*((mesh.Sf() & fvc::interpolate(Vm))
             + mesh.magSf()*Vdj*(rhoc/fvc::interpolate(rho)));
 
+// Define the alpha transport equation
 fvScalarMatrix AlphaEqn
 (
-    Cl*fvm::ddt(alpha)
-    +(1-Cl)*fvm::ddt(alpha)
+    fvm::ddt(alpha)
     + Cl* fvm::div(phiAlpha, alpha)
 );
 
+// Solve the alpha transport equation
 solve (AlphaEqn);

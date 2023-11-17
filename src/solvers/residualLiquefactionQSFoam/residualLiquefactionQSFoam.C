@@ -1,28 +1,29 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 1991-2010 OpenCFD Ltd.
-     \\/     M anipulation  |
+  \\      /  F ield         | foam-extend: Open Source CFD
+   \\    /   O peration     | Version:     4.1
+    \\  /    A nd           | Web:         http://www.foam-extend.org
+     \\/     M anipulation  | For copyright notice see file Copyright
 -------------------------------------------------------------------------------
 License
-    This file is part of OpenFOAM.
+    This file is part of foam-extend.
 
-    OpenFOAM is free software: you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    foam-extend is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or (at your
+    option) any later version.
 
-    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
-    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-    for more details.
+    foam-extend is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+    along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    biotFoam is a modified version of solidDisplacementFoam
+    residualLiquefactionQSFoam is a modified version of solidDisplacementFoam
+    to predict the onset od residual liquefaction.
 
 Description
     Transient segregated finite-volume solver of the Biot quasi-steady consolidation equations
@@ -30,16 +31,15 @@ Description
     pore water flow and pressure governed by Darcy's law.
 
     Simple linear elasticity structural analysis code.
-    Solves for the displacement vector field D and the pore water pressure p.
+    Solves for the displacement vector field U and the pore water pressure p.
     Also generating the stress tensor field sigma.
-    
-    An additional laplacian equation is solved in order to calculate the accumulated 
+
+    An additional laplacian equation is solved in order to calculate the accumulated
     pore pressure pE.
+
 Author
     R. Shanmugasundaram, Wikki GmbH
     H. Rusche, Wikki GmbH
-    Johan Roenby, DHI Water & Environment
-
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
     #include "createTime.H"
     #include "createMesh.H"
-    #include "readMaterialProperties.H"
+    #include "readProperties.H"
     #include "readPoroElasticControls.H"
     #include "createFields.H"
 
@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 
         #include "readPoroElasticControls.H"
 
+        // Initialize correction iteration count and residual variables
         int iCorr = 0;
         scalar UResidual = 1.0e10;
         scalar pResidual = 1.0e10;
@@ -74,31 +75,33 @@ int main(int argc, char *argv[])
 
         do
         {
-            Info << "iCorr ="<< iCorr << endl; 
+            Info << "iCorr ="<< iCorr << endl;
+
+            // Store previous iterations of U and p
             U.storePrevIter();
             p.storePrevIter();
-            
+
             sigmaD.correctBoundaryConditions();
 
+            // Solve for pressure (p) using the poroelastic equation
             fvScalarMatrix pEqn
             (
                 (1/Dp2)*fvm::ddt(p)
-                == 
-                fvm::laplacian(Dp3, p) 
-                - fvc::div(fvc::ddt(U)) 
-                
+                ==
+                fvm::laplacian(Dp3, p)
+                - fvc::div(fvc::ddt(U))
+
             );
             pEqn.relax();
             pResidual = pEqn.solve().initialResidual();
             p.relax();
 
-
-
+            // Solve for displacement (U) using the poroelastic equation
             fvVectorMatrix UEqn
             (
-                fvm::laplacian(2*mu + lambda, U, "laplacian(DD,U)") 
+                fvm::laplacian(2*mu + lambda, U, "laplacian(DD,U)")
                 + divSigmaExp
-                == 
+                ==
                 fvc::grad(p)
             );
             UEqn.relax();
@@ -113,7 +116,6 @@ int main(int argc, char *argv[])
         } while (residual > convergenceTolerance && ++iCorr < nCorr);
 
         V= -Dp3 *fvc::grad(p);
-        
 
         surfaceScalarField phi = - fvc::interpolate(V) & mesh.Sf();
 
@@ -124,20 +126,22 @@ int main(int argc, char *argv[])
 
         Info << "number of iterations " << iCorr << endl;
 
-
+        // Include file for calculation of stress
         #include "calculateStress.H"
 
+        // Include file for preparing buildup
         #include "prepareBuildup.H"
 
+        // Solve the governing equation for accumulated pore pressure
         fvScalarMatrix pEEqn
         (
-            fvm::ddt(pE) 
-            == fvm::laplacian(cv, pE) 
+            fvm::ddt(pE)
+            == fvm::laplacian(cv, pE)
             + f
         );
         pEEqn.solve();
 
-        
+
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"

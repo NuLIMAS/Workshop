@@ -44,6 +44,7 @@ volScalarField pE
     mesh
 );
 
+Info<< "Initializing source term\n" << endl;
 volScalarField f
 (
     IOobject
@@ -59,6 +60,37 @@ volScalarField f
     zeroGradientFvPatchScalarField::typeName
 );
 
+Info<< "Initializing field numCyc\n" << endl;
+volScalarField numCyc
+(
+    IOobject
+    (
+        "numCyc",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("zero", dimless, 0.0),
+    zeroGradientFvPatchScalarField::typeName
+);
+
+Info<< "Initializing field sigma0\n" << endl;
+volScalarField sigma0
+(
+    IOobject
+    (
+        "sigma0",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    gammaD*(-mesh.C().component(vector::Z))*((1.0+(2.0*k0))/3.0),
+    zeroGradientFvPatchScalarField::typeName
+);
+
 Info<< "Calculating stress field sigmaD\n" << endl;
 volSymmTensorField sigmaD
 (
@@ -70,8 +102,6 @@ volSymmTensorField sigmaD
         IOobject::READ_IF_PRESENT,
         IOobject::AUTO_WRITE
     ),
-    //mesh
-    //dimensionedTensor("zero", dimForce / dimArea, 0.0),
     mu*twoSymm(fvc::grad(U)) + lambda*(I*tr(fvc::grad(U)))
 );
 

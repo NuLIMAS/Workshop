@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  1.7.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -14,22 +14,23 @@ FoamFile
     object      controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "$FOAM_CASE/caseInfo"
 
 application     residualLiquefactionQSFoam;
 
 startFrom       startTime;
 
-startTime       0;
+startTime       $startTime;
 
 stopAt          endTime;
 
-endTime         30;
+endTime         $endTime;
 
-deltaT          .2;
+deltaT          $deltaT;
 
 writeControl    adjustableRunTime;
 
-writeInterval   0.2;
+writeInterval   $writeInterval;
 
 purgeWrite      0;
 

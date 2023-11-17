@@ -1,0 +1,45 @@
+/* Wave properties*/
+waveHeight  0.15; // Wave height in meters
+waterDepth  0.55; // Wave height in meters
+period      1.6; // Wave period in seconds
+waveLength  3.18; // Wave length in meters
+phase       0.0; 
+offset      0;
+
+
+/* Mesh parametrs and post-processing probes */
+xm 1.59; //Location at the middle of the domain
+x1 0; // Start seabed
+x2 3.18; //Length of the seabed
+z1 0;    //Seabed mudline
+z2 -0.4; //Impermeable base
+nx 100;
+nz 20; 
+y 0.05;
+
+/* Material properties */
+E            2.56e6; // Elastic modulus
+nu           0.29; // Poisson ratio
+k            1.5e-5; // Permeability
+K            2e9; // True Bulk Modulus
+p0           5395.5; //  Atm pressure
+Sr           1; // Degree of saturation
+n1           0.51; // Porosity
+wh           0; // height of water above the seabed in numerical model
+sg           2.656; // specific gravity$
+planeStress  no;
+gamma        0.981e4; // Specific weight of water
+relDensity   0.28; 
+
+/* Pressure buildup properties */
+gammaD       0.814e4; // Sp weight of the soil
+k0           0.52; // Coeff of lateral stress
+
+/* Simulation controls */
+application     biotQSFoam;
+startTime       0;
+endTime         20;
+deltaT          0.2;
+writeInterval   0.2;
+
+

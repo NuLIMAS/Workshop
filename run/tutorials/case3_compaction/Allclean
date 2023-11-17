@@ -4,4 +4,7 @@
 . $WM_PROJECT_DIR/bin/tools/CleanFunctions
 
 cleanCase
- rm -r postProcessing
+rm -r postProcessing
+rm alpha.txt
+rm liquefactionDepth.txt
+

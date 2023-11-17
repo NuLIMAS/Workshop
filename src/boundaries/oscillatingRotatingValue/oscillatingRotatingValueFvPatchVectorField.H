@@ -106,15 +106,19 @@ class oscillatingRotatingValueFvPatchVectorField
         scalar amplitude_;
 
         //- Frequency
-        scalar frequency_;
+        scalar period_;
+        
+        //- rampPeriod
+        scalar rampPeriod_;
+        
+        //- rampPeriod
+        scalar width_;
 
         //- Centre of rotation
         vector origin_;
 
         //- Current time index
         label curTimeIndex_;
-        
-
 
     // Private Member Functions
 
@@ -205,17 +209,38 @@ public:
                 return amplitude_;
             }
 
-            //- Return frequency
-            scalar frequency() const
+            //- Return period
+            scalar period() const
             {
-                return frequency_;
+                return period_;
             }
 
-            scalar& frequency()
+            scalar& period()
             {
-                return frequency_;
+                return period_;
             }
 
+            //- Return rampPeriod
+            scalar rampPeriod() const
+            {
+                return rampPeriod_;
+            }
+
+            scalar& rampPeriod()
+            {
+                return rampPeriod_;
+            }
+            
+            //- Return plateWidth
+            scalar width() const
+            {
+                return width_;
+            }
+
+            scalar& width()
+            {
+                return width_;
+            }
 
         // Mapping functions
 

@@ -1,3 +1,5 @@
+#include "$FOAM_CASE/caseInfo"
+
 functions
 (
     Probes
@@ -7,11 +9,11 @@ functions
         setFormat          gnuplot;
         probeLocations
         (
-            (1.59 0.0 -0.085)
-            (1.59 0.0 -0.185)
-            (1.59 0.0 -0.24)
-            (1.59 0.0 -0.3)
-            (1.59 0.0 -0.4)
+            ($xm 0.0 -0.085)
+            ($xm 0.0 -0.185)
+            ($xm 0.0 -0.24)
+            ($xm 0.0 -0.3)
+            ($xm 0.0 -0.4)
         );
         fields
         (
@@ -34,8 +36,8 @@ functions
             {
                 type        uniform;
                 axis        z;
-                start       (1.59 0 0);
-                end         (1.59 0 -0.4);
+                start       ($xm 0 $z1);
+                end         ($xm 0 $z2);
                 nPoints     100;
             }
         );

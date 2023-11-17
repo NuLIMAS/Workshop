@@ -134,7 +134,6 @@ void Foam::alphaInletOutletFvPatchScalarField::updateCoeffs()
         return;
     }
 
-
         const fvPatchField<scalar>& alpha =
             patch().lookupPatchField<volScalarField, scalar>("alpha");
         const scalarField& phiAlpha =
@@ -143,24 +142,23 @@ void Foam::alphaInletOutletFvPatchScalarField::updateCoeffs()
             patch().lookupPatchField<surfaceScalarField, scalar>("alphaF");
 
         scalarField alpha_new = alpha;
-        
+
         scalar s1 =0;
         scalar s2 =0;
+
         forAll(phiAlpha,facei)
         {
             if (phiAlpha[facei] < 0)
             {
                 s1 += phiAlpha[facei];
-                
             }
             if (phiAlpha[facei] > 0)
             {
                 s2 += phiAlpha[facei]*alphaF[facei];
-                //Info <<  "alpha " <<alphaF[facei] << endl;
             }
 
         }
-        //Info << s2 << "  "<< s1 << endl;
+
         forAll(phiAlpha,facei)
         {
             if (phiAlpha[facei] < 0)
@@ -234,7 +232,7 @@ void Foam::alphaInletOutletFvPatchScalarField::operator=
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 namespace Foam
-{    
+{
     makePatchTypeField
     (
         fvPatchScalarField,

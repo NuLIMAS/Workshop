@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  1.7.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -14,15 +14,16 @@ FoamFile
     object      waveProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "$FOAM_CASE/caseInfo"
 
-       waveHeight     0.12; // in m
-       waterDepth     0.55;   // in m
-       direction	(1 0 0);		//wave direction
-       period		1.6;			//wave period
-       waveLength	3.18;			//wave length
-       phase		.0;			// Phase shift in rad/(2*pi) 
-       offset		0;			// base pressure 
-       value       uniform 0;      // Initial value
-       start		0;
+    waveHeight   $waveHeight; // in m
+    waterDepth   $waterDepth; // in m
+    direction    (1 0 0);    //wave direction
+    period		 $period;	//wave period
+    waveLength	 $waveLength;//wave length
+    phase        $phase;	    // Phase shift in rad/(2*pi)
+    offset		 $offset;	// base pressure
+    value        uniform 0;  // Initial value
+    start        0;
 
 // ************************************************************************* //

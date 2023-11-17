@@ -10,7 +10,7 @@ FoamFile
     version     2.0;
     format      ascii;
     class       surfaceScalarField;
-    location    "50";
+    location    "0";
     object      Vdj;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -42,8 +42,6 @@ boundaryField
     left
     {
         patchType       splitCyclic;
-        //type            zeroGradient;
-        //type            cyclicVelocityFixedValue;
         type            fixedValue;
         value           uniform 0;
     }
@@ -51,8 +49,6 @@ boundaryField
     right
     {
         patchType       splitCyclic;
-        //type            zeroGradient;
-        //type            cyclicVelocityFixedValue;
         type            fixedValue;
         value           uniform 0;
     }
@@ -60,8 +56,6 @@ boundaryField
     liq
     {
         patchType       splitCyclic;
-        //type            zeroGradient;
-        //type            cyclicVelocityFixedValue;
         type            fixedValue;
         value           uniform 0;
     }
@@ -69,8 +63,6 @@ boundaryField
     sol
     {
         patchType       splitCyclic;
-        //type            zeroGradient;
-        //type            cyclicVelocityFixedValue;
         type            fixedValue;
         value           uniform (0 0 0);
     }

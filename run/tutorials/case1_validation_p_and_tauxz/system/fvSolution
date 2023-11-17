@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  1.7.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -28,7 +28,6 @@ solvers
         agglomerator    faceAreaPair;
         mergeLevels     1;
         minIter         1;
- 
 
     }
 
@@ -43,9 +42,9 @@ solvers
         agglomerator    faceAreaPair;
         mergeLevels     1;
         minIter         1;
- 
+
     }
-    
+
     pE
     {
         solver          GAMG;
@@ -65,13 +64,12 @@ stressAnalysis
     nCorrectors     1000;
     U               1e-06;
     aitkenRelaxation false;
-    
+
 }
 relaxationFactors
 {
     fields
     {
-        
         U    0.6;
     }
     equations

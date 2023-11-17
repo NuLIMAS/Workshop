@@ -1,11 +1,14 @@
 lambda.correctBoundaryConditions();
 mu.correctBoundaryConditions();
+
 fvVectorMatrix UEqn
 (
     fvm::laplacian(2*mu + lambda, U, "laplacian(DD,U)")
     + divSigmaExp
     ==
     fvc::grad(p)
+    - (1-Cs)*fvc::grad(pE)
+    //- rhodg
 );
 
 UEqn.relax();

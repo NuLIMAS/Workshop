@@ -1,0 +1,57 @@
+/* Wave properties*/
+waveHeight  0.15; // Wave height in meters
+waterDepth  0.5; // Wave height in meters
+period      1.6; // Wave period in seconds
+waveLength  2; // Wave length in meters
+phase       -0.25; 
+offset      0;
+
+/* Mesh parametrs and probes */
+xm 1; //Location of probes middle of the domain
+x1 0; // Start seabed
+x2 2; //Length of the seabed
+z1 0;    //Seabed mudline
+z2 -0.2; //Impermeable base
+nx 100;
+nz 40;
+y 0.05;
+
+/* Material properties */
+E            0.7e6; // Elastic modulus
+nu           0.29; // Poisson ratio
+k            1.45e-5; // Permeability
+K            1.9e9; // True Bulk Modulus
+p0           4905; //  Atm pressure
+Sr           1;    // Degree of saturation
+n1           0.5; // Porosity
+n2           0.44; // Porosity of compacted soil
+relDensity   0.22; // Realtive density
+emax         1.159; // Max void ratio
+emin         0.586; // Min void ratio
+rhos         2656; // Density of soil grains
+rhof         1000; // Density of pore fluid
+wh           0; // height of water above the seabed in numerical model
+sg           2.656; // specific gravity
+planeStress    no;
+gamma        0.981e4; // Specific weight of water
+/* Parameters to initialize liquefaction or run in steady state*/
+steady         no;
+Cl             0;
+
+
+/* Pressure buildup properties */
+gammaD       8120.0; // Sp weight of the soil
+k0           0.37; // Coeff of lateral stress
+
+/* Fluid properties for drift flux model */
+vis          0.001;// Viscosity of pore fluid
+C            -142.88; // Const for cal viscosity
+V0           -0.008; // Settling velocity
+q            2; // Factor in calculting drift flux
+
+/* Simulation controls */
+application     liqueCompactionDyMFoam;
+startTime       0;
+endTime         30;
+deltaT          0.2;
+writeInterval   0.2;

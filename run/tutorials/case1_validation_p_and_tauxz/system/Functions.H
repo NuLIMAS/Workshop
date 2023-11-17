@@ -1,3 +1,5 @@
+#include "$FOAM_CASE/caseInfo"
+
 functions
 (
 
@@ -8,15 +10,15 @@ functions
         setFormat              raw;
         interpolationScheme    cellPoint;
         outputControl          outputTime;
-        
+
         sets
         (
             Profile1
             {
                 type        uniform;
                 axis        z;
-                start       (61.0125 0 0);
-                end         (61.0125 0 -50);
+                start       ($xm 0 $z1);
+                end         ($xm 0 $z2);
                 nPoints     200;
             }
 
@@ -24,8 +26,8 @@ functions
             {
                 type        uniform;
                 axis        z;
-                start       (30.50625 0 0);
-                end         (30.50625 0 -50);
+                start       ($xq 0 $z1);
+                end         ($xq 0 $z2);
                 nPoints     200;
             }
         );

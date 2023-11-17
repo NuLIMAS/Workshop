@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  3.0.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -45,15 +45,11 @@ boundaryField
     liq
     {
         type            splitCyclic;
-        //patchType       splitCyclic;
-        //type            zeroGradient;
     }
     
     sol
     {
         type            splitCyclic;
-        //patchType       splitCyclic;ls
-        //type            zeroGradient;
     }
 }
 

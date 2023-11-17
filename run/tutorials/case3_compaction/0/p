@@ -35,7 +35,6 @@ boundaryField
     soilDomainBottom
     {
         type            buoyantRhoPressure;
-        //type            zeroGradient;
     }
     
     "left|right"
@@ -46,19 +45,11 @@ boundaryField
     sol
     {
         type            splitCyclic;
-        //patchType       splitCyclic;
-        //type            cyclicPressureFixedValue;
-        //value           uniform 0;     
     }
 
     liq
     {
-        type            splitCyclic;
-        //patchType       splitCyclic;
-        //type            buoyantRhoMPressure;
-        //value           uniform 0;
-
-        
+        type            splitCyclic;        
     }
 
     

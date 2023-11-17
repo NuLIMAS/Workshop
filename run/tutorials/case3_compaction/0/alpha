@@ -22,8 +22,6 @@ boundaryField
 {
     seaBed
     {
-        //type            inletOutlet;
-        //inletValue      uniform 0;
         type            alphaInletOutlet;
         inletValue      uniform 0;
         value           uniform 0;
@@ -47,14 +45,12 @@ boundaryField
     liq
     {
         patchType       splitCyclic;
-        //type            zeroGradient;
         type            fixedValue;
         value           uniform 0;
     }
     sol
     {
         patchType       splitCyclic;
-        //type            zeroGradient;
         type            fixedValue;
         value           uniform 0;
     }

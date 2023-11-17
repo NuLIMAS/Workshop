@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  1.7.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -14,26 +14,28 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+#include "$FOAM_CASE/caseInfo"
+
 convertToMeters 1;
 
-vertices        
+vertices
 (
-    (0 0 -50)
-    (122.025 0 -50)
-    (122.025 5 -50)
-    (0 5 -50)
-    (0 0 0)
-    (122.025 0 0)
-    (122.025 5 0)
-    (0 5 0)
+    ($x1 0 $z2)
+    ($x2 0 $z2)
+    ($x2 $y $z2)
+    ($x1 $y $z2)
+    ($x1 0 $z1)
+    ($x2 0 $z1)
+    ($x2 $y $z1)
+    ($x1 $y $z1)
 );
 
-blocks          
+blocks
 (
-    hex (0 1 2 3 4 5 6 7) (100 1 50) simpleGrading (1 1 1)
-);  
+    hex (0 1 2 3 4 5 6 7) ($nx 1 $nz) simpleGrading (1 1 1)
+);
 
-edges           
+edges
 (
 );
 
@@ -44,58 +46,43 @@ boundary
         type wall;
         faces
         (
-	    (4 5 6 7)	
+            (4 5 6 7)
         );
     }
-     
+
     frontBack
     {
         type empty;
         faces
         (
-	    (3 7 6 2)
-            (0 1 5 4)	
+            (3 7 6 2)
+            (0 1 5 4)
         );
-    }  
-    
+    }
+
     soilDomainBottom
     {
         type wall;
         faces
         (
-	    (0 3 2 1 )	
-        ) ;
-    } 
-    
+            (0 3 2 1 )
+        );
+    }
+
     sides
     {
         type cyclic;
-        //neighbourPatch  right;
         faces
         (
             (0 4 7 3)
             (1 5 6 2)
         );
-          
+
     }
-     
-     /*right
-    {
-        type cyclic;
-        neighbourPatch  left;
-        faces
-        (
-            (1 5 6 2)
-        );
-          
-    }  */
-
-
-
 );
 
 
-mergePatchPairs 
+mergePatchPairs
 (
 );
 

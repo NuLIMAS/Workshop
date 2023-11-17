@@ -1,25 +1,25 @@
 /*---------------------------------------------------------------------------*\
   =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2014 OpenFOAM Foundation
-     \\/     M anipulation  |
+  \\      /  F ield         | foam-extend: Open Source CFD
+   \\    /   O peration     | Version:     4.1
+    \\  /    A nd           | Web:         http://www.foam-extend.org
+     \\/     M anipulation  | For copyright notice see file Copyright
 -------------------------------------------------------------------------------
 License
-    This file is part of OpenFOAM.
+    This file is part of foam-extend.
 
-    OpenFOAM is free software: you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    foam-extend is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or (at your
+    option) any later version.
 
-    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
-    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-    for more details.
+    foam-extend is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+    along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 \*---------------------------------------------------------------------------*/
 
@@ -771,7 +771,7 @@ bool Foam::splitCyclicPolyPatch::order
                 boundaryMesh().mesh().time().path()
                /neighbPatch().name()+"_faces.obj"
             );
-            Pout<< "cyclicPolyPatch::order : Writing neighbour"
+            Pout<< "splitCyclicPolyPatch::order : Writing neighbour"
                 << " faces to OBJ file " << nm0 << endl;
             writeOBJ(nm0, pp0, pp0.points());
 
@@ -780,7 +780,7 @@ bool Foam::splitCyclicPolyPatch::order
                 boundaryMesh().mesh().time().path()
                /name()+"_faces.obj"
             );
-            Pout<< "cyclicPolyPatch::order : Writing my"
+            Pout<< "splitCyclicPolyPatch::order : Writing my"
                 << " faces to OBJ file " << nm1 << endl;
             writeOBJ(nm1, pp, pp.points());
 
@@ -789,7 +789,7 @@ bool Foam::splitCyclicPolyPatch::order
                 boundaryMesh().mesh().time().path()
                /name() + "_faceCentres.obj"
             );
-            Pout<< "cyclicPolyPatch::order : "
+            Pout<< "splitCyclicPolyPatch::order : "
                 << "Dumping currently found cyclic match as lines between"
                 << " corresponding face centres to file " << ccStr.name()
                 << endl;
@@ -815,7 +815,7 @@ bool Foam::splitCyclicPolyPatch::order
         {
             SeriousErrorIn
             (
-                "cyclicPolyPatch::order"
+                "splitCyclicPolyPatch::order"
                 "(const primitivePatch&, labelList&, labelList&) const"
             )   << "Patch:" << name() << " : "
                 << "Cannot match vectors to faces on both sides of patch"
@@ -852,7 +852,7 @@ bool Foam::splitCyclicPolyPatch::order
             {
                 SeriousErrorIn
                 (
-                    "cyclicPolyPatch::order(const primitivePatch&"
+                    "splitCyclicPolyPatch::order(const primitivePatch&"
                     ", labelList&, labelList&) const"
                 )   << "in patch " << name()
                     << " : "
@@ -932,7 +932,7 @@ Foam::splitCyclicPolyPatch::splitCyclicPolyPatch
     {
         FatalIOErrorIn
         (
-            "cyclicPolyPatch::cyclicPolyPatch\n"
+            "splitCyclicPolyPatch::splitCyclicPolyPatch\n"
             "(\n"
             "    const word& name,\n"
             "    const dictionary& dict,\n"
@@ -1054,7 +1054,7 @@ Foam::label Foam::splitCyclicPolyPatch::neighbPatchID() const
 
         if (neighbPatchID_ == -1)
         {
-            FatalErrorIn("cyclicPolyPatch::neighbPatchID() const")
+            FatalErrorIn("splitCyclicPolyPatch::neighbPatchID() const")
                 << "Illegal neighbourPatch name " << neighbPatchName()
                 << endl << "Valid patch names are "
                 << this->boundaryMesh().names()
@@ -1069,7 +1069,7 @@ Foam::label Foam::splitCyclicPolyPatch::neighbPatchID() const
 
         if (nbrPatch.neighbPatchName() != name())
         {
-            WarningIn("cyclicPolyPatch::neighbPatchID() const")
+            WarningIn("splitCyclicPolyPatch::neighbPatchID() const")
                 << "Patch " << name()
                 << " specifies neighbour patch " << neighbPatchName()
                 << endl << " but that in return specifies "

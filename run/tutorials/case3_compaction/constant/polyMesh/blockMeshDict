@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  1.7.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -14,25 +14,26 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+
+#include "$FOAM_CASE/caseInfo"
+
 convertToMeters 1;
-xl 2; 
-zl -0.2;
-zu 0;
+
 vertices        
 (
-    (0 0 $zl)
-    ($xl 0 $zl)
-    ($xl 0.05 $zl)
-    (0 0.05 $zl)
-    (0 0 $zu)
-    ($xl 0 $zu)
-    ($xl 0.05 $zu)
-    (0 0.05 $zu)
+    ($x1 0  $z2)
+    ($x2 0  $z2)
+    ($x2 $y $z2)
+    ($x1 $y $z2)
+    ($x1 0  $z1)
+    ($x2 0  $z1)
+    ($x2 $y $z1)
+    ($x1 $y $z1)
 );
 
 blocks          
 (
-    hex (0 1 2 3 4 5 6 7) (100 1 40) simpleGrading (1 1 1)
+    hex (0 1 2 3 4 5 6 7) ($nx 1 $nz) simpleGrading (1 1 1)
 );  
 
 edges           
@@ -47,29 +48,29 @@ boundary
         type wall;
         faces
         (
-	 (4 5 6 7)	
-        ) ;
+            (4 5 6 7)
+        );
     }
-     
+
     frontBack
     {
         type empty;
         faces
         (
-	  (3 7 6 2)
-          (0 1 5 4)	
-        ) ;
+            (3 7 6 2)
+            (0 1 5 4)
+        );
     }  
-    
+
     soilDomainBottom
     {
         type wall;
         faces
         (
-	  (0 3 2 1 )	
-        ) ;
+            (0 3 2 1)
+        );
     } 
-    
+
     left
     {
         type splitCyclic;
@@ -81,8 +82,8 @@ boundary
         );
           
     }
-     
-     right
+
+    right
     {
         type splitCyclic;
         neighbourPatch  left;
@@ -91,8 +92,7 @@ boundary
             (1 5 6 2)
         );
           
-    }  
-
+    }
 
     liq
     {
@@ -101,7 +101,8 @@ boundary
         faces
         (
         );
-        }
+    }
+
     sol
     {
         type splitCyclic;
@@ -109,8 +110,7 @@ boundary
         faces
         (
         );
-        }
-
+    }
 
 );
 

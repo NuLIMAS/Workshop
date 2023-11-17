@@ -1,6 +1,6 @@
 if (runTime.outputTime())
 {
-
+Info<< "Calculating stress field sigma\n" << endl;
 volSymmTensorField sigma
 (
     IOobject
@@ -13,22 +13,5 @@ volSymmTensorField sigma
     ),
     sigmaD - I*p
 );
-
-volScalarField sigmaEq
-(
-    IOobject
-    (
-        "sigmaEq",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::AUTO_WRITE
-    ),
-    sqrt((3.0/2.0)*magSqr(dev(sigma)))
-);
-
-Info<< "Max sigmaEq = " << max(sigmaEq).value()
-    << endl;
-
 
 }
