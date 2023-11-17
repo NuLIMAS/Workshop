@@ -70,10 +70,6 @@ int main(int argc, char *argv[])
     {
         Info<< "Iteration: " << runTime.value() << nl << endl;
 
-        //#include "updateLiquefaction.H"
-
-        //bool meshChanged = mesh.update();
-
         #include "readPoroElasticControls.H"
 
         // Initialize correction iteration count and residual variables
@@ -92,7 +88,7 @@ int main(int argc, char *argv[])
             // Store previous iterations of U, p, and V
             U.storePrevIter();
             p.storePrevIter();
-            Vm.storePrevIter();
+            V.storePrevIter();
 
             // Include file for velocity equation
             #include "VEqn.H"
@@ -117,6 +113,7 @@ int main(int argc, char *argv[])
 
         // Include file for pore pressure accumulation
         #include "prepareBuildup.H"
+        runTime.write();
 
         // Calculate and output the sum of alpha
         scalar sum = gSum(alpha);

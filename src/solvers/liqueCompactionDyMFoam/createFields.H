@@ -28,12 +28,12 @@ volTensorField  gradU
 
 //volTensorField gradU = fvc::grad(U);
 
-Info<< "Reading field Vm\n" << endl;
-volVectorField Vm
+Info<< "Reading field V\n" << endl;
+volVectorField V
 (
     IOobject
     (
-        "Vm",
+        "V",
         runTime.timeName(),
         mesh,
         IOobject::MUST_READ,
@@ -445,7 +445,7 @@ surfaceScalarField phi
         IOobject::READ_IF_PRESENT,
         IOobject::NO_WRITE
     ),
-    linearInterpolate(rho*Vm) & mesh.Sf()
+    linearInterpolate(rho*V) & mesh.Sf()
 );
 
 
