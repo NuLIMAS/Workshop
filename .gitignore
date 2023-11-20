@@ -6,6 +6,7 @@ case.pid
 *.o
 *.deb
 *.dep
+postPro*
 lnInclude
 linux*Gcc*/
 linux*Icc*/
@@ -20,3 +21,4 @@ log.*
 */*/*/0/cv
 */*/*/postProcessing
 */*/*/VTK
+.vscode*

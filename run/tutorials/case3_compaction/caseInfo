@@ -49,6 +49,9 @@ C            -142.88; // Const for cal viscosity
 V0           -0.01; // Settling velocity
 q            2; // Factor in calculting drift flux
 
+/*Post processing*/
+probes       ((1 0 -0.05) (1 0 -0.10) (1 0 -0.15) (1 0 -0.18))
+
 /* Simulation controls */
 application     liqueCompactionDyMFoam;
 startTime       0;

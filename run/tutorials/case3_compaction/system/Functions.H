@@ -5,13 +5,7 @@ functions
         type               probes;
         functionObjectLibs ("libsampling.so");
         setFormat          gnuplot;
-        probeLocations
-        (
-            ($xm 0 -0.05)
-            ($xm 0 -0.10)
-            ($xm 0 -0.15)
-            ($xm 0 -0.18)
-        );
+        probeLocations     $probes;
         fields
         (
             p
