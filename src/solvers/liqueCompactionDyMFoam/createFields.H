@@ -28,12 +28,12 @@ volTensorField  gradU
 
 //volTensorField gradU = fvc::grad(U);
 
-Info<< "Reading field V\n" << endl;
-volVectorField V
+Info<< "Reading field Vm\n" << endl;
+volVectorField Vm
 (
     IOobject
     (
-        "V",
+        "Vm",
         runTime.timeName(),
         mesh,
         IOobject::MUST_READ,
@@ -56,22 +56,6 @@ surfaceScalarField Vdj
         IOobject::AUTO_WRITE
     ),
     mesh
-);
-
-
-Info<< "Initialising field visf\n" << endl;
-surfaceScalarField visf
-(
-    IOobject
-    (
-        "visf",
-        runTime.timeName(),
-        mesh,
-        IOobject::READ_IF_PRESENT,
-        IOobject::NO_WRITE
-     ),
-    mesh,
-    dimensionedScalar (materialProperties.lookup("vis"))
 );
 
 
@@ -106,152 +90,6 @@ volScalarField pE
     mesh
 );
 
-
-Info<< "Reading field alpha\n" << endl;
-volScalarField alpha
-(
-    IOobject
-    (
-        "alpha",
-        runTime.timeName(),
-        mesh,
-        IOobject::MUST_READ,
-        IOobject::AUTO_WRITE
-    ),
-    mesh
-);
-
-
-Info<< "Initialising field Cl\n" << endl;
-volScalarField Cl
-(
-    IOobject
-    (
-        "Cl",
-        runTime.timeName(),
-        mesh,
-        IOobject::READ_IF_PRESENT,
-        IOobject::AUTO_WRITE
-    ),
-    mesh,
-    dimensionedScalar("Cl",dimless,0),
-    zeroGradientFvPatchScalarField::typeName
-);
-
-
-Info<< "Initialising field Cs\n" << endl;
-volScalarField Cs
-(
-    IOobject
-    (
-        "Cs",
-        runTime.timeName(),
-        mesh,
-        IOobject::READ_IF_PRESENT,
-        IOobject::AUTO_WRITE
-    ),
-    mesh,
-    dimensionedScalar("Cs",dimless,0),
-    zeroGradientFvPatchScalarField::typeName
-);
-
-
-Info<< "Initializing field rho, rhof, rhom\n" << endl;
-volScalarField rhof
-(
-    IOobject
-    (
-        "rhof",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-    ),
-    mesh,
-    dimensionedScalar(materialProperties.lookup("rhof")),
-    zeroGradientFvPatchScalarField::typeName
-);
-
-
-volScalarField rho
-(
-    IOobject
-    (
-        "rho",
-        runTime.timeName(),
-        mesh,
-        IOobject::READ_IF_PRESENT,
-        IOobject::NO_WRITE
-    ),
-    ((1.0 - alpha) * rhoc + alpha *  rhos)*Cl + (1-Cl) * rhoc
-);
-
-
-volScalarField rhom
-(
-    IOobject
-    (
-        "rhom",
-        runTime.timeName(),
-        mesh,
-        IOobject::READ_IF_PRESENT,
-        IOobject::NO_WRITE
-    ),
-    ((1.0 - alpha) * rhoc + alpha *  rhos)
-);
-
-
-Info<< "Initialising field relDensity\n" << endl;
-volScalarField relDensity
-(
-    IOobject
-    (
-        "relDensity",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-     ),
-    mesh,
-    dimensionedScalar (materialProperties.lookup("relDensity")),
-    zeroGradientFvPatchScalarField::typeName
-);
-
-
-Info<< "Initialising field gammaD\n" << endl;
-volScalarField gammaD
-(
-    IOobject
-    (
-        "gammaD",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-     ),
-    mesh,
-    dimensionedScalar (materialProperties.lookup("gammaD")),
-    zeroGradientFvPatchScalarField::typeName
-);
-
-
-volVectorField rhodg
-(
-    IOobject
-    (
-        "rhodg",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-    ),
-    mesh,
-    dimensionedVector("zero", dimForce/dimVolume, vector(0, 0, -gammaDash.value())),
-    zeroGradientFvPatchScalarField::typeName
-);
-
-
-rhodg.correctBoundaryConditions();
 
 Info<< "Reading inital effective stress\n" << endl;
 volScalarField sigma0
@@ -340,7 +178,7 @@ volSymmTensorField strain
         runTime.timeName(),
         mesh,
         IOobject::NO_READ,
-        IOobject::NO_WRITE
+        IOobject::AUTO_WRITE
      ),
      0.5*twoSymm(fvc::grad(U))
 
@@ -445,7 +283,7 @@ surfaceScalarField phi
         IOobject::READ_IF_PRESENT,
         IOobject::NO_WRITE
     ),
-    linearInterpolate(rho*V) & mesh.Sf()
+    linearInterpolate(rho*Vm) & mesh.Sf()
 );
 
 
@@ -479,7 +317,6 @@ volScalarField contErr
     zeroGradientFvPatchScalarField::typeName
 );
 
-
 if (compactNormalStress)
 {
     divSigmaExp -= fvc::laplacian(2*mu + lambda, U, "laplacian(DD,U)");
@@ -488,6 +325,7 @@ else
 {
     divSigmaExp -= fvc::div((2*mu + lambda)*fvc::grad(U), "div(sigmaD)");
 }
+
 
 // Set initial  alpha and water height 
 forAll (mesh.C(),cellI)

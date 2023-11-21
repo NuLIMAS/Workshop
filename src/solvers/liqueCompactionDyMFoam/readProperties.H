@@ -105,6 +105,8 @@ dimensionedScalar rhos(materialProperties.lookup("rhos"));
 dimensionedVector V0(materialProperties.lookup("V0"));
 dimensionedVector g(materialProperties.lookup("g"));
 dimensionedScalar q(materialProperties.lookup("q"));
+//dimensionedScalar n2(materialProperties.lookup("n2"));
+dimensionedScalar E2(materialProperties.lookup("E2"));
 dimensionedScalar wh(materialProperties.lookup("wh"));
 dimensionedScalar k0(materialProperties.lookup("k0"));
 dimensionedScalar gammaDash(materialProperties.lookup("gammaD"));
@@ -112,12 +114,79 @@ dimensionedScalar T("T",dimensionSet(0, 0, 1, 0, 0), waveProperties.lookup("peri
 dimensionedScalar wahe("wahe",dimensionSet(0, 1, 0, 0, 0), waveProperties.lookup("waveHeight"));
 dimensionedScalar wl("wl",dimensionSet(0, 1, 0, 0, 0), waveProperties.lookup("waveLength"));
 dimensionedScalar wd("wd",dimensionSet(0, 1, 0, 0, 0), waveProperties.lookup("waterDepth"));
-//dimensionedScalar E2(materialProperties.lookup("E2"));
+
 dimensionedScalar relDensity2(materialProperties.lookup("relDensity2"));
 dimensionedScalar emax(materialProperties.lookup("emax"));
 dimensionedScalar emin(materialProperties.lookup("emin"));
-//volScalarField e = n /(1.0 -n);
+
 Switch st(materialProperties.lookup("steady"));
+//volScalarField e = n /(1.0 -n);
+
+
+Info<< "Initialising field relDensity\n" << endl;
+volScalarField relDensity
+(
+    IOobject
+    (
+        "relDensity",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+     ),
+    mesh,
+    dimensionedScalar (materialProperties.lookup("relDensity")),
+    zeroGradientFvPatchScalarField::typeName
+);
+
+Info<< "Initialising field visf\n" << endl;
+surfaceScalarField visf
+(
+    IOobject
+    (
+        "visf",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::NO_WRITE
+     ),
+    mesh,
+    dimensionedScalar (materialProperties.lookup("vis"))
+);
+
+Info<< "Initialising field gammaD\n" << endl;
+volScalarField gammaD
+(
+    IOobject
+    (
+        "gammaD",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+     ),
+    mesh,
+    dimensionedScalar (materialProperties.lookup("gammaD")),
+    zeroGradientFvPatchScalarField::typeName
+);
+
+
+volVectorField rhodg
+(
+    IOobject
+    (
+        "rhodg",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+    ),
+    mesh,
+    dimensionedVector("zero", dimForce/dimVolume, vector(0, 0, -gammaDash.value())),
+    zeroGradientFvPatchScalarField::typeName
+);
+rhodg.correctBoundaryConditions();
+
 dimensionedScalar Kprime = 1.0/(1.0/K + (1.0-Sr)/p0);
 
 
@@ -163,3 +232,94 @@ lambda.correctBoundaryConditions();
 k.correctBoundaryConditions();
 nu.correctBoundaryConditions();
 
+Info<< "Initialising field Cl\n" << endl;
+volScalarField Cl
+(
+    IOobject
+    (
+        "Cl",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("Cl",dimless,0),
+    zeroGradientFvPatchScalarField::typeName
+);
+
+
+volScalarField Cs
+(
+    IOobject
+    (
+        "Cs",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("Cs",dimless,0),
+    zeroGradientFvPatchScalarField::typeName
+);
+
+
+Info<< "Reading field alpha\n" << endl;
+volScalarField alpha
+(
+    IOobject
+    (
+        "alpha",
+        runTime.timeName(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh
+);
+
+
+Info<< "Initializing field rho, rhof, rhom\n" << endl;
+volScalarField rhof
+(
+    IOobject
+    (
+        "rhof",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+    ),
+    mesh,
+    dimensionedScalar(materialProperties.lookup("rhof")),
+    zeroGradientFvPatchScalarField::typeName
+);
+
+
+volScalarField rho
+(
+    IOobject
+    (
+        "rho",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    ((1.0 - alpha) * rhoc + alpha *  rhos)*Cl + (1-Cl) * rhoc
+);
+
+
+volScalarField rhom
+(
+    IOobject
+    (
+        "rhom",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::NO_WRITE
+    ),
+    ((1.0 - alpha) * rhoc + alpha *  rhos)
+);

@@ -41,6 +41,7 @@ fvScalarMatrix pEEqn
 );
 pEEqn.solve();
 
+runTime.write();
 
 
 

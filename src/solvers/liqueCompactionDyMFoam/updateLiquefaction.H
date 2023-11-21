@@ -1,4 +1,4 @@
-// Calculate the liqeuafction criteria
+// Calculate the liqeuafaction criteria
 liqueCriteria.internalField() = pE.internalField()/sigma0.internalField();
 liqueCriteria.correctBoundaryConditions();
 
