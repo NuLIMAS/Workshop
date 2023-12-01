@@ -201,7 +201,7 @@ volScalarField mu
          runTime.timeName(),
          mesh,
          IOobject::NO_READ,
-         IOobject::AUTO_WRITE
+         IOobject::NO_WRITE
     ),
     mesh,
     dimensionSet (1,-1,-2, 0, 0, 0, 0),
@@ -218,7 +218,7 @@ volScalarField lambda
         runTime.timeName(),
         mesh,
         IOobject::NO_READ,
-        IOobject::AUTO_WRITE
+        IOobject::NO_WRITE
     ),
     mesh,
     dimensionSet (1,-1,-2, 0, 0, 0, 0),

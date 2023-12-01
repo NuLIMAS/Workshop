@@ -169,7 +169,7 @@ volScalarField tauXZPrime2Mean
 );
 
 
-Info<< "Initializing strain field\n" << endl;
+/*Info<< "Initializing strain field\n" << endl;
 volSymmTensorField strain
 (
     IOobject
@@ -178,7 +178,7 @@ volSymmTensorField strain
         runTime.timeName(),
         mesh,
         IOobject::NO_READ,
-        IOobject::AUTO_WRITE
+        IOobject::NO_WRITE
      ),
      0.5*twoSymm(fvc::grad(U))
 
@@ -197,7 +197,7 @@ volScalarField volStrain
         IOobject::NO_WRITE
     ),
     tr(strain)
-);
+);*/
 
 
 Info<< "Initializing liquefaction criteria\n" << endl;
@@ -335,6 +335,10 @@ forAll (mesh.C(),cellI)
         Cl[cellI] = 1;
         alpha[cellI] = 0;
     }
+    //else
+    //{
+    //    Cl[cellI] = 1;
+    //}
 
 }
 

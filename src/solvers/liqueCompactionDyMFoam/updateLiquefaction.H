@@ -3,6 +3,7 @@ liqueCriteria.internalField() = pE.internalField()/sigma0.internalField();
 liqueCriteria.correctBoundaryConditions();
 
 scalarField& ClI = Cl.internalField();
+scalarField& CsI = Cs.internalField();
 
 forAll (mesh.C(),cellI)
 {
@@ -16,9 +17,20 @@ forAll (mesh.C(),cellI)
         ClI[cellI] = 1;
         //alpha[cellI] = n[cellI];
     }
+    if (alpha[cellI]>= (1/(1+emin.value()))) //compacted  region
+    {
+        //Info  << " compacted" << endl;
+        CsI[cellI] = 1;
+        ClI[cellI] = 0;
+        alpha[cellI]=1/(1+emin.value());
+        n[cellI]  =  emin.value()/(1+emin.value());
+        relDensity[cellI] = relDensity2.value();
+
+    }
 }
 
 Cl.correctBoundaryConditions();
+Cs.correctBoundaryConditions();
 
 // If left and right faces doesn't liqueify together,
 // switch face liquefied to non-liquefied
@@ -36,14 +48,28 @@ const labelList cs1=Csface1.patch().faceCells();
 const labelList cs2=Csface2.patch().faceCells();
 forAll(Clface1, facei)
 {
-    if (Cl[cl1[facei]] != Cl[cl2[facei]] )
+    if ((Cl[cl1[facei]] != Cl[cl2[facei]] ) && ( (Cs[cs1[facei]] ==0)  || (Cs[cs2[facei]] ==0 ) ))
     {
         Cl[cl2[facei]] = 0;
         Cl[cl1[facei]] = 0;
     }
-    if (Cs[cs1[facei]] != Cs[cs2[facei]] )
+    else if  ((Cl[cl1[facei]] != Cl[cl2[facei]] ) && ( (Cs[cs1[facei]] != Cs[cs2[facei]])))
     {
-        Cs[cs2[facei]] = 0;
-        Cs[cs1[facei]] = 0;
+        Cl[cl2[facei]] = 1;
+        Cl[cl1[facei]] = 1;
+    }
+
+    //if (Cs[cs1[facei]] != Cs[cs2[facei]] )
+    //{
+    //    Cs[cs2[facei]] = 0;
+    //    Cs[cs1[facei]] = 0;
+    //}
+}
+forAll(Csface1, facei)
+{
+    if ((Cs[cs1[facei]] != Cs[cs2[facei]] ))
+    {
+        Cs[cs2[facei]] = 1;
+        Cs[cs1[facei]] = 1;
     }
 }

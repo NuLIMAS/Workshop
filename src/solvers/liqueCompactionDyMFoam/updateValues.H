@@ -32,41 +32,13 @@ forAll(patchUliq, i)
     rho.boundaryField()[boundaryID1][i] = 1000;
 }
 
-
-labelHashSet soilCells;
-forAll(Cl, cellI)
-{
-
-    if (Cl[cellI]==0 ) // non-liquefied region
-    {
-        soilCells.insert(cellI);
-    }
-    else
-    {
-        E[cellI]=E2.value();
-    }
-
-    if (alpha[cellI]>= (1/(1+emin.value()))) //compacted  region
-    {
-        //Info  << " compacted" << endl;
-        soilCells.insert(cellI);
-        Cs[cellI] = 1;
-        Cl[cellI] = 0;
-        n[cellI]  =  emin.value()/(1+emin.value()) ;
-        alpha[cellI]=1/(1+emin.value());
-        relDensity[cellI] = relDensity2.value();
-
-    }
-
-}
-
 relDensity.correctBoundaryConditions();
 E.correctBoundaryConditions();
 nu.correctBoundaryConditions();
-labelList soilLabels = soilCells.toc();
+
 Cl.correctBoundaryConditions();
 n.correctBoundaryConditions();
-Cs.correctBoundaryConditions();
+//Cs.correctBoundaryConditions();
 //rho.correctBoundaryConditions();
 Vdj.correctBoundaryConditions();
 mu = E/(2.0*(1.0 + nu));
@@ -96,7 +68,7 @@ Info << "Density          :   max: " <<  max(rho).value() <<  " kg/m^3 min: " <<
 Info << "--------------------------------------------------" << endl;
 
 Info << "---- Pressurebuildup properties ----" << endl;
-Info << "relativeDesnity  :   max: " <<  max(relDensity).value() <<  " min: " << min(relDensity).value() << " " << endl;
+Info << "relativeDensity  :   max: " <<  max(relDensity).value() <<  " min: " << min(relDensity).value() << " " << endl;
 Info << "Coefficient of lateral Earth pressure  : " <<  k0.value()  << endl;
 Info << "Coefficient of consolidation  :   max: " <<  max(cv).value() <<  " m^2/s min: " << min(cv).value() << " m^2/s" << endl;
 Info << "---------------------------------------------------" << endl;

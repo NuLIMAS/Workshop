@@ -18,4 +18,4 @@ U.relax();
 gradU = fvc::grad(U);
 sigmaD = mu*twoSymm(gradU) + (lambda*I)*tr(gradU);
 divSigmaExp = fvc::div(sigmaD - (2*mu + lambda)*gradU,"div(sigmaD)");
-strain = 0.5*twoSymm(fvc::grad(U));
+//strain = 0.5*twoSymm(fvc::grad(U));
