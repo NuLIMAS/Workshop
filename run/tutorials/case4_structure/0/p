@@ -1,0 +1,89 @@
+//*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    seaBed
+    {
+        type        propagatingPressureWave;
+        #include "../constant/waveProperties"
+    }    
+
+    foundationTop
+    {
+        type            propagatingPressureWave;
+        #include "../constant/waveProperties"
+    }
+
+    /*foundationSeabed
+    {
+        patchType        splitCyclic;
+        type             zeroGradient;
+    }
+    
+    
+    seabedFoundation
+    {
+        patchType       splitCyclic;
+        type            zeroGradient;
+
+    }*/
+    "seabedFoundation1|seabedFoundation2|seabedFoundation3"
+    {
+        patchType        splitCyclic;
+        type             zeroGradient;
+    }
+    
+    
+    "foundationSeabed1|foundationSeabed2|foundationSeabed3"
+    {
+        patchType       splitCyclic;
+        type            zeroGradient;
+
+    }
+
+    "left|right"
+    {
+        type            splitCyclic;
+    }
+
+    soilDomainBottom
+    {
+        type            buoyantRhoPressure;
+    }
+
+    frontBack
+    {
+        type            empty;
+    }
+    
+    liq
+    {
+        type            splitCyclic;
+    }
+    sol
+    {
+        type            splitCyclic;
+    }
+
+    
+}
+
+// ************************************************************************* //

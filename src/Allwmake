@@ -21,6 +21,8 @@ cd liquefactionQSFoam && wmake
 cd ..
 cd liqueCompactionDyMFoam && wmake
 cd ..
+cd structDyMFoam && wmake
+cd ..
 cd pressureBuildupFoam  && wmake
 cd ../../
 

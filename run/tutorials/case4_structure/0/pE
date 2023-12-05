@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      pE;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    seaBed
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    /*foundationSeabed
+    {
+        patchType       splitCyclic;
+        type            fixedValue;
+        value           uniform 0;
+    }
+    
+    seabedFoundation
+    {
+        patchType       splitCyclic;
+        type            fixedValue;
+        value           uniform 0;
+    }*/
+    "seabedFoundation1|seabedFoundation2|seabedFoundation3"
+    {
+        patchType       splitCyclic;
+        //type            fixedValue;
+        //value           uniform 0;
+        type            zeroGradient;
+    }
+    
+    "foundationSeabed1|foundationSeabed2|foundationSeabed3"
+    {
+        patchType       splitCyclic;
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    foundationTop
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    "left|right"
+    {
+        type            splitCyclic;
+    }
+
+    soilDomainBottom
+    {
+        type            zeroGradient;
+    }
+
+    frontBack
+    {
+        type  		 empty;
+    }
+    
+    liq
+    {
+        type            splitCyclic;
+    }
+    sol
+    {
+        type            splitCyclic;
+    }
+}
+
+// ************************************************************************* //

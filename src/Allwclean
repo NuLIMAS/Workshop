@@ -21,6 +21,8 @@ cd liquefactionQSFoam && wclean
 cd ..
 cd liqueCompactionDyMFoam && wclean
 cd ..
+cd structDyMFoam && wclean
+cd ..
 cd pressureBuildupFoam  && wclean
 cd ../../
 
