@@ -91,6 +91,8 @@ class propagatingPressureWaveFvPatchScalarField
         //- Mean pressure
         scalar offset_;
 
+        //- wave switchoff
+        scalar cutoff_;
 
         
 
