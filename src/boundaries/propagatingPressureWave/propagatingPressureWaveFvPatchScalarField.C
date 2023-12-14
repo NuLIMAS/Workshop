@@ -59,7 +59,8 @@ propagatingPressureWaveFvPatchScalarField
     wd_(ptf.wd_),    
     lambda_(ptf.lambda_),
     shift_(ptf.shift_),
-    offset_(ptf.offset_)
+    offset_(ptf.offset_),
+    cutoff_(ptf.cutoff_)    
 {}
 
 
@@ -78,7 +79,8 @@ propagatingPressureWaveFvPatchScalarField
     wd_(readScalar(dict.lookup("waterDepth"))),
     lambda_(readScalar(dict.lookup("waveLength"))),
     shift_(dict.lookupOrDefault<scalar>("phase", 0.0)),
-    offset_(dict.lookupOrDefault<scalar>("offset", 0.0))
+    offset_(dict.lookupOrDefault<scalar>("offset", 0.0)),
+    cutoff_(dict.lookupOrDefault<scalar>("cutoff", 0.0))
 {}
 
 
@@ -95,7 +97,8 @@ propagatingPressureWaveFvPatchScalarField
     wd_(ptf.wd_),
     lambda_(ptf.lambda_),
     shift_(ptf.shift_),
-    offset_(ptf.offset_)
+    offset_(ptf.offset_),
+    cutoff_(ptf.cutoff_)
 {}
 
 
@@ -113,7 +116,8 @@ propagatingPressureWaveFvPatchScalarField
     wd_(ptf.wd_),    
     lambda_(ptf.lambda_),
     shift_(ptf.shift_),
-    offset_(ptf.offset_)
+    offset_(ptf.offset_),
+    cutoff_(ptf.cutoff_)
 {}
 
 
@@ -134,8 +138,18 @@ void Foam::propagatingPressureWaveFvPatchScalarField::updateCoeffs()
 
     scalar A =0 ;
 
-    A = 9810.0 * wh_ / (2.0* Foam::cosh(2.0*pi*wd_/lambda_));
-
+    if (!cutoff_)
+    {
+        A = 9810.0 * wh_ / (2.0* Foam::cosh(2.0*pi*wd_/lambda_));
+    }
+    else if ( t < cutoff_)
+    {
+        A = 9810.0 * wh_ / (2.0* Foam::cosh(2.0*pi*wd_/lambda_));
+    }
+    else
+    {
+        A = 0;
+    }
     const vectorField& x = patch().Cf();
 
     scalar omega = 2.0*pi/T_;
@@ -161,6 +175,7 @@ void Foam::propagatingPressureWaveFvPatchScalarField::write
     os.writeKeyword("period") << T_ << token::END_STATEMENT << nl;
     os.writeKeyword("shift") <<shift_ << token::END_STATEMENT << nl;
     os.writeKeyword("offset") << offset_ << token::END_STATEMENT << nl;
+    os.writeKeyword("cutoff") << cutoff_ << token::END_STATEMENT << nl;
     writeEntry("value", os);
 }
 
