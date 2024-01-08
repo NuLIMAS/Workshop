@@ -18,6 +18,7 @@ y 0.05;
 
 /* Material properties */
 E            0.7e6; // Elastic modulus
+E2            0.7e6; // Elastic modulus
 nu           0.29; // Poisson ratio
 k            1.45e-5; // Permeability
 K            1.9e9; // True Bulk Modulus
