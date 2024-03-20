@@ -103,10 +103,7 @@ int main(int argc, char *argv[])
             residual = max(pResidual,UResidual);
 
         } while (residual > convergenceTolerance && ++iCorr < nCorr);
-        p.write();
-        Vm.write();
-        U.write();
-        alpha.write();
+
         Info << "Number of iterations:" << iCorr <<endl;
 
         #include "prepareBuildup.H"

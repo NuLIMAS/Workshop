@@ -120,15 +120,15 @@ int main(int argc, char *argv[])
 
 
         //// Calculate and output the sum of alpha
-        //scalar sum = gSum(alpha);
-        //Info << "div1 :" <<   gSum(phiAlpha) << endl;
-        //std::ofstream file1;
-        //file1.open ("alpha.txt", std::ofstream::out | std::ofstream::app);
-        //file1 << runTime.timeName() << " " << sum  << std::endl << "\n";
-        //file1.close();
+        scalar sum = gSum(alpha);
+        Info << "div1 :" <<   gSum(phiAlpha) << endl;
+        std::ofstream file1;
+        file1.open ("alpha.txt", std::ofstream::out | std::ofstream::app);
+        file1 << runTime.timeName() << " " << sum  << std::endl << "\n";
+        file1.close();
 
         // Include file for calculating liquefaction depth
-        //#include "liquefactionDepth.H"
+        #include "liquefactionDepth.H"
 
         // Output execution time information
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"

@@ -107,6 +107,7 @@ dimensionedVector g(materialProperties.lookup("g"));
 dimensionedScalar q(materialProperties.lookup("q"));
 //dimensionedScalar n2(materialProperties.lookup("n2"));
 dimensionedScalar E2(materialProperties.lookup("E2"));
+
 dimensionedScalar wh(materialProperties.lookup("wh"));
 dimensionedScalar k0(materialProperties.lookup("k0"));
 dimensionedScalar gammaDash(materialProperties.lookup("gammaD"));

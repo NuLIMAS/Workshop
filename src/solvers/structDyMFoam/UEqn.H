@@ -11,7 +11,7 @@ fvVectorMatrix UEqn
     ==
     fvc::grad(p)
     - (1-Cs)*fvc::grad(pE)
-    - rhodg
+    //- rhodg
 );
 
 UEqn.relax();
