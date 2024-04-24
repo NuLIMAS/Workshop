@@ -28,7 +28,7 @@ License
 #include "calculatedFvPatchFields.H"
 #include "surfaceFields.H"
 #include "volFields.H"
-
+#include "motionSolver.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -72,7 +72,8 @@ Foam::interfaceFrontFvMesh::interfaceFrontFvMesh(const IOobject& io)
             )
         ).subDict(typeName + "Coeffs")
     ),
-    wallFzID_(faceZones().findZoneID(motionDict_.lookup("wallFz")))
+    wallFzID_(faceZones().findZoneID(motionDict_.lookup("wallFz"))),
+    motionPtr_(motionSolver::New(*this))
     {
         Pout << "interfaceFrontFvMesh::interfaceFrontFvMesh" << endl;
         if (openFzID_ < 0)
@@ -129,24 +130,44 @@ Foam::interfaceFrontFvMesh::~interfaceFrontFvMesh()
 
 bool Foam::interfaceFrontFvMesh::update()
 {
+// Save old points
+    pointField oldPointsNew = allPoints();
+Info << "allPoints().size() " << allPoints().size() <<endl;
+    movePoints(motionPtr_->newPoints());  
+
 
     // Get the interfaceFront object from topoChanger
     interfaceFront& attDet = dynamic_cast<interfaceFront&>(topoChanger_[0]);
 
     // Flag to check if the interface has changed
     bool hasChanged = false;
-
+Info << "interfaceFront 1" << endl;
     // Get the wall faceZone
     faceZone& wall = faceZones()[wallFzID_];
 
+pointField mappedOldPointsNew1;
+Info << "interfaceFront 2" << endl;
     // Check if the interface is not attached
     if ( !attDet.attached() )
     {
         // Set the attachment and change the mesh
         attDet.setAttach();
         autoPtr<mapPolyMesh> map = topoChanger_.changeMesh();
-    }
+    
 
+        motionPtr_->updateMesh(map());
+    
+Info << "allPoints().size() " << allPoints().size() <<endl;
+        mappedOldPointsNew1.resize(allPoints().size());
+        mappedOldPointsNew1.map(oldPointsNew, map->pointMap());
+
+        movePoints(mappedOldPointsNew1);
+        resetMotion();
+        setV0();
+
+        movePoints(map->preMotionPoints());
+    }
+Info << "interfaceFront 3" << endl;
     // Lookup whether the cell is  liqufied
     const volScalarField& iLiq = lookupObject<volScalarField>("Cl");
 
@@ -182,6 +203,17 @@ bool Foam::interfaceFrontFvMesh::update()
 
     // Reset addressing for the wall faceZone
     wall.resetAddressing(newWall, newWallFlipMap);
+Info << "interfaceFront 4" << endl;
+    // Save old points
+    //pointField oldPointsNew2 = allPoints();
+
+    // movePoints(motionPtr_->newPoints());  
+    pointField mappedOldPointsNew2;
+
+    if (!mappedOldPointsNew1.size())
+    {
+        mappedOldPointsNew1 = allPoints();
+    }
 
     // Check if the interface is attached
     if ( attDet.attached() )
@@ -189,13 +221,28 @@ bool Foam::interfaceFrontFvMesh::update()
         // Set the detachment and change the mesh
         attDet.setDetach();
         autoPtr<mapPolyMesh> map = topoChanger_.changeMesh();
+
+        motionPtr_->updateMesh(map());
+        //Info <<"mappedOldPointsNew1 "<< mappedOldPointsNew1<< endl;
+        //pointField mappedOldPointsNew2(mappedOldPointsNew1.size());
+        //mappedOldPointsNew2.resize(mappedOldPointsNew1.size());
+        mappedOldPointsNew2.map(mappedOldPointsNew1, map->pointMap());
+        //Info << "mappedOldPointsNew2 "<< mappedOldPointsNew2<< endl;
+Info << "interfaceFront 5" << endl;
+        movePoints(mappedOldPointsNew2);
+        resetMotion();
+Info << "interfaceFront 6" << endl;
+        setV0();
+        // Info << "interfaceFront 7" << endl;
+        movePoints(map->preMotionPoints());
     }
 
     {
         faceZone& wall = faceZones()[wallFzID_];
         Info << "End of interfaceFrontFvMesh" << endl;
     }
-    return false;
+
+    return true;
 }
 
 
