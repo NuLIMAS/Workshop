@@ -1,10 +1,13 @@
 EXE_INC = \
     -g -O0\
     -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/foam/lnInclude \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude \
     -IpropagatingPressureWave/lnInclude \
     -I$(LIB_SRC)/solidModels/lnInclude \
-    -I$(LIB_SRC)/tetFiniteElement/lnInclude 
+
 LIB_LIBS = \
     -lfiniteVolume \
-    -lsolidModels \
-    -ltetFiniteElement
+    -lfoam \
+    -ldynamicMesh \
+    -lsolidModels 

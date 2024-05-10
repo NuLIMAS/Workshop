@@ -130,9 +130,12 @@ Foam::interfaceFrontFvMesh::~interfaceFrontFvMesh()
 
 bool Foam::interfaceFrontFvMesh::update()
 {
+Info << "interfaceFront 0" << endl;
 // Save old points
     pointField oldPointsNew = allPoints();
 Info << "allPoints().size() " << allPoints().size() <<endl;
+
+//Info << "old" <<oldPointsNew<< endl;
     movePoints(motionPtr_->newPoints());  
 
 
@@ -140,13 +143,14 @@ Info << "allPoints().size() " << allPoints().size() <<endl;
     interfaceFront& attDet = dynamic_cast<interfaceFront&>(topoChanger_[0]);
 
     // Flag to check if the interface has changed
-    bool hasChanged = false;
+    //bool hasChanged = false;
 Info << "interfaceFront 1" << endl;
     // Get the wall faceZone
     faceZone& wall = faceZones()[wallFzID_];
 
-pointField mappedOldPointsNew1;
+    pointField mappedOldPointsNew1;
 Info << "interfaceFront 2" << endl;
+Info << "State : " << attDet.attached() << endl;
     // Check if the interface is not attached
     if ( !attDet.attached() )
     {
@@ -233,16 +237,19 @@ Info << "interfaceFront 5" << endl;
         resetMotion();
 Info << "interfaceFront 6" << endl;
         setV0();
-        // Info << "interfaceFront 7" << endl;
+ 
         movePoints(map->preMotionPoints());
+Info << "interfaceFront 7" << endl;
+//Info << "new" <<mappedOldPointsNew2<< endl;
+
     }
 
     {
         faceZone& wall = faceZones()[wallFzID_];
         Info << "End of interfaceFrontFvMesh" << endl;
     }
-
-    return true;
+Info << "State : " << attDet.attached() << endl;
+    return false;
 }
 
 

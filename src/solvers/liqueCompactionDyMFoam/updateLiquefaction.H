@@ -17,6 +17,8 @@ forAll (mesh.C(),cellI)
         ClI[cellI] = 1;
         //alpha[cellI] = n[cellI];
     }
+    if (mesh.C().internalField()[cellI].component(vector::Z) < -0.1)
+    {
     if (alpha[cellI]>= (1/(1+emin.value()))) //compacted  region
     {
         //Info  << " compacted" << endl;
@@ -27,6 +29,7 @@ forAll (mesh.C(),cellI)
         n[cellI]  =  emin.value()/(1+emin.value());
         relDensity[cellI] = relDensity2.value();
 
+    }
     }
 }
 

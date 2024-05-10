@@ -201,8 +201,8 @@ void oscillatingRotatingValueFvPatchVectorField::rmap
 {
     fixedValueFvPatchField<vector>::rmap(ptf, addr);
 
-    const oscillatingRotatingValueFvPatchVectorField& tiptf =
-        refCast<const oscillatingRotatingValueFvPatchVectorField >(ptf);
+    //const oscillatingRotatingValueFvPatchVectorField& tiptf =
+    //    refCast<const oscillatingRotatingValueFvPatchVectorField >(ptf);
 }
 
 
@@ -226,7 +226,7 @@ void oscillatingRotatingValueFvPatchVectorField::updateCoeffs()
 
         scalar frequency = 1.0 /period_;
 
-        scalar rampTime = period_ * rampPeriod_;
+        //scalar rampTime = period_ * rampPeriod_;
 
         scalar eulerAngle = angle *sin(twoPi*frequency* t );
 

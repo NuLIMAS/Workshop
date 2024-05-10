@@ -90,6 +90,10 @@ class splitCyclicPointPatch
 
 public:
 
+    typedef coupledPointPatch CoupledPointPatch;
+    typedef pointBoundaryMesh BoundaryMesh;
+
+
     //- Runtime type information
     TypeName(splitCyclicPolyPatch::typeName_());
 

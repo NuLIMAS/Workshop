@@ -8,6 +8,7 @@ oscillatingRotatingValue/oscillatingRotatingValueFvPatchVectorField.C
 pressureFixedValue/pressureFixedValueFvPatchScalarField.C
 splitCyclic/splitCyclicPolyPatch.C
 splitCyclic/splitCyclicPointPatch.C
+splitCyclic/splitCyclicPointPatchField/splitCyclicPointPatchFields.C
 splitCyclic/splitCyclicFvPatch.C
 splitCyclic/splitCyclicFvPatchFields.C
 splitCyclic/splitCyclicLduInterface.C
@@ -17,7 +18,7 @@ splitCyclic/splitCyclicAMGInterface.C
 splitCyclic/splitCyclicAMGInterfaceField.C
 alphaInletOutlet/alphaInletOutletFvPatchScalarField.C
 cyclicFixedValue/cyclicFixedValueFvPatchVectorField.C
-splitCyclicTet/splitCyclicTetPolyPatch.C
+
 
 
 LIB = $(FOAM_USER_LIBBIN)/libliqueFvPatchFields

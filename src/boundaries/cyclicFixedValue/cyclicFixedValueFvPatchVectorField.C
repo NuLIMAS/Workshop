@@ -102,10 +102,7 @@ void Foam::cyclicFixedValueFvPatchVectorField::updateCoeffs()
         return;
     }
 
-    const fvPatchField<vector>& U =
-        patch().lookupPatchField<volVectorField, vector>("U");
-
-    const volVectorField& Uref =this->db().objectRegistry::lookupObject<volVectorField>  ("U");
+    const volVectorField& Uref =this->db().objectRegistry::lookupObject<volVectorField>("U");
 
 
     int solBoundaryIndex = -1;
