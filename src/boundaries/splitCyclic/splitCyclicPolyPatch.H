@@ -93,7 +93,7 @@ private:
         mutable label neighbPatchID_;
 
         //- Type of transformation - rotational or translational
-        transformType transform_;
+        transformType transform_ = UNKNOWN;
 
         // For rotation
 

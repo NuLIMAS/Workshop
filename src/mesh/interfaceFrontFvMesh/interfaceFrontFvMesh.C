@@ -76,12 +76,12 @@ Foam::interfaceFrontFvMesh::interfaceFrontFvMesh(const IOobject& io)
     motionPtr_(motionSolver::New(*this))
     {
         Pout << "interfaceFrontFvMesh::interfaceFrontFvMesh" << endl;
-        if (openFzID_ < 0)
-        {
-            FatalErrorIn("Foam::interfaceFrontFvMesh::interfaceFrontFvMesh(const IOobject& io)")
-                << "open face zone does not exists." << nl
-                << abort(FatalError);
-        }
+        // if (openFzID_ < 0)
+        // {
+        //     FatalErrorIn("Foam::interfaceFrontFvMesh::interfaceFrontFvMesh(const IOobject& io)")
+        //         << "open face zone does not exists." << nl
+        //         << abort(FatalError);
+        // }
 
         if (wallFzID_ < 0)
         {
