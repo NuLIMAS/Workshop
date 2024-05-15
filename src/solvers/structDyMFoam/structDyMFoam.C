@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
         scalar residual = 1.0e10;
 
         #include "updateValues.H"
-  
+
         do
         {
             Info << "iCorr = " << iCorr << endl;

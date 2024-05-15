@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
     pisoControl piso(mesh);
     #include "createFields.H"
     #include "initContinuityErrs.H"
+    #include "initTotalVolume.H"
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     scalar sumLocalphiV = 0;
@@ -71,7 +72,7 @@ int main(int argc, char *argv[])
         Info<< "Iteration: " << runTime.value() << nl << endl;
 
         #include "updateLiquefaction.H"
-
+        #include "checkTotalVolume.H"
         bool meshChanged = mesh.update();
 
         #include "readPoroElasticControls.H"

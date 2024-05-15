@@ -191,45 +191,45 @@ rhodg.correctBoundaryConditions();
 dimensionedScalar Kprime = 1.0/(1.0/K + (1.0-Sr)/p0);
 
 
-Info<< "Calculating Lame's coefficients\n" << endl;
+// Info<< "Calculating Lame's coefficients\n" << endl;
 
-Info<< "Initializing field mu\n" << endl;
-volScalarField mu
-(
-    IOobject
-    (
-         "mu",
-         runTime.timeName(),
-         mesh,
-         IOobject::NO_READ,
-         IOobject::NO_WRITE
-    ),
-    mesh,
-    dimensionSet (1,-1,-2, 0, 0, 0, 0),
-    zeroGradientFvPatchScalarField::typeName
-);
-
-
-Info<< "Initializing field lambda\n" << endl;
-volScalarField lambda
-(
-    IOobject
-    (
-        "lambda",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-    ),
-    mesh,
-    dimensionSet (1,-1,-2, 0, 0, 0, 0),
-    zeroGradientFvPatchScalarField::typeName
-
-);
+// Info<< "Initializing field mu\n" << endl;
+// volScalarField mu
+// (
+//     IOobject
+//     (
+//          "mu",
+//          runTime.timeName(),
+//          mesh,
+//          IOobject::NO_READ,
+//          IOobject::NO_WRITE
+//     ),
+//     mesh,
+//     dimensionSet (1,-1,-2, 0, 0, 0, 0),
+//     zeroGradientFvPatchScalarField::typeName
+// );
 
 
-mu.correctBoundaryConditions();
-lambda.correctBoundaryConditions();
+// Info<< "Initializing field lambda\n" << endl;
+// volScalarField lambda
+// (
+//     IOobject
+//     (
+//         "lambda",
+//         runTime.timeName(),
+//         mesh,
+//         IOobject::NO_READ,
+//         IOobject::NO_WRITE
+//     ),
+//     mesh,
+//     dimensionSet (1,-1,-2, 0, 0, 0, 0),
+//     zeroGradientFvPatchScalarField::typeName
+
+// );
+
+
+// mu.correctBoundaryConditions();
+// lambda.correctBoundaryConditions();
 k.correctBoundaryConditions();
 nu.correctBoundaryConditions();
 

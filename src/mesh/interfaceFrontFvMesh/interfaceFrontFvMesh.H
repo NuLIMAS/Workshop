@@ -46,11 +46,13 @@ SourceFiles
 namespace Foam
 {
 
+class motionSolver;
+
 /*---------------------------------------------------------------------------*\
                        Class interfaceFrontFvMesh Declaration
 \*---------------------------------------------------------------------------*/
 
-class motionSolver;
+
 
 
 class interfaceFrontFvMesh
@@ -88,7 +90,7 @@ class interfaceFrontFvMesh
 
 
 public:
-        //- Runtime type information
+       //- Runtime type information
          TypeName("interfaceFrontFvMesh");
 
 
@@ -115,7 +117,6 @@ public:
 
         //- Update the mesh for both mesh motion and topology change
         virtual bool update();
-
 };
 
 

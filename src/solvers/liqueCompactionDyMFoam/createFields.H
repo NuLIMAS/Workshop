@@ -107,6 +107,10 @@ volScalarField sigma0
 );
 sigma0.correctBoundaryConditions();
 
+volScalarField lambda("lambda", nu*E/((1.0 + nu)*(1.0 - 2.0*nu)));
+volScalarField mu ("mu", E/(2.0*(1.0 + nu)));
+lambda.correctBoundaryConditions();
+mu.correctBoundaryConditions();
 
 Info<< "Calculating stress field sigmaD\n" << endl;
 volSymmTensorField sigmaD
