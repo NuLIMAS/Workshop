@@ -39,20 +39,15 @@ SourceFiles
 #include "topoChangerFvMesh.H"
 #include "interfaceFront.H"
 #include "mapPolyMesh.H"
-#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-class motionSolver;
-
 /*---------------------------------------------------------------------------*\
                        Class interfaceFrontFvMesh Declaration
 \*---------------------------------------------------------------------------*/
-
-
 
 
 class interfaceFrontFvMesh
@@ -69,8 +64,6 @@ class interfaceFrontFvMesh
 
         //- Face zone ID
         label wallFzID_;
-
-        autoPtr<motionSolver> motionPtr_;
 
 
     // Private Member Functions
@@ -90,7 +83,7 @@ class interfaceFrontFvMesh
 
 
 public:
-       //- Runtime type information
+     //- Runtime type information
          TypeName("interfaceFrontFvMesh");
 
 

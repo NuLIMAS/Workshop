@@ -28,10 +28,8 @@ License
 #include "calculatedFvPatchFields.H"
 #include "surfaceFields.H"
 #include "volFields.H"
-#include "motionSolver.H"
+
 #include "addToRunTimeSelectionTable.H"
-#include "pointMesh.H"
-#include "pointPatchField.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -74,8 +72,7 @@ Foam::interfaceFrontFvMesh::interfaceFrontFvMesh(const IOobject& io)
             )
         ).subDict(typeName + "Coeffs")
     ),
-    wallFzID_(faceZones().findZoneID(motionDict_.lookup("wallFz"))),
-    motionPtr_(motionSolver::New(*this))
+    wallFzID_(faceZones().findZoneID(motionDict_.lookup("wallFz")))
     {
         Pout << "interfaceFrontFvMesh::interfaceFrontFvMesh" << endl;
         // if (openFzID_ < 0)
@@ -132,45 +129,19 @@ Foam::interfaceFrontFvMesh::~interfaceFrontFvMesh()
 
 bool Foam::interfaceFrontFvMesh::update()
 {
-    //Info << "interfaceFront 0" << endl;
-    // Save old points
-    pointField oldPointsNew = allPoints();
-    //Info << "allPoints().size() " << allPoints().size() <<endl;
-    tmp<pointField> newPoints = motionPtr_->newPoints();
-    movePoints(newPoints());
-    //movePoints(oldPointsNew); 
-
-    const pointVectorField& pointMotionU = lookupObject<pointVectorField>("pointMotionU"); 
-    //Info << "pointMotionU1 :" << pointMotionU << endl;
 
     // Get the interfaceFront object from topoChanger
     interfaceFront& attDet = dynamic_cast<interfaceFront&>(topoChanger_[0]);
 
-    // Flag to check if the interface has changed
-    //bool hasChanged = false;
-    //Info << "interfaceFront 1" << endl;
     // Get the wall faceZone
     faceZone& wall = faceZones()[wallFzID_];
 
-    pointField mappedOldPointsNew1;
-    //Info << "State : " << attDet.attached() << endl;
     // Check if the interface is detached
     if ( !attDet.attached() )
     {
         // Set the attachment and change the mesh
         attDet.setAttach();
         autoPtr<mapPolyMesh> map = topoChanger_.changeMesh();
- 
-        motionPtr_->updateMesh(map());
-
-        mappedOldPointsNew1.resize(allPoints().size());
-        mappedOldPointsNew1.map(oldPointsNew, map->pointMap());
-
-        movePoints(mappedOldPointsNew1);
-        resetMotion();
-        setV0();
-
-        movePoints(map->preMotionPoints());
     }
 
     // Lookup whether the cell is  liqufied
@@ -184,65 +155,36 @@ bool Foam::interfaceFrontFvMesh::update()
     // Lists to store the new wall faces and their orientation
     DynamicList<label> newWall(nei.size());
     DynamicList<bool> newWallFlipMap(nei.size());
-//Info << "newwall1:" << newWall<< endl;
+
     // Loop through neighbor faces
     forAll(nei, facei)
     {
+        // Check if the neighbor is liquid and the owner is not, or vice versa
+        if  (iLiq[nei[facei]] == 1 &&  iLiq[own[facei]] == 0)
+        {
+            newWall.append(facei);
+            newWallFlipMap.append(true);
+        }
+        else if  (iLiq[nei[facei]] == 0 &&  iLiq[own[facei]] == 1)
+        {
+            newWall.append(facei);
+            newWallFlipMap.append(false);
+        }
+    }
 
-    // Check if the neighbor is liquid and the owner is not, or vice versa
-    if  (iLiq[nei[facei]] == 1 &&  iLiq[own[facei]] == 0)
-    {
-        newWall.append(facei);
-        newWallFlipMap.append(true);
-    }
-    else if  (iLiq[nei[facei]] == 0 &&  iLiq[own[facei]] == 1)
-    {
-        newWall.append(facei);
-        newWallFlipMap.append(false);
-    }
-
-    }
-//Info << "newwall2:" << newWall<< endl;
     // Sort the new wall faces
     sort(newWall);
 
     // Reset addressing for the wall faceZone
     wall.resetAddressing(newWall, newWallFlipMap);
 
-    pointField mappedOldPointsNew2;
-
-    if (!mappedOldPointsNew1.size())
-    {
-        mappedOldPointsNew1 = allPoints();
-    }
-//Info << "pointMotionU2 :" << pointMotionU << endl;
     // Check if the interface is attached
     if ( attDet.attached() )
     {
-
         // Set the detachment and change the mesh
         attDet.setDetach();
         autoPtr<mapPolyMesh> map = topoChanger_.changeMesh();
-
-
-        motionPtr_->updateMesh(map());
-        //Info << "pointMotionU21 :" << pointMotionU << endl;
-
-
-        //motionPtr_->updateMesh(map());
-        //Info << "pointMotionU22 :" << pointMotionU << endl;    
-        mappedOldPointsNew2.map(mappedOldPointsNew1, map->pointMap());
-        movePoints(mappedOldPointsNew2);
-        //Info << "pointMotionU23 :" << pointMotionU << endl;
-        resetMotion();
-        setV0();
- 
-        //movePoints(map->preMotionPoints());
-
     }
-        //Info << "State : " << attDet.attached() << endl;
-        //Info << "End of interfaceFrontFvMesh" << endl;
-//Info << "pointMotionU3 :" << pointMotionU << endl;
     return false;
 }
 
