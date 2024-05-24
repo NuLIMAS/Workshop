@@ -28,8 +28,11 @@ License
 #include "calculatedFvPatchFields.H"
 #include "surfaceFields.H"
 #include "volFields.H"
-
 #include "addToRunTimeSelectionTable.H"
+#include "pointMesh.H"
+#include "fvMesh.H"
+#include "volPointInterpolation.H"
+#include "polyMesh.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -129,10 +132,20 @@ Foam::interfaceFrontFvMesh::~interfaceFrontFvMesh()
 
 bool Foam::interfaceFrontFvMesh::update()
 {
-
+ const volVectorField& U = lookupObject<volVectorField>("U");
+    const fvMesh &mesh  =  U.mesh();
+      const vectorField fc = mesh.boundary()[3].Cf();   
+    //  Info << "fc1 " << fc << endl;
+        // Info << "Displacement at boundary:" << U.boundaryField()[2]<<endl;
+    // const fvPatchVectorField& patchU = U.boundaryField()[2];
+    // //forAll(patchU,i)
+    // //{
+    //     Info << "value" << patchU<< endl;
+    // //}
+    //Info << "mesh" << allPoints()<< endl;
+    
     // Get the interfaceFront object from topoChanger
     interfaceFront& attDet = dynamic_cast<interfaceFront&>(topoChanger_[0]);
-
     // Get the wall faceZone
     faceZone& wall = faceZones()[wallFzID_];
 
@@ -177,6 +190,8 @@ bool Foam::interfaceFrontFvMesh::update()
 
     // Reset addressing for the wall faceZone
     wall.resetAddressing(newWall, newWallFlipMap);
+    const vectorField fc2 = mesh.boundary()[3].Cf();            // Boundary patch name
+    //  Info << "fc2 " << fc2 << endl;
 
     // Check if the interface is attached
     if ( attDet.attached() )
@@ -185,7 +200,23 @@ bool Foam::interfaceFrontFvMesh::update()
         attDet.setDetach();
         autoPtr<mapPolyMesh> map = topoChanger_.changeMesh();
     }
-    return false;
+    //topoChanger_.modifyMotionPoints();
+//     const volVectorField& U = lookupObject<volVectorField>("U");
+//     const fvMesh &mesh  =  U.mesh();
+
+    const vectorField fc3 = mesh.boundary()[3].Cf();           
+    //   Info << "fc3 " << fc3 << endl;
+
+    volPointInterpolation interp(mesh);
+    
+    pointVectorField pointU("pointU", interp.interpolate(U));
+
+pointU.internalField() +=  mesh.points();
+    pointU.correctBoundaryConditions();
+
+    pointField pmU = pointU.internalField() + mesh.points();
+    fvMesh::movePoints(pointU);
+    return true;
 }
 
 
