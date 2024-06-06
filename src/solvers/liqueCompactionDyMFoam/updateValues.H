@@ -55,7 +55,7 @@ if (planeStress)
 // Update Coefficient of consolidation
 cv = (mu * k / gamma) * ((2-2*nu)/ ((1-2*nu)+(2-2*nu)*(n*mu/Kprime)));
 cv.correctBoundaryConditions();
-
+#if DEBUG
 Info << "------ Material properties  --------" << endl;
 Info << "Elastic modulus  :   max: " <<  max(E).value() <<  " Pa min: " << min(E).value() << " Pa" << endl;
 Info << "Shear modulus    :   max: " <<  max(mu).value() <<  " Pa min: " << min(mu).value() << " Pa" << endl;
@@ -72,3 +72,4 @@ Info << "relativeDensity  :   max: " <<  max(relDensity).value() <<  " min: " <<
 Info << "Coefficient of lateral Earth pressure  : " <<  k0.value()  << endl;
 Info << "Coefficient of consolidation  :   max: " <<  max(cv).value() <<  " m^2/s min: " << min(cv).value() << " m^2/s" << endl;
 Info << "---------------------------------------------------" << endl;
+#endif

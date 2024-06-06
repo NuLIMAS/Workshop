@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    To predict seabed liquefaction  untill  compaction
+    biotFoam is a modified version of solidDisplacementFoam
 
 Description
     Transient segregated finite-volume solver of the Biot quasi-steady consolidation equations
@@ -30,92 +30,75 @@ Description
     pore water flow and pressure governed by Darcy's law.
 
     Simple linear elasticity structural analysis code.
-    Solves for the displacement vector field U and the pore water pressure p.
+    Solves for the displacement vector field D and the pore water pressure p.
     Also generating the stress tensor field sigma.
-
-    An additional laplacian equation is solved in order to calculate the accumulated
-    pore pressure pE and predicts residual liquefaction.
-
-    Post-liquefaction, the liquefied region is solved using drift-flux model.
+    
+    An additional laplacian equation is solved in order to calculate the accumulated 
+    pore pressure pE.
 Author
     R. Shanmugasundaram, Wikki GmbH
-    H. Rusche, Wikki GmbH
+    Johan Roenby, DHI Water & Environment
 
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
-#include "dynamicFvMesh.H"
 #include "zeroGradientFvPatchFields.H"
-
-#include "pisoControl.H"
-
+#include "constitutiveModel.H"
+#include "wallDist.H"
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
 {
     #include "setRootCase.H"
+
     #include "createTime.H"
-    #include "createDynamicFvMesh.H"
+    #include "createMesh.H"
     #include "readMaterialProperties.H"
     #include "readPoroElasticControls.H"
-    pisoControl piso(mesh);
     #include "createFields.H"
-    #include "initContinuityErrs.H"
-    #include "initTotalVolume.H"
+    
+
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-            scalar sumLocalphiV = 0;
+    Info<< "\nCalculating displacement field\n" << endl;
 
     while (runTime.loop())
     {
         Info<< "Iteration: " << runTime.value() << nl << endl;
 
-        #include "updateLiquefaction.H"
-        #include "checkTotalVolume.H"
-        bool meshChanged = mesh.update();
-
         #include "readPoroElasticControls.H"
+
         int iCorr = 0;
         scalar UResidual = 1.0e10;
         scalar pResidual = 1.0e10;
-        scalar VmResidual = 1.0e10;
         scalar residual = 1.0e10;
 
-        #include "updateValues.H"
+        U.correctBoundaryConditions();
+        p.correctBoundaryConditions();
 
+        #include "updateValues.H"
         do
         {
-            Info << "iCorr = " << iCorr << endl;
+            Info << "iCorr ="<< iCorr << endl; 
             U.storePrevIter();
             p.storePrevIter();
-            Vm.storePrevIter();
-
-            #include "VmEqn.H"
-
-            while (piso.correct())
-            {
-                //#include "alphaEqn.H"
-
-                #include "pEqn.H"
-            }
+            sigmaD.correctBoundaryConditions();
+                                                                                                      
+            #include "pEqn.H"
 
             #include "UEqn.H"
 
             residual = max(pResidual,UResidual);
 
         } while (residual > convergenceTolerance && ++iCorr < nCorr);
+        
+        Info << "number of iterations " << iCorr << endl;
 
-        Info << "Number of iterations:" << iCorr <<endl;
+        #include "calculateStress.H"
 
         #include "prepareBuildup.H"
-        #if DEBUG
-        scalar sum = gSum(alpha);
-        Info << "div1 :" <<   gSum(phiAlpha) << endl;
-        std::ofstream file1;
-        file1.open ("alpha.txt", std::ofstream::out | std::ofstream::app);
-        file1 << runTime.timeName() << " " << sum  << std::endl << "\n";
-        file1.close();
-        #endif
+
+
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"

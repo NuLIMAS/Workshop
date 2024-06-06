@@ -9,7 +9,8 @@ volScalarField tauYZ("tauYZ", sigmaD.component(symmTensor::YZ));
 Info<< "runTime :" << runTime.time().value() <<endl;
 
 volScalarField txz = SMALL*sigmaD.component(symmTensor::XZ);
-if ( runTime.time().value() > 1.0*T.value())
+
+if ( runTime.time().value() > T.value())
 {
      txz = sqrt(mag(mesh.lookupObject<volScalarField>("tauXZPrime2Mean"))*2.0);
 }
@@ -33,8 +34,12 @@ fvScalarMatrix pEEqn
     fvm::ddt(pE)
     ==
     fvm::laplacian(cv, pE, "laplacian(cv,pE)")
-    +  Cf* f
+    +  Cf* (1.0 - Cl)*f
 );
 pEEqn.solve();
 
+liqueCriteria.internalField() = pE.internalField()/sigma0.internalField();
+liqueCriteria.correctBoundaryConditions();
+
 runTime.write();
+

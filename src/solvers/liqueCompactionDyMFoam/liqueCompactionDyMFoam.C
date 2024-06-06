@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
         // Include file for pore pressure accumulation
         #include "prepareBuildup.H"
 
-
+        #if DEBUG
         //// Calculate and output the sum of alpha
         scalar sum = gSum(alpha);
         Info << "div1 :" <<   gSum(phiAlpha) << endl;
@@ -130,6 +130,7 @@ int main(int argc, char *argv[])
 
         // Include file for calculating liquefaction depth
         #include "liquefactionDepth.H"
+        #endif
 
         // Output execution time information
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"

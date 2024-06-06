@@ -8,16 +8,23 @@ scalarField& CsI = Cs.internalField();
 
 forAll (mesh.C(),cellI)
 {
-    if ( Cl[cellI] == 1 &&  Cs[cellI] == 0 )
+    if ( Cl[cellI] == 1 &&  Cs[cellI] == 0 && liqueFlag[cellI] ==1)
     {
         ClI[cellI] = 1;
+        liqueFlag[cellI] = 1;
     }
 
-    if ( liqueCriteria[cellI] >= 1.0 &&  Cs[cellI] == 0 )
-    {
-        ClI[cellI] = 1;
-        //alpha[cellI] = n[cellI];
-    }
+     if ( liqueCriteria[cellI] >= 1.0 &&  Cs[cellI] == 0 )
+     {
+         //ClI[cellI] = 1;
+         //Cf[cellI] = 0;
+         liqueFlag[cellI] =1;
+         
+     }
+    //    if ( liqueCriteria[cellI] >= 1.0 &&  Cs[cellI] == 0 )
+    //     {
+    //         Cf[cellI] = 0;
+    //     }
     if (alpha[cellI]>= (1/(1+emin.value()))) //compacted  region
     {
         //Info  << " compacted" << endl;
@@ -25,13 +32,13 @@ forAll (mesh.C(),cellI)
         ClI[cellI] = 0;
         alpha[cellI]=1/(1+emin.value());
         n[cellI]  =  emin.value()/(1+emin.value());
-        relDensity[cellI] = relDensity2.value();
+        //relDensity[cellI] = relDensity2.value();
     }
 }
 
 Cl.correctBoundaryConditions();
 Cs.correctBoundaryConditions();
-
+Cf.correctBoundaryConditions();
 // If left and right faces doesn't liqueify together,
 // switch face liquefied to non-liquefied
 
