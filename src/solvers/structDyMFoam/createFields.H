@@ -79,12 +79,12 @@ volScalarField sigma0
         "sigma0",
         runTime.timeName(),
         mesh,
-        IOobject::MUST_READ,
+        IOobject::NO_READ,
         IOobject::AUTO_WRITE
     ),
-    //gammaD*(-mesh.C().component(vector::Z))*((1.0+(2.0*k0))/3.0),
-    //zeroGradientFvPatchScalarField::typeName
-    mesh
+    gammaD*(-mesh.C().component(vector::Z))*((1.0+(2.0*k0))/3.0),
+    zeroGradientFvPatchScalarField::typeName
+    //mesh
 );
 //sigma0.correctBoundaryConditions();
 
@@ -441,7 +441,7 @@ volScalarField liqueFlag
     zeroGradientFvPatchScalarField::typeName
 );
 
-/*
+
 
 if(loading)
 {
@@ -465,7 +465,7 @@ sigmaA.internalField() =QbyBL.value()* (1 -
     (pow(pow(fd.internalField(),2)+ pow(dist.internalField(),2),1.5))));
 }
 
-sigma0 = sigma0 + sigmaA * (1.0+(2.0*k0))/3.0;*/
+sigma0 = sigma0 + sigmaA * (1.0+(2.0*k0))/3.0;
 
 
 

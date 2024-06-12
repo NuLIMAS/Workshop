@@ -6,8 +6,9 @@ fvVectorMatrix UEqn
     + divSigmaExp
     - fvm ::d2dt2(rhom,U)
     + Us
-    == 
+    ==
     fvc::grad(p)
+    - rhodg
 );
 
 UEqn.relax();

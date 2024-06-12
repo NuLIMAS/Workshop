@@ -34,39 +34,6 @@ forAll(patchUliq, i)
     rho.boundaryField()[boundaryID1][i] = 1000;
 }
 
-
-
-/*labelHashSet soilCells;
-forAll(Cl, cellI)
-{
-
-    if (Cl[cellI]==0 ) // non-liquefied region
-    {
-        soilCells.insert(cellI);
-    }
-    else
-    {
-        E[cellI]=E2.value();
-    }
-
-    if (alpha[cellI]>= (1/(1+emin.value()))) //compacted  region
-    {
-        soilCells.insert(cellI);
-        Cs[cellI] = 1;
-        Cl[cellI] = 0;
-        n[cellI]  = emin.value()/(1+ emin.value());
-        alpha[cellI]= (1/(1+emin.value()));
-        relDensity[cellI] = relDensity2.value();
-        //E[cellI]=E2.value();
-    }
-    if (mesh.C().internalField()[cellI].component(vector::Z)> wh.value())
-    {
-        rho[cellI] = rhoa.value();
-        rhom[cellI] = rhoa.value();
-    }
-
-}*/
-
 relDensity.correctBoundaryConditions();
 E.correctBoundaryConditions();
 nu.correctBoundaryConditions();
@@ -88,13 +55,15 @@ int tp = ceil( runTime.time().value() / T.value()) ;
 const cellZone& cz1 = mesh.cellZones()["structureZones"];
 forAll(cz1, czi)
 {
+    rhodg[cz1[czi]] = vector(0,0,-rhoag.value());
     E[cz1[czi]] = 1e10;
     rhom[cz1[czi]] =rhoa.value();
     rho[cz1[czi]] =rhoa.value();
     Cf[cz1[czi]] =0;
     Cl[cz1[czi]] =0;
     Cs[cz1[czi]] =1;
-    alpha[cz1[czi]] =0.5;
+    alpha[cz1[czi]] =0.8;
+    //n[cz1[czi]]=0.5;
     //E[cellI] = 1e10;
     //rhom[cellI] =1450;
     //Cf[cellI] =0;
@@ -125,70 +94,6 @@ forAll(cz3, czi)
     }
 }
 
-/*if (stationary)
-{
-    forAll (mesh.C(),cellI)
-    {
-        if ( mesh.C().internalField()[cellI].component(vector::Z) > 0 )
-        {
-            //rhom[cellI] =2656;
-            E[cellI] = 1e10;
-            //Cp[cellI] = 0;
-            rhom[cellI] =1395;
-            Cf[cellI] =0;
-            //E[cellI] = 1e9;
-            //Us[cellI] = vector(0,0,-25000);
-        }
-    }
-}
-else
-{
-    //Info << "Moving foundation" << endl;
-    forAll (mesh.C(),cellI)
-    {
-        if  (mesh.C().internalField()[cellI].component(vector::Z) >  0.035 &&   // 0.028 && //0.009
-            mesh.C().internalField()[cellI].component(vector::X) > 1.02  &&//0.35 &&
-            mesh.C().internalField()[cellI].component(vector::X) <  1.03 //0.36     //0.38  0.353
-            )
-        {
-            if (tp %2 == 0)
-            {
-                Us[cellI] = vector(0,0,ms.value());
-            }
-            else
-            {
-                Us[cellI] = vector(0,0,0);
-            }
-        }
-        
-        if  (mesh.C().internalField()[cellI].component(vector::Z) > 0.035 &&
-            mesh.C().internalField()[cellI].component(vector::X) > 1.29 &&//0.64 &&  //0.62  && 0.647 
-             mesh.C().internalField()[cellI].component(vector::X) < 1.3 //0.65     
-            )
-        {
-            if (tp %2 == 0)
-            { 
-                Us[cellI] = vector(0,0,0);
-            }
-            else
-            {
-                Us[cellI] = vector(0,0,ms.value());
-            } 
-        }
-        //if ( mesh.C().internalField()[cellI].component(vector::Z) > 0.035 )
-        //{
-        //    Us[cellI] = vector(0,0,125000);
-        //}
-
-        if ( mesh.C().internalField()[cellI].component(vector::Z) > 0 )
-        {
-            E[cellI] = 1e10;
-            rhom[cellI] =rhoa.value();
-            Cf[cellI] =0;
-        }
-
-    }
-}*/
 E.correctBoundaryConditions();
 rhom.correctBoundaryConditions();
 Cf.correctBoundaryConditions();

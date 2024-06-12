@@ -32,8 +32,8 @@ Description
     Simple linear elasticity structural analysis code.
     Solves for the displacement vector field D and the pore water pressure p.
     Also generating the stress tensor field sigma.
-    
-    An additional laplacian equation is solved in order to calculate the accumulated 
+
+    An additional laplacian equation is solved in order to calculate the accumulated
     pore pressure pE.
 Author
     R. Shanmugasundaram, Wikki GmbH
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     #include "readMaterialProperties.H"
     #include "readPoroElasticControls.H"
     #include "createFields.H"
-    
+
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -79,11 +79,11 @@ int main(int argc, char *argv[])
         #include "updateValues.H"
         do
         {
-            Info << "iCorr ="<< iCorr << endl; 
+            Info << "iCorr ="<< iCorr << endl;
             U.storePrevIter();
             p.storePrevIter();
             sigmaD.correctBoundaryConditions();
-                                                                                                      
+
             #include "pEqn.H"
 
             #include "UEqn.H"
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
             residual = max(pResidual,UResidual);
 
         } while (residual > convergenceTolerance && ++iCorr < nCorr);
-        
+
         Info << "number of iterations " << iCorr << endl;
 
         #include "calculateStress.H"

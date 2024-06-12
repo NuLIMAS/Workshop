@@ -24,7 +24,7 @@ numCyc.internalField() =
 
 numCyc.correctBoundaryConditions();
 
-f= (1-Cl)*sigma0/(numCyc * T);
+f= sigma0/(numCyc * T);
 
 f.correctBoundaryConditions();
 

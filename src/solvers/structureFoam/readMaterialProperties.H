@@ -100,6 +100,7 @@ dimensionedScalar rhos(materialProperties.lookup("rhos"));
 //dimensionedVector g(materialProperties.lookup("g"));
 dimensionedVector Ur1(materialProperties.lookup("Ur1"));
 dimensionedVector Ur2(materialProperties.lookup("Ur2"));
+dimensionedScalar rhoag(materialProperties.lookup("rhodg"));
 
 dimensionedScalar wh(materialProperties.lookup("wh"));
 dimensionedScalar k0(materialProperties.lookup("k0"));
@@ -161,7 +162,7 @@ volVectorField rhodg
         IOobject::NO_WRITE
     ),
     mesh,
-    dimensionedVector("zero", dimForce/dimVolume, vector(0, 0, -gammaDash.value())),
+    dimensionedVector("zero", dimForce/dimVolume, vector(0, 0, 0)),
     zeroGradientFvPatchScalarField::typeName
 );
 rhodg.correctBoundaryConditions();
