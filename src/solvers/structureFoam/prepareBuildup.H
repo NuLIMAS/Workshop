@@ -25,7 +25,7 @@ numCyc.internalField() =
 
 numCyc.correctBoundaryConditions();
 
-f= (1-Cl)*sigma0/(numCyc * T);
+f= sigma0/(numCyc * T);
 
 f.correctBoundaryConditions();
 
@@ -34,7 +34,7 @@ fvScalarMatrix pEEqn
     fvm::ddt(pE)
     ==
     fvm::laplacian(cv, pE, "laplacian(cv,pE)")
-    +  Cf* (1.0 - Cl)*f
+    +  Cf* f
 );
 pEEqn.solve();
 

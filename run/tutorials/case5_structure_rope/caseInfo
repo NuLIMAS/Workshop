@@ -1,0 +1,91 @@
+/* Wave properties*/
+waveHeight  0.5; // Wave height in meters
+waterDepth  4.5; // Wave height in meters
+period      2.69; // Wave period in seconds
+waveLength  11.16; // Wave length in meters
+phase       -0.25; 
+offset      0;
+
+/* Mesh parametrs and probes */
+
+xm 5.58; //Location of probes middle of the domain
+z1 0;    //Seabed mudline
+z2 -1;//Impermeable base
+z3 -0.05;//Impermeable base
+z4 0.463;
+x1 0;    // Seabed start
+x2 11.16; //Length of the seabed
+x3 4.552; //Foundation start
+x4 6.6080; //Foundation end
+y  2.056;
+nxs 40;
+nxf 20;
+nzt 1;
+nzb 23;
+nz 10 ;
+nzf 8;
+
+/* Material properties */
+E            1.5e6; // Elastic modulus
+nu           0.31; // Poisson ratio
+k            1.45e-5; // Permeability
+K            1.9e9; // True Bulk Modulus
+p0           44145; //  Atm pressure
+Sr           1; // Degree of saturation
+n1           0.5; // Porosity
+n2           0.37; // Porosity of compacted soil
+relDensity   0.25; // Realtive density
+emax         1.159; // Max void ratioq
+emin         0.586; // Min void ratio
+rhos         2656; // Density of soil grains
+rhof         1000; // Density of water
+wh           0; // height of water above the seabed in numerical model
+sg           2.656; // specific gravity
+planeStress    no;
+gamma        0.981e4; // Specific weight of water
+/* Parameters to initialize liquefaction or run in steady state*/
+steady         no;
+Cl             0;
+ropeForce      1000;
+
+
+/* Pressure buildup properties */
+gammaD       8120.0; // Sp weight of the soil
+k0           0.45; // Coeff of lateral stress
+
+
+
+/* Foundation parameters */ 
+QbyBL        2543.53;//  (rhoa-rhof)*g*h
+rhoa         1560; // Desity of foundation
+Ur1           (0 0 1000);//rope forces
+Ur2           (0 0 1000);//rope forces
+fw            2.056; //foundation width
+rhodg         2629.8; //gamma' - (rhoa-rhof)*g
+
+/*Post processing*/
+probes       (($xm 0 -0.12)  
+    	      ($xm 0 -0.22)   
+   	      ($xm 0 -0.4)  
+  	      ($xm 0 -0.6) 
+  	      ($xm 0 -0.85)
+  	      (4.58 0 -0.12)  
+    	      (4.58 0 -0.22)   
+   	      (4.58 0 -0.4)  
+  	      (4.58 0 -0.6) 
+  	      (4.58 0 -0.85)
+  	      (5.08 0 -0.12)  
+    	      (5.08 0 -0.22)   
+   	      (5.08 0 -0.4)  
+  	      (5.08 0 -0.6) 
+  	      (5.08 0 -0.85));
+
+field        (p liqueCriteria  pE sigma0);
+
+
+/* Simulation controls */
+application     structureFoam;
+startTime       0;
+endTime         600;
+deltaT          0.269;
+writeInterval   0.269;

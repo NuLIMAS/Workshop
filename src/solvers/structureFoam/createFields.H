@@ -75,7 +75,7 @@ volScalarField sigma0
     //zeroGradientFvPatchScalarField::typeName
     mesh
 );
-//sigma0.correctBoundaryConditions();
+sigma0.correctBoundaryConditions();
 
 
 
@@ -344,8 +344,8 @@ volScalarField fd
 
 
 
-/*
 
+/*
 if(loading)
 {
     label patchID = mesh.boundaryMesh().findPatchID("seabedFoundation");

@@ -118,6 +118,7 @@ dimensionedScalar emin(materialProperties.lookup("emin"));
 dimensionedScalar rhoa(materialProperties.lookup("rhoa"));
 dimensionedScalar fw(materialProperties.lookup("fw"));
 
+dimensionedScalar ropeForce(materialProperties.lookup("ropeForce"));
 Info<< "Initialising field relDensity\n" << endl;
 volScalarField relDensity
 (

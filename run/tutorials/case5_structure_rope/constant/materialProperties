@@ -1,0 +1,72 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      materialProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "$FOAM_CASE/caseInfo"
+
+E              E [ 1 -1 -2 0 0 0 0 ] $E;
+
+k              k [ 0 1 -1 0 0 0 0 ] $k;
+
+K              K [ 1 -1 -2 0 0 0 0 ] $K;
+
+Sr             Sr [ 0 0 0 0 0 0 0 ] $Sr;
+
+p0             p0 [ 1 -1 -2 0 0 0 0 ] $p0;
+
+gamma          gamma [ 1 -2 -2 0 0 0 0 ] 9810;
+
+n           	n [ 0 0 0 0 0 0 0 ] $n1;
+
+nu           	nu [ 0 0 0 0 0 0 0 ] $nu;
+
+k0             k0 [0 0 0 0 0 0 0 ] $k0;
+
+relDensity     relDensity [0 0 0 0 0 0 0 ] $relDensity; 
+
+gammaD         gammaD [1 -2 -2 0 0 0 0 ]$gammaD;
+
+rhodg         rhodg [1 -2 -2 0 0 0 0 ]$rhodg;
+
+rhof           rhof [1 -3 0 0 0 0 0] $rhof;
+
+rhom           rhom [1 -3 0 0 0 0 0] 1811.4 ;
+
+rhos           rhos [1 -3 0 0 0 0 0] $rhos ;
+
+rhoa           rhoa [1 -3 0 0 0 0 0] $rhoa ;
+
+QbyBL          Q [1 -1 -2 0 0 0 0] $QbyBL;
+
+Us             Us [1 -2 -2 0 0 0 0] 0;  
+
+Ur1            Ur1 [1 -2 -2 0 0 0 0] $Ur1;
+
+Ur2            Ur2 [1 -2 -2 0 0 0 0] $Ur2; 
+emax           emax [0 0 0 0 0 0 0] $emax;
+
+emin           emin [0 0 0 0 0 0 0] $emin;
+
+fw             fw [0 1 0 0 0 0 0] $fw; 
+
+wh             wh [0 1 0 0 0 0 0 ] $wh;
+
+ropeForce      ropeForce [1 -1 -2 0 0 0 0 ] $ropeForce;
+planeStress     no;
+
+stationary     yes;
+
+loading        yes;
+// ************************************************************************* //

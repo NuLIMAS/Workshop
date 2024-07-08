@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    seaBed
+    {
+        type        propagatingPressureWave;
+        #include "../constant/waveProperties"
+    }    
+
+    foundationTop
+    {
+        type            propagatingPressureWave;
+        #include "../constant/waveProperties"
+    }
+
+    foundationSeabed
+    {
+        patchType        splitCyclic;
+        type             zeroGradient;
+    }
+    
+    
+    seabedFoundation
+    {
+        patchType       splitCyclic;
+        type            zeroGradient;
+
+    }
+
+    "left|right"
+    {
+        type            splitCyclic;
+    }
+
+    soilDomainBottom
+    {
+        type            zeroGradient;
+    }
+
+    frontBack
+    {
+        type            empty;
+    }
+}
+
+// ************************************************************************* //

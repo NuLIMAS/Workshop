@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    U
+    {
+        solver          PCG;
+        preconditioner  DILU;
+        //solver          GAMG;
+        tolerance       1e-07;
+        relTol          0;
+        smoother        GaussSeidel;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 20;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+        minIter         2;
+        //maxIter         3;
+    }
+
+    p
+    {
+        solver          PCG;
+        preconditioner  DILU;
+        //solver          GAMG;
+        tolerance       1e-07;
+        relTol          0;
+        smoother        GaussSeidel;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 20;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+        minIter         2;
+    }
+    
+    pE
+    {
+        solver          PCG;
+        preconditioner  DILU;
+        tolerance       1e-06;
+        relTol          0;
+        smoother        GaussSeidel;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 20;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+        minIter         1;
+ 
+    }
+}
+
+stressAnalysis
+{
+    compactNormalStress yes;
+    nCorrectors     3500;
+    U               9e-04;
+    aitkenRelaxation false;
+    
+}
+relaxationFactors
+{
+    fields
+    {
+        U    0.3;
+    }
+    equations
+    {
+        p    0.3;
+    }
+}
+
+
+// ************************************************************************* //
