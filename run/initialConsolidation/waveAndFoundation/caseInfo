@@ -2,16 +2,16 @@
 xm 5.58; //Location of probes middle of the domain
 z1 0;    //Seabed mudline
 z2 -1;//Impermeable base
-z3 -0.1;//Impermeable base
+z3 -0.05;//Impermeable base
 x1 0;    // Seabed start
 x2 11.16; //Length of the seabed
 x3 4.552; //Foundation start
 x4 6.608; //Foundation end
-y  0.1;
-nxs 60;
-nxf 30;
-nzt 4;
-nzb 36;
+y  2.054;
+nxs 40;
+nxf 20;
+nzt 1;
+nzb 23;
 
 
 
@@ -24,8 +24,8 @@ rhof         1000; // Desnity of water
 k0           0.525; // Coeff of lateral stress
 planeStress    no;
 
-QbyBL        -2124.30;//  (rhoa-rhof)*g*h
-
+QbyBL         -2543.53;//  (rhoa-rhof)*g*h
+fw            2.056;
 /* Simulation controls */
 application     initialConsolidationFoam;
 startTime       0;

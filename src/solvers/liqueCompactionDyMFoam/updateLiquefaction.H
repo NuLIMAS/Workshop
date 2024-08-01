@@ -23,7 +23,7 @@ forAll (mesh.C(),cellI)
     {
         //Info  << " compacted" << endl;
         CsI[cellI] = 1;
-        E[cellI] = E2.value();
+        //E[cellI] = E2.value();
         ClI[cellI] = 0;
         alpha[cellI]=1/(1+emin.value());
         n[cellI]  =  emin.value()/(1+emin.value());
