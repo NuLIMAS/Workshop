@@ -27,6 +27,7 @@ nzf 8;
 
 /* Material properties */
 E            1.5e6; // Elastic modulus
+Ea           1e10; // Elasic modulus anchor
 nu           0.31; // Poisson ratio
 k            1.45e-5; // Permeability
 K            1.9e9; // True Bulk Modulus

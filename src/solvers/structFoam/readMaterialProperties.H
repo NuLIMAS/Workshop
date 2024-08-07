@@ -89,7 +89,7 @@ volScalarField n
     dimensionedScalar(materialProperties.lookup("n")),
     zeroGradientFvPatchScalarField::typeName
 );
-
+dimensionedScalar Ea(materialProperties.lookup("Ea"));
 dimensionedScalar K(materialProperties.lookup("K"));
 dimensionedScalar Sr(materialProperties.lookup("Sr"));
 dimensionedScalar p0(materialProperties.lookup("p0"));

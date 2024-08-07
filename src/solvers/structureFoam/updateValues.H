@@ -12,7 +12,7 @@ const cellZone& cz1 = mesh.cellZones()["structureZones"];
 forAll(cz1, czi)
 {
     rhodg[cz1[czi]] = vector(0,0,-rhoag.value());
-    E[cz1[czi]] = 1e10;
+    E[cz1[czi]] = Ea.value();
     rhom[cz1[czi]] =rhoa.value();
     rho[cz1[czi]] =rhoa.value();
     Cf[cz1[czi]] =0;
