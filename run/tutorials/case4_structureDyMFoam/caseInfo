@@ -1,0 +1,86 @@
+/* Wave properties*/
+waveHeight  0.15; // Wave height in meters
+waterDepth  0.5; // Wave height in meters
+period      1.7; // Wave period in seconds
+waveLength  3.32; // Wave length in meters
+
+/* Mesh parametrs and probes */
+
+xm 1.66; //Location of probes middle of the domain
+z1 0;    //Seabed mudline
+z2 -0.3;//Impermeable base
+z3 -0.015;//Impermeable base
+z4 0.05;
+x1 0;    // Seabed start
+x2 3.32; //Length of the seabed
+x3 1.51; //Foundation start
+x4 1.81; //Foundation end
+y  0.59;
+nxs 40;
+nxf 20;
+nzt 3;
+nzb 57;
+nz 10;
+nzf 8;
+
+/* Material properties */
+E            1.5e6; // Elastic modulus
+Ea            1e10; // Elastic modulus
+nu           0.34426; // Poisson ratio
+k            1.45e-5; // Permeability
+K            1.9e9; // True Bulk Modulus
+p0           4905; //  Atm pressure
+Sr           1; // Degree of saturation
+n1           0.5; // Porosity
+n2           0.37; // Porosity of compacted soil
+relDensity   0.25; // Realtive density
+emax         1.159; // Max void ratio
+emin         0.586; // Min void ratio
+rhos         2656; // Desnity of soil grains
+rhof         1000; // Desnity of water
+wh           0; // height of water above the seabed in numerical model
+sg           2.656; // specific gravity
+planeStress    no;
+
+
+/* Parameters to initialize liquefaction or run in steady state*/
+steady         no;
+Cl             0;
+
+
+/* Pressure buildup properties */
+gammaD       8120.0; // Sp weight of the soil
+k0           0.525; // Coeff of lateral stress
+
+/* Fluid properties for drift flux model */
+vis          0.001;// Viscosity of pore fluid
+C            -142.88; // Const for cal viscosity
+V0           -0.0005; // Settling velocity
+q            2.7; // Factor in calculting drift flux
+
+
+/* Foundation parameters */ 
+QbyBL        194;//  (rhoa-rhof)*g*h
+rhoa         1395; // Desity of foundation
+Ur1           (0 0 0);
+Ur2           (0 0 0);
+fw            0.3;
+rhodg        194; //(rhoa-rhof)*g
+
+
+/*Post processing*/
+probes      (
+            ($xm 0 -0.100000)
+            ($xm 0 -0.150000)
+            ($xm 0 -0.200000)
+            ($xm 0 -0.250000)
+             );
+
+field        (p liqueCriteria  pE sigma0);
+
+/* Simulation controls */
+application     structureDyMFoam;
+startTime       0;
+endTime         1000;
+deltaT          0.2;
+writeInterval   0.2;

@@ -89,8 +89,7 @@ volScalarField n
     dimensionedScalar(materialProperties.lookup("n1")),
     zeroGradientFvPatchScalarField::typeName
 );
-
-
+dimensionedScalar Ea(materialProperties.lookup("Ea"));
 dimensionedScalar K(materialProperties.lookup("K"));
 dimensionedScalar Sr(materialProperties.lookup("Sr"));
 dimensionedScalar p0(materialProperties.lookup("p0"));
@@ -108,7 +107,6 @@ dimensionedScalar rhoag(materialProperties.lookup("rhodg"));
 
 Switch st(materialProperties.lookup("steady"));
 dimensionedScalar n2(materialProperties.lookup("n2"));
-dimensionedScalar E2(materialProperties.lookup("E2"));
 dimensionedScalar wh(materialProperties.lookup("wh"));
 dimensionedScalar k0(materialProperties.lookup("k0"));
 dimensionedScalar gammaDash(materialProperties.lookup("gammaD"));
@@ -117,7 +115,6 @@ dimensionedScalar wahe("wahe",dimensionSet(0, 1, 0, 0, 0), waveProperties.lookup
 dimensionedScalar wl("wl",dimensionSet(0, 1, 0, 0, 0), waveProperties.lookup("waveLength"));
 dimensionedScalar wd("wd",dimensionSet(0, 1, 0, 0, 0), waveProperties.lookup("waterDepth"));
 
-dimensionedScalar relDensity2(materialProperties.lookup("relDensity2"));
 Switch loading(materialProperties.lookup("loading"));
 dimensionedScalar QbyBL(materialProperties.lookup("QbyBL"));
 dimensionedScalar emax(materialProperties.lookup("emax"));
@@ -125,8 +122,6 @@ dimensionedScalar emin(materialProperties.lookup("emin"));
 dimensionedScalar rhoa(materialProperties.lookup("rhoa"));
 dimensionedScalar fw(materialProperties.lookup("fw"));
 //volScalarField e = n /(1.0 -n);
-
-
 
 Info<< "Initialising field relDensity\n" << endl;
 volScalarField relDensity

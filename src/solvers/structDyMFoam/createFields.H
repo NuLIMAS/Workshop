@@ -86,7 +86,7 @@ volScalarField sigma0
     zeroGradientFvPatchScalarField::typeName
     //mesh
 );
-//sigma0.correctBoundaryConditions();
+sigma0.correctBoundaryConditions();
 
 /*Info<< "Reading inital effective stress\n" << endl;
 volScalarField sigma1
@@ -329,22 +329,22 @@ volScalarField contErr
 );
 
 // Set initial  alpha and water height
-// forAll (mesh.C(),cellI)
-// {
-//     if (mesh.C().internalField()[cellI].component(vector::Z)> wh.value())
-//     {
-//         Cl[cellI] = 1;
-//         //E[cellI] = 1e10;
-//         alpha[cellI] = 0;
-//         Cf[cellI] = 0;
-//         //rhom[cellI] =1395;
-//     }
-//     //else
-//     //{
-//     //    Cl[cellI] = 1;
-//     //}
+forAll (mesh.C(),cellI)
+{
+    if (mesh.C().internalField()[cellI].component(vector::Z)> wh.value())
+    {
+        Cl[cellI] = 1;
+        //E[cellI] = 1e10;
+        alpha[cellI] = 0;
+        Cf[cellI] = 0;
+        //rhom[cellI] =1395;
+    }
+    //else
+    //{
+    //    Cl[cellI] = 1;
+    //}
 
-// }
+}
 
 
 
@@ -425,23 +425,6 @@ volScalarField fd
     dimensionedScalar("zero", dimLength, fw.value()/2),
     zeroGradientFvPatchScalarField::typeName
 );
-
-volScalarField liqueFlag 
-(
-    IOobject
-    (
-        "liqueFlag",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::AUTO_WRITE
-    ),
-    mesh,
-    dimensionedScalar("zero", dimless, 0),
-    zeroGradientFvPatchScalarField::typeName
-);
-
-
 
 if(loading)
 {

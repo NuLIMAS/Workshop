@@ -1,0 +1,39 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+    class           dictionary;
+    location        "system";
+    object          probesDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "$FOAM_CASE/caseInfo"
+//type probes;
+// Fields to be probed. runTime modifiable!
+fields
+(
+    p
+    tauXZ
+    tauXZPrime2Mean
+    pE
+);
+
+// Locations to be probed. runTime modifiable!
+probeLocations
+(
+    ($xm 0 -0.100000)
+    ($xm 0 -0.150000)
+    ($xm 0 -0.200000)
+    ($xm 0 -0.250000)
+);
+
+
+// ************************************************************************* //

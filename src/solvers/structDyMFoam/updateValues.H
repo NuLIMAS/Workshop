@@ -55,15 +55,14 @@ int tp = ceil( runTime.time().value() / T.value()) ;
 const cellZone& cz1 = mesh.cellZones()["structureZones"];
 forAll(cz1, czi)
 {
-    rhodg[cz1[czi]] = vector(0,0,-rhoag.value());
-    E[cz1[czi]] = 1e10;
+    //rhodg[cz1[czi]] = vector(0,0,-rhoag.value());
+    E[cz1[czi]] = Ea.value();
     rhom[cz1[czi]] =rhoa.value();
     rho[cz1[czi]] =rhoa.value();
     Cf[cz1[czi]] =0;
     Cl[cz1[czi]] =0;
     Cs[cz1[czi]] =1;
-    alpha[cz1[czi]] =0.8;
-    //n[cz1[czi]]=0.5;
+    alpha[cz1[czi]] =0.5;
     //E[cellI] = 1e10;
     //rhom[cellI] =1450;
     //Cf[cellI] =0;

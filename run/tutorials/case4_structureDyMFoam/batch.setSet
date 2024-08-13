@@ -1,0 +1,13 @@
+cellSet structureZones new boxToCell (1.51 0 0)(1.81 0.59 0.05);
+cellSet ropeZones1 new boxToCell (1.51 0 0.0375)(1.52 0.59 0.05);
+cellSet ropeZones2 new boxToCell (1.81 0 0.0375)(1.81 0.59 0.05);
+
+faceSet foundationSeabedFaceZone new patchToFace foundationSeabed
+faceSet seabedFoundationFaceZone new patchToFace seabedFoundation
+
+faceSet wall new boxToFace (0 0 0) (0 0 0)
+
+
+
+
+quit

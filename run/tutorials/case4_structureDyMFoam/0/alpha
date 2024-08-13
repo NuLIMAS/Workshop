@@ -1,0 +1,76 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+     location    "0";
+    object      alpha;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 0 0 0 0];
+
+internalField   uniform 0.5;
+
+boundaryField
+{
+    seaBed
+    {
+        type            alphaInletOutlet;
+        inletValue      uniform 0;
+        value           uniform 0;
+
+    }
+
+    seabedFoundation
+    {
+        patchType       splitCyclic;
+        type            fixedValue;
+        value           uniform 0;
+    }
+    foundationSeabed
+    {
+        patchType       splitCyclic;
+        type            fixedValue;
+        value           uniform 0;
+    }
+
+    frontBack
+    {
+        type            empty;
+    }
+    soilDomainBottom
+    {
+        type            zeroGradient;
+    }
+    left
+    {
+        type            splitCyclic;
+    }
+    right
+    {
+        type            splitCyclic;
+    }
+    liq
+    {
+        patchType       splitCyclic;
+        type            fixedValue;
+        value           uniform 0;
+    }
+    sol
+    {
+        patchType       splitCyclic;
+        type            fixedValue;
+        value           uniform 0;
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,91 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+
+{
+    name    anchorFaceSet;
+    type    faceSet;
+    action  new;
+    source  boxToFace;
+    sourceInfo
+    {
+        box (4.552 0 0)(6.6080 2.056 0.463);
+    }
+}
+
+{
+    name    anchorCellSet;
+    type    cellSet;
+    action  new;
+    source  boxToCell;
+    sourceInfo
+    {
+        box (4.552 0 0)(6.6080 2.056 0.463);
+    }
+}
+
+{
+    name    anchorFaces;
+    type    faceZoneSet;
+    action  new;
+    source  setsToFaceZone;
+    sourceInfo
+    {
+        faceSet anchorFaceSet;
+        cellSet anchorCellSet;
+    }
+}
+    
+{
+    name    anchorZones;
+    type    cellZoneSet;
+    action  new;
+    source  setToCellZone;
+    sourceInfo
+    {
+        set anchorCellSet;
+    }
+}
+
+
+
+
+
+
+
+
+
+=
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+);
+
+// ************************************************************************* //
