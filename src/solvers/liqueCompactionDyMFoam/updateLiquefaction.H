@@ -27,8 +27,7 @@ forAll (mesh.C(),cellI)
         ClI[cellI] = 0;
         alpha[cellI]=1/(1+emin.value());
         n[cellI]  =  emin.value()/(1+emin.value());
-        relDensity[cellI] = relDensity2.value();
-
+        // relDensity2[cz1[czi]]= relDensity2.value();
     }
     }
 }

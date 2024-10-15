@@ -32,6 +32,22 @@ forAll(patchUliq, i)
     rho.boundaryField()[boundaryID1][i] = 1000;
 }
 
+dimensionedScalar Es(materialProperties.lookup("Es"));
+
+const cellZone& cz1 = mesh.cellZones()["solidZones"];
+forAll(cz1, czi)
+{
+
+    E[cz1[czi]] = Es.value();
+    rhom[cz1[czi]] =rhos.value();
+    rho[cz1[czi]] =rhos.value();
+    Cl[cz1[czi]] =0;
+    Cs[cz1[czi]] =1;
+    relDensity[cz1[czi]]= relDensity2.value();
+    alpha[cz1[czi]] =0.5;
+}
+
+
 relDensity.correctBoundaryConditions();
 E.correctBoundaryConditions();
 nu.correctBoundaryConditions();
