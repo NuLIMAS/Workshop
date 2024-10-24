@@ -17,6 +17,7 @@ splitCyclic/coupleGroupIdentifier.C
 splitCyclic/splitCyclicAMGInterface.C
 splitCyclic/splitCyclicAMGInterfaceField.C
 alphaInletOutlet/alphaInletOutletFvPatchScalarField.C
+alphaInletOutletTest/alphaInletOutletTestFvPatchScalarField.C
 cyclicFixedValue/cyclicFixedValueFvPatchVectorField.C
 
 
