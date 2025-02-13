@@ -1,3 +1,18 @@
+dimensionedScalar Es(materialProperties.lookup("Es"));
+dimensionedScalar ns(materialProperties.lookup("ns"));
+dimensionedScalar ks(materialProperties.lookup("ks"));
+dimensionedScalar relDensitys(materialProperties.lookup("relDensitys"));
+
+const cellZone& cz1 = mesh.cellZones()["stoneZone"];
+forAll(cz1, czi)
+{
+
+    E[cz1[czi]] = Es.value();
+    n[cz1[czi]] = ns.value();
+    alpha[cz1[czi]] = 1.0 - ns.value();
+    k[cz1[czi]] = ks.value();
+    relDensity[cz1[czi]]= relDensitys.value();
+}
 
 surfaceScalarField alphaF
 (
