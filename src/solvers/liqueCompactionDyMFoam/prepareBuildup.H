@@ -37,7 +37,7 @@ fvScalarMatrix pEEqn
     fvm::ddt(pE)
     ==
     fvm::laplacian(cv, pE, "laplacian(cv,pE)")
-    +  (1.0 - Cl)*f
+    +  (1.0 - Cl)*Cf*f
 );
 pEEqn.solve();
 

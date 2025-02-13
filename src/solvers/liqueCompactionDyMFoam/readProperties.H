@@ -264,6 +264,21 @@ volScalarField Cs
     zeroGradientFvPatchScalarField::typeName
 );
 
+volScalarField Cf
+(
+    IOobject
+    (
+        "Cf",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("Cf",dimless,1),
+    zeroGradientFvPatchScalarField::typeName
+);
+
 
 Info<< "Reading field alpha\n" << endl;
 volScalarField alpha

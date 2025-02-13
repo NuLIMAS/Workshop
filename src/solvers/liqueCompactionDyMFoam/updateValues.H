@@ -11,6 +11,7 @@ forAll(cz1, czi)
     n[cz1[czi]] = ns.value();
     alpha[cz1[czi]] = 1.0 - ns.value();
     k[cz1[czi]] = ks.value();
+    Cf[cz1[czi]] = 0;
     relDensity[cz1[czi]]= relDensitys.value();
 }
 
