@@ -56,9 +56,9 @@ Foam::splitCyclicAMGInterface::splitCyclicAMGInterface
     fineCyclicInterface_(refCast<const splitCyclicLduInterface>(fineInterface)),
     coarseInterfaces_(coarseInterfaces)
 {
-    Info << "Constructing interface " << neighbPatchID() << " " << master() << " " << size() << endl;
-    Info << "mesh size " << lduMesh.size() << " " << coarseInterfaces.size() << endl;
-    Info << "addressing size " << localRestrictAddressing.size() << " " << neighbourRestrictAddressing.size() << endl;
+    // Info << "Constructing interface " << neighbPatchID() << " " << master() << " " << size() << endl;
+    // Info << "mesh size " << lduMesh.size() << " " << coarseInterfaces.size() << endl;
+    // Info << "addressing size " << localRestrictAddressing.size() << " " << neighbourRestrictAddressing.size() << endl;
 
     // Make a lookup table of entries for owner/neighbour
     HashTable<SLList<label>, label, Hash<label> > neighboursTable
@@ -229,7 +229,7 @@ Foam::splitCyclicAMGInterface::splitCyclicAMGInterface
     }
 */
 
-    Info << "nCoarseFaces " << nCoarseFaces << endl;
+    // Info << "nCoarseFaces " << nCoarseFaces << endl;
 }
 
 

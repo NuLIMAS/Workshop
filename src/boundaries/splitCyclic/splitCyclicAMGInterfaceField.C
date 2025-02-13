@@ -81,9 +81,9 @@ void Foam::splitCyclicAMGInterfaceField::updateInterfaceMatrix
     const bool switchToLhs
 ) const
 {
-    Info << "In splitCyclicAMGInterfaceField::updateInterfaceMatrix" << endl;
-    Info << cyclicInterface_.neighbPatchID() << endl;
-    Info << cyclicInterface_.neighbPatch().faceCells().size() << endl;
+    // Info << "In splitCyclicAMGInterfaceField::updateInterfaceMatrix" << endl;
+    // Info << cyclicInterface_.neighbPatchID() << endl;
+    // Info << cyclicInterface_.neighbPatch().faceCells().size() << endl;
 
     // Get neighbouring field
     scalarField pnf
@@ -91,9 +91,9 @@ void Foam::splitCyclicAMGInterfaceField::updateInterfaceMatrix
         cyclicInterface_.neighbPatch().interfaceInternalField(psiInternal)
     );
 
-    Info << pnf.size() << " " << coeffs.size() << " " << cyclicInterface_.faceCells().size() << endl;
+    // Info << pnf.size() << " " << coeffs.size() << " " << cyclicInterface_.faceCells().size() << endl;
 
-    Info << "In splitCyclicAMGInterfaceField::updateInterfaceMatrix 1" << endl;
+    // Info << "In splitCyclicAMGInterfaceField::updateInterfaceMatrix 1" << endl;
 
     const unallocLabelList& faceCells = cyclicInterface_.faceCells();
 

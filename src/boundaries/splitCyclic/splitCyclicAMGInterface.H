@@ -123,7 +123,7 @@ public:
 
             virtual const splitCyclicAMGInterface& neighbPatch() const
             {
-                Info << "splitCyclicAMGInterface::neighbPatch()" << endl;
+                // Info << "splitCyclicAMGInterface::neighbPatch()" << endl;
 
                 //return reinterpret_cast<const splitCyclicAMGInterface&>
                 //return refCast<const splitCyclicAMGInterface>
