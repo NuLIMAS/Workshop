@@ -143,11 +143,27 @@ bool Foam::interfaceFrontFvMesh::update()
     {
         // Set the attachment and change the mesh
         attDet.setAttach();
-        autoPtr<mapPolyMesh> map = topoChanger_.changeMesh();
+        autoPtr<mapPolyMesh> map = topoChanger_.changeMesh(); //add Interface
     }
 
     // Lookup whether the cell is  liqufied
     const volScalarField& iLiq = lookupObject<volScalarField>("Cl");
+    
+    // scalarField Clneigh = iLiq.boundaryField()[7].patchNeighbourField();
+    // scalarField Clint = iLiq.boundaryField()[7].patchInternalField();
+
+    // Pout << "Boundaryfield "<< iLiq.boundaryField()[7] << endl;
+
+    // forAll(iLiq.boundaryField()[7], facei)
+    // {
+    //     if(Clint[facei] != Clneigh[facei])
+    //     {
+    //         Pout << "Split face :" << facei << endl;
+    //     }
+    // }
+
+
+
 
     // Get the neighbor and owner label lists
     const labelList& nei = neighbour();
@@ -185,8 +201,13 @@ bool Foam::interfaceFrontFvMesh::update()
     {
         // Set the detachment and change the mesh
         attDet.setDetach();
-        autoPtr<mapPolyMesh> map = topoChanger_.changeMesh();
+        autoPtr<mapPolyMesh> map = topoChanger_.changeMesh(); //remove Interface
     }
+    
+    
+
+    //rpt.repatch();
+
     return true;
 }
 

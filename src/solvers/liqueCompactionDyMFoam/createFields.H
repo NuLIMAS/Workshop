@@ -331,20 +331,20 @@ else
 }
 
 
-// Set initial  alpha and water height 
-forAll (mesh.C(),cellI)
-{
-    if (mesh.C().internalField()[cellI].component(vector::Z)> 0)
-    {
-        Cl[cellI] = 1;
-        alpha[cellI] = 0;
-    }
-    //else
-    //{
-    //    Cl[cellI] = 1;
-    //}
+// // Set initial  alpha and water height 
+// forAll (mesh.C(),cellI)
+// {
+//     if (mesh.C().internalField()[cellI].component(vector::Z)> 0)
+//     {
+//         Cl[cellI] = 1;
+//         alpha[cellI] = 0;
+//     }
+//     //else
+//     //{
+//     //    Cl[cellI] = 1;
+//     //}
 
-}
+// }
 
 Info << "Initial parameters used :" << endl;
 Info << "----- Wave properties -----" << endl;
