@@ -56,11 +56,11 @@ propagatingPressureWaveFvPatchScalarField
     k_(ptf.k_),
     T_(ptf.T_),
     wh_(ptf.wh_),
-    wd_(ptf.wd_),    
+    wd_(ptf.wd_),
     lambda_(ptf.lambda_),
     shift_(ptf.shift_),
     offset_(ptf.offset_),
-    cutoff_(ptf.cutoff_)    
+    cutoff_(ptf.cutoff_)
 {}
 
 
@@ -113,7 +113,7 @@ propagatingPressureWaveFvPatchScalarField
     k_(ptf.k_),
     T_(ptf.T_),
     wh_(ptf.wh_),
-    wd_(ptf.wd_),    
+    wd_(ptf.wd_),
     lambda_(ptf.lambda_),
     shift_(ptf.shift_),
     offset_(ptf.offset_),
