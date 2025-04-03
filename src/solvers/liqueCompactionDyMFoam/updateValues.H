@@ -1,4 +1,4 @@
-Switch stones(materialProperties.lookup("stones"));
+Switch stones(materialProperties.lookupOrDefault<bool>("stones",0));
 if (stones)
 {
     dimensionedScalar Es(materialProperties.lookup("Es"));

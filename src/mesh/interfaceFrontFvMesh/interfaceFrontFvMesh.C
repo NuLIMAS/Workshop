@@ -132,7 +132,7 @@ Foam::interfaceFrontFvMesh::~interfaceFrontFvMesh()
 
 bool Foam::interfaceFrontFvMesh::update()
 {
- 
+
     // Get the interfaceFront object from topoChanger
     interfaceFront& attDet = dynamic_cast<interfaceFront&>(topoChanger_[0]);
     // Get the wall faceZone
