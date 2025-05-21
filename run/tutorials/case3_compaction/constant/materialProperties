@@ -18,7 +18,7 @@ FoamFile
 
 E              E [ 1 -1 -2 0 0 0 0 ] $E; // Elastic modulus
 
-E2             E2 [ 1 -1 -2 0 0 0 0 ] $E;
+E2             E2 [ 1 -1 -2 0 0 0 0 ] $E2;
 
 nu             nu [ 0 0 0 0 0 0 0 ]  $nu; //Poisson ratio
 
