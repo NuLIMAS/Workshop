@@ -1,0 +1,29 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      waveProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "$FOAM_CASE/caseInfo"
+
+    waveHeight   $waveHeight; // in m
+    waterDepth   $waterDepth; // in m
+    direction    (1 0 0);    //wave direction
+    period		 $period;	//wave period
+    waveLength	 $waveLength;//wave length
+    phase        $phase;	    // Phase shift in rad/(2*pi)
+    offset		 $offset;	// base pressure
+    value        uniform 0;  // Initial value
+    start        0;
+
+// ************************************************************************* //

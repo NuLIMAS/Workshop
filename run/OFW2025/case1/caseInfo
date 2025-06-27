@@ -1,0 +1,63 @@
+/* Wave properties*/
+waveHeight  0.17; // Wave height in meters
+waterDepth  0.4; // Wave height in meters
+period      1.6; // Wave period in seconds
+waveLength  2.84; // Wave length in meters
+phase       -0.25; 
+offset      0;
+
+
+/* Mesh parametrs and post-processing probes */
+xm 1.42; //Location at the middle of the domain
+x1 0; // Start seabed
+x2 2.84; //Length of the seabed
+z1 0;    //Seabed mudline
+z2 -0.165; //Impermeable base
+nx 100;
+nz 40;
+y 0.05;
+
+/* Material properties */
+E            5.8e6; // Elastic modulus
+nu           0.29; // Poisson ratio
+k            5.4e-8; // Permeability
+K            2e9; // True Bulk Modulus
+p0           3924; //  Atm pressure
+Sr           1; // Degree of saturation
+n1           0.42; // Porosity
+n2           0.37;
+wh           0; // height of water above the seabed in numerical model
+sg           2.656; // specific gravity
+planeStress  no;
+gamma        0.981e4; // Specific weight of water
+relDensity   0.37; // Realtive density
+emax         0.90; // Max void ratio
+emin         0.44; // Min void ratio
+rhos         2656; // Density of soil grains
+rhof         1000; // Density of pore fluid
+
+/* Stone properties */
+stones       no;
+
+/* Pressure buildup properties */
+gammaD       9390.38; // Sp weight of the soil
+k0           0.5; // Coeff of lateral stress
+
+/* Simulation controls */
+application     residualLiquefactionFoam;
+startTime       0;
+endTime         60;
+deltaT          0.2;
+writeInterval   0.2;
+
+fields          (p  pMean  liqueCriteria);
+
+probes          (
+                 ($xm 0 -0)
+                 ($xm 0 -0.05)
+                 ($xm 0 -0.1)
+                 ($xm 0 -0.13)
+                 ($xm 0 -0.15)
+                 ($xm 0 -0.16)
+                );
+

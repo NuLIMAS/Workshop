@@ -22,7 +22,8 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    structure is a modified version of solidDisplacementFoam
+    residualLiquefactionFoam is a modified version of solidDisplacementFoam
+    to predict the onset of residual liquefaction.
 
 Description
     Transient segregated finite-volume solver of the Biot quasi-steady consolidation equations
@@ -38,14 +39,11 @@ Description
 Author
     R. Shanmugasundaram, Wikki GmbH
     H. Rusche, Wikki GmbH
-
-
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
 #include "zeroGradientFvPatchFields.H"
-#include "constitutiveModel.H"
-#include "wallDist.H"
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
@@ -58,7 +56,6 @@ int main(int argc, char *argv[])
     #include "readPoroElasticControls.H"
     #include "createFields.H"
 
-
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     Info<< "\nCalculating displacement field\n" << endl;
@@ -69,37 +66,74 @@ int main(int argc, char *argv[])
 
         #include "readPoroElasticControls.H"
 
+        // Initialize correction iteration count and residual variables
         int iCorr = 0;
         scalar UResidual = 1.0e10;
         scalar pResidual = 1.0e10;
         scalar residual = 1.0e10;
 
-        U.correctBoundaryConditions();
-        p.correctBoundaryConditions();
-
-        #include "updateValues.H"
         do
         {
             Info << "iCorr ="<< iCorr << endl;
+
+            // Store previous iterations of U and p
             U.storePrevIter();
             p.storePrevIter();
+
             sigmaD.correctBoundaryConditions();
 
-            #include "pEqn.H"
+            // Solve for pressure (p) using the poroelastic equation
+            fvScalarMatrix pEqn
+            (
+                (1/Dp2)*fvm::ddt(p)
+                ==
+                fvm::laplacian(Dp3, p)
+                - fvc::div(fvc::ddt(U))
 
-            #include "UEqn.H"
+            );
+            pEqn.relax();
+            pResidual = pEqn.solve().initialResidual();
+            p.relax();
+
+            // Solve for displacement (U) using the poroelastic equation
+            fvVectorMatrix UEqn
+            (
+                fvm::laplacian(2*mu + lambda, U, "laplacian(DD,U)")
+                + divSigmaExp
+                ==
+                fvc::grad(p)
+            );
+            UEqn.relax();
+            UResidual = UEqn.solve().initialResidual();
+            U.relax();
+            gradU = fvc::grad(U);
+            sigmaD = mu*twoSymm(gradU) + (lambda*I)*tr(gradU);
+            divSigmaExp = fvc::div(sigmaD - (2*mu + lambda)*gradU,"div(sigmaD)");
 
             residual = max(pResidual,UResidual);
 
         } while (residual > convergenceTolerance && ++iCorr < nCorr);
 
+        V= -Dp3 *fvc::grad(p);
+
         Info << "number of iterations " << iCorr << endl;
 
+        // Include file for calculation of stress
         #include "calculateStress.H"
 
+        // Include file for preparing buildup
         #include "prepareBuildup.H"
 
+        // Solve the governing equation for accumulated pore pressure
+        fvScalarMatrix pEEqn
+        (
+            fvm::ddt(pE)
+            == fvm::laplacian(cv, pE)
+            + f
+        );
+        pEEqn.solve();
 
+        runTime.write();
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"

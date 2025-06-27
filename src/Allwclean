@@ -11,22 +11,10 @@ then
 fi
 
 # Compile solvers
-cd solvers/biotQSFoam  && wclean
-cd ..
-cd residualLiquefactionQSFoam  && wclean
-cd ..
-cd initialConsolidationFoam && wclean
-cd ..
-cd liquefactionQSFoam && wclean
-cd ..
-cd liqueCompactionDyMFoam && wclean
-cd ..
-cd structureFoam && wclean
-cd ..
-cd structDyMFoam && wclean
-cd ..
-cd pressureBuildupFoam  && wclean
-cd ../../
+wclean  solvers/biotQSFoam  
+wclean  solvers/residualLiquefactionFoam
+wclean  solvers/initialConsolidationFoam
+wclean  solvers/structFoam 
 
 # Compile boundaries
 cd boundaries && wclean

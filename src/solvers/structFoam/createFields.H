@@ -71,9 +71,9 @@ volScalarField sigma0
         IOobject::MUST_READ,
         IOobject::AUTO_WRITE
     ),
-    gammaD*(-mesh.C().component(vector::Z))*((1.0+(2.0*k0))/3.0),
-    zeroGradientFvPatchScalarField::typeName
-    //mesh
+    //gammaD*(-mesh.C().component(vector::Z))*((1.0+(2.0*k0))/3.0),
+    //zeroGradientFvPatchScalarField::typeName
+    mesh
 );
 sigma0.correctBoundaryConditions();
 
@@ -295,9 +295,7 @@ volVectorField Us
 );
 
 
-// Initial effective stress
-//sigma0 = gammaD*(waterHeight-mesh.C().component(vector::Z))*((1.0+(2.0*k0))/3.0);
-//sigma0 = gammaD*(-mesh.C().component(vector::Z))*((1.0+(2.0*k0))/3.0);
+
 volScalarField sigmaA
 (
     IOobject

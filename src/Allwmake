@@ -11,22 +11,10 @@ then
 fi
 
 # Compile solvers
-cd solvers/biotQSFoam  && wmake
-cd ..
-cd residualLiquefactionQSFoam  && wmake
-cd ..
-cd initialConsolidationFoam && wmake
-cd ..
-cd liquefactionQSFoam && wmake
-cd ..
-cd liqueCompactionDyMFoam && wmake
-cd ..
-cd structureFoam && wmake
-cd ..
-cd structDyMFoam && wmake
-cd ..
-cd pressureBuildupFoam  && wmake
-cd ../../
+wmake  solvers/biotQSFoam  
+wmake  solvers/residualLiquefactionFoam
+wmake  solvers/initialConsolidationFoam
+wmake  solvers/structFoam 
 
 
 # Compile boundaries

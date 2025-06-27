@@ -1,0 +1,49 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.1                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      materialProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "$FOAM_CASE/caseInfo"
+
+E              E [ 1 -1 -2 0 0 0 0 ] $E; // Elastic modulus
+
+nu             nu [ 0 0 0 0 0 0 0 ] $nu; //Poisson ratio
+
+k              k [ 0 1 -1 0 0 0 0 ] $k; // Permeability
+
+K              K [ 1 -1 -2 0 0 0 0 ] $K; // True Bulk modulus
+
+Sr             Sr [ 0 0 0 0 0 0 0 ] $Sr; // Degree of saturation
+
+p0             p0 [ 1 -1 -2 0 0 0 0 ] $p0; // Pressure at rest
+
+gamma          gamma [ 1 -2 -2 0 0 0 0 ] $gamma; // Specific weight of water
+
+n              n [ 0 0 0 0 0 0 0 ] $n1; // Porosity of soil (initial)
+
+k0             k0 [0 0 0 0 0 0 0 ] $k0; // Coeff of lateral stress
+
+gammaD         gammaD [1 -2 -2 0 0 0 0 ] $gammaD; //Submerged specific weight of soil
+
+relDensity     relDensity [0 0 0 0 0 0 0] $relDensity; // Relative density of the soil (initial)
+
+emax           emax [0 0 0 0 0 0 0] $emax;
+
+emin           emin [0 0 0 0 0 0 0] $emin;
+
+planeStress    no;
+
+stones         $stones; 
+
+// ************************************************************************* //
