@@ -2,32 +2,53 @@
 volScalarField rd_a = 0.34 * relDensity + 0.084;
 volScalarField rd_b = 0.37 * relDensity - 0.46;
 
-// Calculate shear stress components
-volScalarField tauXY("tauXY", sigmaD.component(symmTensor::XY));
-tauXZ = sigmaD.component(symmTensor::XZ);
-volScalarField tauYZ("tauYZ", sigmaD.component(symmTensor::YZ));
+// // Calculate shear stress components
+// tauXY = sigmaD.component(symmTensor::XY);
+// tauXZ = sigmaD.component(symmTensor::XZ);
+// tauYZ = sigmaD.component(symmTensor::YZ);
 
 Info<< "runTime :" << runTime.time().value() <<endl;
 
-volScalarField txz = SMALL*sigmaD.component(symmTensor::XZ);
+volScalarField txz = SMALL*sigmaDPrime2Mean.component(symmTensor::XZ);
+volScalarField txy = SMALL*sigmaDPrime2Mean.component(symmTensor::XY);
+volScalarField tyz = SMALL*sigmaDPrime2Mean.component(symmTensor::YZ);
+
 if ( runTime.time().value() > 1.0*T.value())
 {
-     txz = sqrt(mag(mesh.lookupObject<volScalarField>("tauXZPrime2Mean"))*2.0);
+    sigmaDPrime2Mean = mesh.lookupObject<volSymmTensorField>("sigmaDPrime2Mean");
+    txz = sqrt(mag(sigmaDPrime2Mean.component(symmTensor::XZ))*2.0);
+    txy = sqrt(mag(sigmaDPrime2Mean.component(symmTensor::XY))*2.0);
+    tyz = sqrt(mag(sigmaDPrime2Mean.component(symmTensor::YZ))*2.0);
 }
 
 // Calculate the number of cycles based on shear stress and relative density
-numCyc.internalField() =
+numCycXY.internalField() =
+    Foam::pow
+    (
+        (1.0/rd_a.internalField())
+       *mag(txy.internalField()/sigma0.internalField())
+       + SMALL, (1.0/rd_b.internalField())
+    );
+numCycXZ.internalField() =
     Foam::pow
     (
         (1.0/rd_a.internalField())
        *mag(txz.internalField()/sigma0.internalField())
        + SMALL, (1.0/rd_b.internalField())
     );
-
-numCyc.correctBoundaryConditions();
+numCycYZ.internalField() =
+    Foam::pow
+    (
+        (1.0/rd_a.internalField())
+       *mag(tyz.internalField()/sigma0.internalField())
+       + SMALL, (1.0/rd_b.internalField())
+    );
+numCycXY.correctBoundaryConditions();
+numCycXZ.correctBoundaryConditions();
+numCycYZ.correctBoundaryConditions();
 
 // Calculate source term for pressure accumulation
-f= (1-Cl)*sigma0/(numCyc * T);
+f= (1-Cl)*(sigma0/(numCycXZ * T)  + sigma0/(numCycYZ* T) +sigma0/(numCycXY * T) );
 
 f.correctBoundaryConditions();
 

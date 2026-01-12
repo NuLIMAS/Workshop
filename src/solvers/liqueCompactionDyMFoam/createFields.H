@@ -142,34 +142,21 @@ volVectorField divSigmaExp
 );
 
 
-Info<< "Initializing sigmaXZ field\n" << endl;
-volScalarField tauXZ
+Info<< "Initializing sigmaDPrime2Mean field\n" << endl;
+
+
+volSymmTensorField sigmaDPrime2Mean
 (
     IOobject
     (
-        "tauXZ",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::AUTO_WRITE
-    ),
-    sigmaD.component(symmTensor::XZ)
-);
-
-
-Info<< "Initializing tauXZPrime2Mean field\n" << endl;
-volScalarField tauXZPrime2Mean
-(
-    IOobject
-    (
-        "tauXZPrime2Mean",
+        "sigmaDPrime2Mean",
         runTime.timeName(),
         mesh,
         IOobject::READ_IF_PRESENT,
         IOobject::AUTO_WRITE
     ),
     mesh,
-    dimensionedScalar("0.0", p.dimensions()*p.dimensions(),0.0)
+    dimensionedSymmTensor("0.0", p.dimensions()*p.dimensions(),symmTensor(0.0,0.0,0.0,0.0,0.0,0.0))
 );
 
 
@@ -222,11 +209,39 @@ volScalarField liqueCriteria
 
 
 Info<< "Initializing field numCyc\n" << endl;
-volScalarField numCyc
+volScalarField numCycXY
 (
     IOobject
     (
-        "numCyc",
+        "numCycXY",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("zero", dimless, 0.0),
+    zeroGradientFvPatchScalarField::typeName
+);
+volScalarField numCycXZ
+(
+    IOobject
+    (
+        "numCycXZ",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("zero", dimless, 0.0),
+    zeroGradientFvPatchScalarField::typeName
+);
+volScalarField numCycYZ
+(
+    IOobject
+    (
+        "numCycYZ",
         runTime.timeName(),
         mesh,
         IOobject::NO_READ,
