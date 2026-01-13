@@ -142,23 +142,87 @@ volVectorField divSigmaExp
 );
 
 
-Info<< "Initializing sigmaDPrime2Mean field\n" << endl;
 
 
-volSymmTensorField sigmaDPrime2Mean
+volScalarField tauXZ
 (
     IOobject
     (
-        "sigmaDPrime2Mean",
+        "tauXZ",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    sigmaD.component(symmTensor::XZ)
+);
+
+volScalarField tauXY
+(
+    IOobject
+    (
+        "tauXY",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    sigmaD.component(symmTensor::XY)
+);
+
+volScalarField tauYZ
+(
+    IOobject
+    (
+        "tauYZ",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    sigmaD.component(symmTensor::YZ)
+);
+
+Info<< "Initializing tauXZPrime2Mean field\n" << endl;
+volScalarField tauXZPrime2Mean
+(
+    IOobject
+    (
+        "tauXZPrime2Mean",
         runTime.timeName(),
         mesh,
         IOobject::READ_IF_PRESENT,
         IOobject::AUTO_WRITE
     ),
     mesh,
-    dimensionedSymmTensor("0.0", p.dimensions()*p.dimensions(),symmTensor(0.0,0.0,0.0,0.0,0.0,0.0))
+    dimensionedScalar("0.0", p.dimensions()*p.dimensions(),0.0)
 );
-
+volScalarField tauXYPrime2Mean
+(
+    IOobject
+    (
+        "tauXYPrime2Mean",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("0.0", p.dimensions()*p.dimensions(),0.0)
+);
+volScalarField tauYZPrime2Mean
+(
+    IOobject
+    (
+        "tauYZPrime2Mean",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("0.0", p.dimensions()*p.dimensions(),0.0)
+);
 
 /*Info<< "Initializing strain field\n" << endl;
 volSymmTensorField strain

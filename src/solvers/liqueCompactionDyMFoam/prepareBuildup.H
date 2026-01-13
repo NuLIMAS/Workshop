@@ -3,22 +3,24 @@ volScalarField rd_a = 0.34 * relDensity + 0.084;
 volScalarField rd_b = 0.37 * relDensity - 0.46;
 
 // // Calculate shear stress components
-// tauXY = sigmaD.component(symmTensor::XY);
-// tauXZ = sigmaD.component(symmTensor::XZ);
-// tauYZ = sigmaD.component(symmTensor::YZ);
+tauXY = sigmaD.component(symmTensor::XY);
+tauXZ = sigmaD.component(symmTensor::XZ);
+tauYZ = sigmaD.component(symmTensor::YZ);
 
 Info<< "runTime :" << runTime.time().value() <<endl;
 
-volScalarField txz = SMALL*sigmaDPrime2Mean.component(symmTensor::XZ);
-volScalarField txy = SMALL*sigmaDPrime2Mean.component(symmTensor::XY);
-volScalarField tyz = SMALL*sigmaDPrime2Mean.component(symmTensor::YZ);
+
+volScalarField txz = SMALL*sigmaD.component(symmTensor::XZ);
+volScalarField txy = SMALL*sigmaD.component(symmTensor::XY);
+volScalarField tyz = SMALL*sigmaD.component(symmTensor::YZ);
+
 
 if ( runTime.time().value() > 1.0*T.value())
 {
-    sigmaDPrime2Mean = mesh.lookupObject<volSymmTensorField>("sigmaDPrime2Mean");
-    txz = sqrt(mag(sigmaDPrime2Mean.component(symmTensor::XZ))*2.0);
-    txy = sqrt(mag(sigmaDPrime2Mean.component(symmTensor::XY))*2.0);
-    tyz = sqrt(mag(sigmaDPrime2Mean.component(symmTensor::YZ))*2.0);
+
+    txz = sqrt(mesh.lookupObject<volScalarField>("tauXZPrime2Mean")*2.0);
+    txy = sqrt(mesh.lookupObject<volScalarField>("tauXYPrime2Mean")*2.0);
+    tyz = sqrt(mesh.lookupObject<volScalarField>("tauYZPrime2Mean")*2.0);
 }
 
 // Calculate the number of cycles based on shear stress and relative density
