@@ -15,6 +15,8 @@ wclean  solvers/biotQSFoam
 wclean  solvers/residualLiquefactionFoam
 wclean  solvers/initialConsolidationFoam
 wclean  solvers/structFoam 
+wclean  solvers/structDyMFoam 
+wclean  solvers/liqueCompactionDyMFoam 
 
 # Compile boundaries
 cd boundaries && wclean

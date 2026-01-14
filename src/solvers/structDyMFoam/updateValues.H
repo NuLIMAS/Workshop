@@ -68,29 +68,17 @@ forAll(cz1, czi)
     //Cf[cellI] =0;
     //Cl[cellI] =0;
 }
-const cellZone& cz2 = mesh.cellZones()["ropeZones1"];
+
+dimensionedScalar ropeForce(materialProperties.lookup("ropeForce"));
+scalar A =ropeForce.value();
+scalar pi = 22/7;
+
+const cellZone& cz2 = mesh.cellZones()["ropeZones"];
 forAll(cz2, czi)
 {
-    if (tp %2 == 0)
-    {
-        Us[cz2[czi]] = Ur1.value();
-    }
-    else
-    {
-        Us[cz2[czi]] = Ur2.value();
-    }
-}
-const cellZone& cz3 = mesh.cellZones()["ropeZones2"];
-forAll(cz3, czi)
-{
-    if (tp %2 == 0)
-    {
-        Us[cz3[czi]] = Ur2.value();
-    }
-    else
-    {
-        Us[cz3[czi]] = Ur1.value();
-    }
+    scalar force1 = A*Foam::cos(2.0*pi/T.value()*runTime.time().value() + pi ) ;
+    Us[cz2[czi]] = vector(0,0,force1)/mesh.V()[czi];
+
 }
 
 E.correctBoundaryConditions();

@@ -160,11 +160,64 @@ volScalarField tauXZ
     sigmaD.component(symmTensor::XZ)
 );
 
+volScalarField tauXY
+(
+    IOobject
+    (
+        "tauXY",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    sigmaD.component(symmTensor::XY)
+);
+
+volScalarField tauYZ
+(
+    IOobject
+    (
+        "tauYZ",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    sigmaD.component(symmTensor::YZ)
+);
+
+Info<< "Initializing tauXZPrime2Mean field\n" << endl;
 volScalarField tauXZPrime2Mean
 (
     IOobject
     (
         "tauXZPrime2Mean",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("0.0", p.dimensions()*p.dimensions(),0.0)
+);
+volScalarField tauXYPrime2Mean
+(
+    IOobject
+    (
+        "tauXYPrime2Mean",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("0.0", p.dimensions()*p.dimensions(),0.0)
+);
+volScalarField tauYZPrime2Mean
+(
+    IOobject
+    (
+        "tauYZPrime2Mean",
         runTime.timeName(),
         mesh,
         IOobject::READ_IF_PRESENT,
@@ -219,11 +272,13 @@ volScalarField liqueCriteria
     zeroGradientFvPatchScalarField::typeName
 );
 
-volScalarField numCyc
+
+Info<< "Initializing field numCyc\n" << endl;
+volScalarField numCycXY
 (
     IOobject
     (
-        "numCyc",
+        "numCycXY",
         runTime.timeName(),
         mesh,
         IOobject::NO_READ,
@@ -233,6 +288,35 @@ volScalarField numCyc
     dimensionedScalar("zero", dimless, 0.0),
     zeroGradientFvPatchScalarField::typeName
 );
+volScalarField numCycXZ
+(
+    IOobject
+    (
+        "numCycXZ",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("zero", dimless, 0.0),
+    zeroGradientFvPatchScalarField::typeName
+);
+volScalarField numCycYZ
+(
+    IOobject
+    (
+        "numCycYZ",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+    ),
+    mesh,
+    dimensionedScalar("zero", dimless, 0.0),
+    zeroGradientFvPatchScalarField::typeName
+);
+
 
 Info<< "Initialising field Vdj\n" << endl;
 
@@ -371,7 +455,7 @@ volVectorField Us
         runTime.timeName(),
         mesh,
         IOobject::NO_READ,
-        IOobject::NO_WRITE
+        IOobject::AUTO_WRITE
     ),
     mesh,
     dimensionedVector("zero", dimForce/dimVolume,vector (0.0, 0.0, 0)),
@@ -379,76 +463,6 @@ volVectorField Us
 );
 
 
-// Initial effective stress
-//sigma0 = gammaD*(waterHeight-mesh.C().component(vector::Z))*((1.0+(2.0*k0))/3.0);
-//sigma0 = gammaD*(-mesh.C().component(vector::Z))*((1.0+(2.0*k0))/3.0);
-volScalarField sigmaA
-(
-    IOobject
-    (
-        "sigmaA",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-    ),
-    mesh,
-    dimensionedScalar("zero", dimForce/dimArea, 0.0),
-    zeroGradientFvPatchScalarField::typeName
-
-);
-volScalarField dist
-(
-    IOobject
-    (
-        "dist",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-    ),
-    mesh,
-    dimensionedScalar("zero", dimLength, 0),
-    zeroGradientFvPatchScalarField::typeName
-);
-volScalarField fd
-(
-    IOobject
-    (
-        "fd",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-    ),
-    mesh,
-    dimensionedScalar("zero", dimLength, fw.value()/2),
-    zeroGradientFvPatchScalarField::typeName
-);
-
-if(loading)
-{
-    label patchID = mesh.boundaryMesh().findPatchID("seabedFoundation");
-    const vectorField& faceCentres = mesh.Cf().boundaryField()[patchID];
-    forAll(mesh.C(),cellI)
-    {
-        scalar mink= GREAT;
-        forAll(faceCentres, facei)
-        {
-            if ( mag(mesh.C()[cellI] - faceCentres[facei]) < mink)
-            {
-                mink =mag(mesh.C()[cellI] - faceCentres[facei]) ;
-            }
-        }
-        dist[cellI] = mink;
-    }
-
-sigmaA.internalField() =QbyBL.value()* (1 -
-    ((pow(dist.internalField(),3.0))/
-    (pow(pow(fd.internalField(),2)+ pow(dist.internalField(),2),1.5))));
-}
-
-sigma0 = sigma0 + sigmaA * (1.0+(2.0*k0))/3.0;
 
 
 

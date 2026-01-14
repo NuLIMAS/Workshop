@@ -348,7 +348,6 @@ volScalarField f
     dimensionedScalar("0.0", dimPressure/dimTime,0.0)
 );
 
-
 // For piso loop
 label pRefCell = 0;
 scalar pRefValue = 0.0;

@@ -86,7 +86,7 @@ volScalarField n
         IOobject::NO_WRITE
     ),
     mesh,
-    dimensionedScalar(materialProperties.lookup("n")),
+    dimensionedScalar(materialProperties.lookup("n1")),
     zeroGradientFvPatchScalarField::typeName
 );
 dimensionedScalar Ea(materialProperties.lookup("Ea"));
