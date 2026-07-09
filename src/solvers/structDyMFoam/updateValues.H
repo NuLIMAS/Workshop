@@ -4,14 +4,17 @@ surfaceScalarField alphaF
     "alphaF",
     fvc::interpolate(alpha)
 );
-//Info <<"alphaF" << alphaF << endl;
+
+// Bound alphaF to prevent log of non-positive number and other math errors
+alphaF = min(1.0 - SMALL, max(0.0, alphaF));
+
 Vdj = V0 & mesh.Sf()/mesh.magSf()*pow(1-alphaF,q);
 
 
 label boundaryID1 = mesh.boundaryMesh().findPatchID("sol");
 label boundaryID2 = mesh.boundaryMesh().findPatchID("liq");
 // Set drift-flux at the innterface to 0
-Vdj.boundaryField()[boundaryID1] == 0; 
+Vdj.boundaryField()[boundaryID1] == 0;
 Vdj.boundaryField()[boundaryID2] == 0;
 const fvPatchScalarField& patchUsol = Cl.boundaryField()[boundaryID1];
 const fvPatchScalarField& patchUliq = Cl.boundaryField()[boundaryID2];
@@ -30,8 +33,8 @@ forAll(patchUliq, i)
 {
     Cl.boundaryField()[boundaryID2][i] = 1;
     Cl.boundaryField()[boundaryID1][i] = 0;
-    rho.boundaryField()[boundaryID2][i] = 1000;
-    rho.boundaryField()[boundaryID1][i] = 1000;
+    rho.boundaryField()[boundaryID2][i] = rhoc.value();
+    rho.boundaryField()[boundaryID1][i] = rhoc.value();
 }
 
 relDensity.correctBoundaryConditions();
@@ -55,14 +58,15 @@ int tp = ceil( runTime.time().value() / T.value()) ;
 const cellZone& cz1 = mesh.cellZones()["structureZones"];
 forAll(cz1, czi)
 {
-    //rhodg[cz1[czi]] = vector(0,0,-rhoag.value());
+    rhodg[cz1[czi]] = vector(0,0,-rhoag.value()-1000);
     E[cz1[czi]] = Ea.value();
     rhom[cz1[czi]] =rhoa.value();
     rho[cz1[czi]] =rhoa.value();
     Cf[cz1[czi]] =0;
     Cl[cz1[czi]] =0;
     Cs[cz1[czi]] =1;
-    alpha[cz1[czi]] =0.5;
+    alpha[cz1[czi]] = 0; // structure is non-porous anchor
+    n[cz1[czi]] = 0;     // no pore volume in the structure
     //E[cellI] = 1e10;
     //rhom[cellI] =1450;
     //Cf[cellI] =0;

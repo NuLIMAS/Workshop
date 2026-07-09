@@ -158,7 +158,7 @@ void tractionDisplacementSFFvPatchVectorField::updateCoeffs()
     //patch().lookupPatchField<volScalarField, scalar>("p");
 
     const fvPatchField<tensor>& gradU =
-        patch().lookupPatchField<volTensorField, tensor>("gradU");
+        patch().lookupPatchField<volTensorField, tensor>("grad(U)");
 
 
     gradient() =

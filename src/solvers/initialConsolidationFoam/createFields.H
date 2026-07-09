@@ -12,6 +12,23 @@ volVectorField U
     mesh
 );
 
+Info<< "Reading field p\n" << endl;
+volScalarField p
+(
+    IOobject
+    (
+        "p",
+        runTime.timeName(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh
+);
+
+
+
+Info<< "Calculating field gradU\n" << endl;
 volTensorField  gradU
 (
     IOobject
@@ -62,7 +79,7 @@ volSymmTensorField strain
         runTime.timeName(),
         mesh,
         IOobject::NO_READ,
-        IOobject::NO_WRITE
+        IOobject::AUTO_WRITE
      ),
      0.5*twoSymm(fvc::grad(U))
 );
@@ -94,35 +111,22 @@ volScalarField volStrain
     tr(strain)
 );
 
-volVectorField rhog
+Info<< "Calculating  field rhog\n" << endl;
+volVectorField rhodg
 (
     IOobject
     (
-        "rhog",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-    ),
-    mesh,
-    dimensionedVector("zero", dimForce/dimVolume, vector(0, 0, -gammaD.value())),
-    zeroGradientFvPatchScalarField::typeName
-);
-rhog.correctBoundaryConditions();
-
-volScalarField effStress
-(
-    IOobject
-    (
-        "effStress",
+        "rhodg",
         runTime.timeName(),
         mesh,
         IOobject::NO_READ,
         IOobject::AUTO_WRITE
     ),
-    (gammaD* -mesh.C().component(vector::Z))*
-    (1 + 2*k0)/3
+    //dimensionedVector("zero", dimForce/dimVolume, vector(0, 0, -(1-n)*(rhos-rhof)*g)),
+    (1-n)*(rhos-rhof)*g
 );
+rhodg.correctBoundaryConditions();
+
 
 volScalarField sigmaA
 (
@@ -138,7 +142,7 @@ volScalarField sigmaA
     dimensionedScalar("zero", dimForce/dimArea, 0.0),
     zeroGradientFvPatchScalarField::typeName
 );
-
+Info<< "Calculating initStress\n" << endl;
 volScalarField sigma0
 (
     IOobject
@@ -156,3 +160,6 @@ volScalarField sigma0
 
 divSigmaExp -= fvc::laplacian(2*mu + lambda, U, "laplacian(DD,D)");
 
+dimensionedScalar QbyBL(materialProperties.lookup("QbyBL"));
+
+Info << "Done  creating fields" << endl;

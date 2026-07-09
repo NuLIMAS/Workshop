@@ -46,7 +46,7 @@ Author
 #include "fvCFD.H"
 #include "dynamicFvMesh.H"
 #include "zeroGradientFvPatchFields.H"
-
+#include "constitutiveModel.H"
 #include "pisoControl.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

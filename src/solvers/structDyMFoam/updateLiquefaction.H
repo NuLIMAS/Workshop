@@ -58,6 +58,8 @@ forAll(Clface1, facei)
     {
         Cl[cl2[facei]] = 1;
         Cl[cl1[facei]] = 1;
+        Cs[cs2[facei]] = 0; // Force mutual exclusivity
+        Cs[cs1[facei]] = 0;
     }
 }
 forAll(Csface1, facei)
@@ -66,5 +68,7 @@ forAll(Csface1, facei)
     {
         Cs[cs2[facei]] = 1;
         Cs[cs1[facei]] = 1;
+        Cl[cl2[facei]] = 0; // Force mutual exclusivity
+        Cl[cl1[facei]] = 0;
     }
 }

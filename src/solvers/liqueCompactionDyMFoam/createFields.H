@@ -13,20 +13,20 @@ volVectorField U
 );
 
 
-volTensorField  gradU
-(
-    IOobject
-    (
-        "gradU",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-    ),
-    fvc::grad(U)
-);
+// volTensorField  gradU
+// (
+//     IOobject
+//     (
+//         "gradU",
+//         runTime.timeName(),
+//         mesh,
+//         IOobject::NO_READ,
+//         IOobject::NO_WRITE
+//     ),
+//     fvc::grad(U)
+// );
 
-//volTensorField gradU = fvc::grad(U);
+volTensorField gradU = fvc::grad(U);
 
 Info<< "Reading field Vm\n" << endl;
 volVectorField Vm

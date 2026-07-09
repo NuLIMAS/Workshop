@@ -26,10 +26,13 @@ Application
 
 Description
     Simple linear elasticity structural analysis code.
-    Solves for the displacement vector field D, also generating the
+    Solves for the displacement vector field U, also generating the
     stress tensor field sigma.
-    Also, calculates the Elastic modulus and initial effective
-    stress of the soil
+
+Author
+    R. Shanmugasundaram, Wikki GmbH
+    H. Rusche, Wikki GmbH
+
 
 \*---------------------------------------------------------------------------*/
 
@@ -52,50 +55,52 @@ int main(int argc, char *argv[])
 
     Info<< "\nCalculating displacement field\n" << endl;
 
-    while (runTime.loop())
+// #   include "readSolidDisplacementFoamControls.H"
+
+    // Initialize correction iteration count and residual variables
+    int iCorr = 0;
+    scalar UResidual = 1.0e10;
+    scalar residual = 1.0e10;
+
+    Info<< "Solving until U converges..." << nl << endl;
+
+    do
     {
-        Info<< "Iteration: " << runTime.value() << nl << endl;
+        Info << "iCorr = " << iCorr << endl;
 
-#       include "readSolidDisplacementFoamControls.H"
+        // Store previous iterations of U
+        U.storePrevIter();
 
-        int iCorr = 0;
-        scalar initialResidual = 0;
+        fvVectorMatrix UEqn
+        (
+            fvm::laplacian(2*mu + lambda, U, "laplacian(DD,D)")
+            + divSigmaExp
+            //+ rhodg
+        );
 
-        do
-        {
+        UResidual = UEqn.solve().initialResidual();
 
-            fvVectorMatrix UEqn
-            (
-                fvm::laplacian(2*mu + lambda, U, "laplacian(DD,D)")
-                + divSigmaExp + rhog
-            );
+        gradU = fvc::grad(U);
+        strain = 0.5*twoSymm(gradU);
+        volStrain = tr(strain);
+        sigmaD = mu*twoSymm(gradU) + (lambda*I)*tr(gradU);
 
-            initialResidual = UEqn.solve().initialResidual();
+        divSigmaExp = fvc::div
+        (
+            sigmaD - (2*mu + lambda)*gradU,
+            "div(sigmaD)"
+        );
+        residual = UResidual;
 
-            strain = 0.5*twoSymm(gradU);
-            gradU = fvc::grad(U);
-            volStrain = tr(strain);
-            sigmaD = mu*twoSymm(gradU) + (lambda*I)*tr(gradU);
+    } while (residual > convergenceTolerance && ++iCorr < nCorr);
 
-            divSigmaExp = fvc::div
-            (
-                sigmaD - (2*mu + lambda)*gradU,
-                "div(sigmaD)"
-            );
 
-        } while (initialResidual > convergenceTolerance && ++iCorr < nCorr);
+    runTime++;
+    # include "calculateStress.H"
 
-        sigma0 = - (sigmaD.component(symmTensor::XX)
-                 + sigmaD.component(symmTensor::YY)
-                 + sigmaD.component(symmTensor::ZZ)) /3;
-
-        sigmaA = sigma0 - effStress;
-        runTime.write();
-
-        Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-            << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-            << nl << endl;
-    }
+    Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+        << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+        << nl << endl;
 
     Info<< "End\n" << endl;
 

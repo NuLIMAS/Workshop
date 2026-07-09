@@ -160,7 +160,7 @@ void tractionPressureDisplacementSFFvPatchVectorField::updateCoeffs()
     //    patch().lookupPatchField<volScalarField, scalar>("p");
 
     const fvPatchField<tensor>& gradU =
-        patch().lookupPatchField<volTensorField, tensor>("gradU");
+        patch().lookupPatchField<volTensorField, tensor>("grad(U)");
 
     const dictionary& materialProperties =
         db().lookupObject<IOdictionary>("materialProperties");

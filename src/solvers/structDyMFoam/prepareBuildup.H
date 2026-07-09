@@ -27,22 +27,22 @@ numCycXY.internalField() =
     Foam::pow
     (
         (1.0/rd_a.internalField())
-       *mag(txy.internalField()/sigma0.internalField())
-       + SMALL, (1.0/rd_b.internalField())
+       *max(mag(txy.internalField()/sigma0.internalField()), 1e-6), 
+       (1.0/rd_b.internalField())
     );
 numCycXZ.internalField() =
     Foam::pow
     (
         (1.0/rd_a.internalField())
-       *mag(txz.internalField()/sigma0.internalField())
-       + SMALL, (1.0/rd_b.internalField())
+       *max(mag(txz.internalField()/sigma0.internalField()), 1e-6), 
+       (1.0/rd_b.internalField())
     );
 numCycYZ.internalField() =
     Foam::pow
     (
         (1.0/rd_a.internalField())
-       *mag(tyz.internalField()/sigma0.internalField())
-       + SMALL, (1.0/rd_b.internalField())
+       *max(mag(tyz.internalField()/sigma0.internalField()), 1e-6), 
+       (1.0/rd_b.internalField())
     );
 numCycXY.correctBoundaryConditions();
 numCycXZ.correctBoundaryConditions();
